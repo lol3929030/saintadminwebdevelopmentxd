@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saint Admin - Privacy Policy</title>
+    <meta name="description" content="Saint Admin Privacy Policy - Learn how we collect, use, and protect your data.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #ef4444;
+            --primary-dark: #dc2626;
+            --primary-light: #f87171;
+            --secondary: #3b82f6;
+            --accent: #f97316;
+            --warning: #f59e0b;
+            --danger: #dc2626;
+            --success: #10b981;
+            --dark-bg: #0a0a0a;
+            --darker-bg: #050505;
+            --card-bg: rgba(15, 15, 15, 0.7);
+            --text-primary: #ffffff;
+            --text-secondary: #d1d5db;
+            --text-tertiary: #9ca3af;
+            --border-color: rgba(239, 68, 68, 0.2);
+            --border-light: rgba(255, 255, 255, 0.1);
+            --gradient-red: linear-gradient(135deg, #ef4444, #dc2626, #b91c1c);
+            --gradient-orange: linear-gradient(135deg, #f97316, #ea580c);
+            --gradient-blue: linear-gradient(135deg, #3b82f6, #2563eb);
+            --gradient-primary: linear-gradient(135deg, #ef4444, #f97316);
+            --gradient-purple: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+            position: relative;
+        }
+        
+        /* ASCII Art Background */
+        .ascii-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            opacity: 0.03;
+            pointer-events: none;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            line-height: 1.1;
+            white-space: pre;
+            color: var(--primary-light);
+            overflow: hidden;
+        }
+        
+        .ascii-bg-content {
+            animation: scroll-up 80s linear infinite;
+        }
+        
+        @keyframes scroll-up {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-50%); }
+        }
+        
+        /* Gradient Overlay */
+        .gradient-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 20% 30%, rgba(239, 68, 68, 0.1) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, rgba(249, 115, 22, 0.08) 0%, transparent 40%),
+                        radial-gradient(circle at 40% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 40%);
+            pointer-events: none;
+        }
+        
+        /* Animated Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            animation: float 20s infinite linear;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px);
+                opacity: 0;
+            }
+        }
+        
+        /* Header & Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1.5rem 2rem;
+            backdrop-filter: blur(10px);
+            background-color: rgba(10, 10, 10, 0.9);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 800;
+            font-size: 1.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--gradient-primary);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 800;
+            font-size: 1rem;
+            color: white;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-link:hover {
+            color: var(--text-primary);
+        }
+        
+        .nav-link.active {
+            color: var(--primary);
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+        
+        .nav-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .btn {
+            padding: 0.6rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-light);
+        }
+        
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Main Content */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 8rem 2rem 4rem;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .page-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* Privacy Content */
+        .privacy-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .privacy-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient-blue);
+        }
+        
+        .last-updated {
+            text-align: center;
+            color: var(--warning);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            padding: 0.75rem;
+            background: rgba(245, 158, 11, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+        
+        .privacy-section {
+            margin-bottom: 3rem;
+        }
+        
+        .privacy-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: var(--gradient-blue);
+            border-radius: 2px;
+        }
+        
+        .data-category {
+            margin-bottom: 2.5rem;
+            padding: 1.5rem;
+            background: rgba(15, 15, 15, 0.5);
+            border-radius: 12px;
+            border: 1px solid var(--border-light);
+        }
+        
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .category-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            background: rgba(59, 130, 246, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--secondary);
+        }
+        
+        .category-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--secondary);
+            flex: 1;
+        }
+        
+        .data-list {
+            list-style: none;
+        }
+        
+        .data-list li {
+            padding: 0.75rem 0;
+            color: var(--text-secondary);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+        
+        .data-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .data-list li::before {
+            content: '📊';
+            flex-shrink: 0;
+            margin-top: 0.2rem;
+        }
+        
+        .purpose-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--primary);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        
+        .info-box {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-left: 4px solid var(--secondary);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+        
+        .info-title {
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .warning-box {
+            background: rgba(220, 38, 38, 0.1);
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            border-left: 4px solid var(--danger);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+        
+        .warning-title {
+            color: var(--danger);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .data-flow-diagram {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .flow-step {
+            background: rgba(15, 15, 15, 0.5);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .flow-step:hover {
+            transform: translateY(-5px);
+            border-color: var(--secondary);
+        }
+        
+        .flow-number {
+            width: 36px;
+            height: 36px;
+            background: var(--gradient-blue);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin: 0 auto 1rem;
+        }
+        
+        .flow-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+        
+        .flow-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .consent-section {
+            text-align: center;
+            margin: 3rem 0;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(15, 15, 15, 0.9), rgba(10, 10, 10, 0.9));
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+        }
+        
+        .consent-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        
+        .consent-desc {
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 1.5rem;
+        }
+        
+        .contact-section {
+            text-align: center;
+            margin-top: 4rem;
+            padding: 3rem;
+            background: linear-gradient(135deg, rgba(15, 15, 15, 0.9), rgba(10, 10, 10, 0.9));
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+        }
+        
+        .contact-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        
+        .contact-desc {
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            font-size: 1.1rem;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--darker-bg);
+            border-top: 1px solid var(--border-light);
+            padding: 4rem 2rem 2rem;
+            margin-top: 4rem;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+        
+        .footer-brand {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .footer-tagline {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            max-width: 300px;
+        }
+        
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .footer-heading {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        
+        .footer-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-link:hover {
+            color: var(--primary);
+        }
+        
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 3rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .page-title {
+                font-size: 3rem;
+            }
+            
+            .section-title {
+                font-size: 1.6rem;
+            }
+            
+            .contact-title {
+                font-size: 1.8rem;
+            }
+            
+            .data-flow-diagram {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .nav-links, .nav-actions {
+                display: none;
+            }
+            
+            .nav-links.mobile-open {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: var(--darker-bg);
+                padding: 2rem;
+                border-top: 1px solid var(--border-light);
+                border-bottom: 1px solid var(--border-light);
+                gap: 1.5rem;
+            }
+            
+            .nav-actions.mobile-open {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: calc(100% + 200px);
+                left: 0;
+                width: 100%;
+                padding: 0 2rem 2rem;
+                background-color: var(--darker-bg);
+            }
+            
+            .main-container {
+                padding: 7rem 1.5rem 3rem;
+            }
+            
+            .privacy-container {
+                padding: 2rem 1.5rem;
+            }
+            
+            .page-title {
+                font-size: 2.5rem;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .contact-section {
+                padding: 2rem 1.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.4rem;
+            }
+            
+            .privacy-container {
+                padding: 1.5rem;
+            }
+            
+            .category-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+        
+        /* Animation Classes */
+        .fade-in {
+            animation: fadeIn 1s ease forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .slide-up {
+            animation: slideUp 0.8s ease forwards;
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--darker-bg);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--gradient-primary);
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+        
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+    </style>
+</head>
+<body>
+    <div class="ascii-bg">
+        <div class="ascii-bg-content">
+        </div>
+    </div>
+    
+    <div class="gradient-overlay"></div>
+    
+    <div class="particles" id="particles-container"></div>
+    
+    <!-- Header -->
+    <header>
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">S</div>
+                Saint Admin
+            </div>
+            
+            <button class="mobile-menu-btn" id="mobile-menu-toggle">☰</button>
+            
+            <nav class="nav-links" id="nav-links">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/terms" class="nav-link">Terms of Service</a>
+                <a href="/privacy-policy" class="nav-link active">Privacy Policy</a>
+                <a href="/refund-policy" class="nav-link">Refund Policy</a>
+                <a href="https://discord.gg/CEKQDKBN9R" class="nav-link">Discord</a>
+            </nav>
+            
+            <div class="nav-actions" id="nav-actions">
+                <a href="/sign-in" class="btn btn-secondary">Sign In</a>
+                <a href="/register" class="btn btn-primary">Register</a>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main class="main-container">
+        <div class="page-header fade-in">
+            <h1 class="page-title slide-up">Privacy Policy</h1>
+            <p class="page-subtitle slide-up">
+                Transparency in data collection and usage. Learn how we collect, process, and protect your information 
+                to provide and improve our services while ensuring security and compliance.
+            </p>
+        </div>
+        
+        <div class="last-updated slide-up">
+            Last Updated: December 2025 | Effective immediately upon publication
+        </div>
+        
+        <div class="privacy-container slide-up">
+            <div class="info-box">
+                <div class="info-title">
+                    🔐 DATA COLLECTION NOTICE
+                </div>
+                <p>
+                    By using Saint Admin services, you acknowledge and consent to the collection, processing, 
+                    and storage of your data as described in this Privacy Policy. We collect data to provide, 
+                    maintain, and improve our services while ensuring security and compliance with our Terms of Service.
+                </p>
+            </div>
+            
+            <div class="privacy-section">
+                <h2 class="section-title">Data We Collect</h2>
+                <p>
+                    To provide and maintain our services, we collect and process the following types of data. 
+                    This collection is necessary for service functionality, security, and compliance enforcement.
+                </p>
+                
+                <div class="data-category slide-up">
+                    <div class="category-header">
+                        <div class="category-icon">📜</div>
+                        <h3 class="category-title">Script Execution Data</h3>
+                    </div>
+                    <ul class="data-list">
+                        <li>
+                            <strong>Script Logging:</strong> Whatever scripts you run are logged by us for security and compliance monitoring.
+                            <span class="purpose-badge">Security</span>
+                        </li>
+                        <li>
+                            <strong>Execution Timestamps:</strong> Date and time of script executions are recorded.
+                            <span class="purpose-badge">Audit Trail</span>
+                        </li>
+                        <li>
+                            <strong>Script Content:</strong> Full script content executed through our platform.
+                            <span class="purpose-badge">Compliance</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="data-category slide-up">
+                    <div class="category-header">
+                        <div class="category-icon">👤</div>
+                        <h3 class="category-title">User Identification Data</h3>
+                    </div>
+                    <ul class="data-list">
+                        <li>
+                            <strong>User ID & Discord Username:</strong> To verify identities and prevent unauthorized access.
+                            <span class="purpose-badge">Authentication</span>
+                        </li>
+                        <li>
+                            <strong>Roblox Username:</strong> Required to verify purchases and certain account-specific functionalities.
+                            <span class="purpose-badge">Verification</span>
+                        </li>
+                        <li>
+                            <strong>Account Creation Date:</strong> Date when your account was created.
+                            <span class="purpose-badge">Account Management</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="data-category slide-up">
+                    <div class="category-header">
+                        <div class="category-icon">🌐</div>
+                        <h3 class="category-title">Network & Communication Data</h3>
+                    </div>
+                    <ul class="data-list">
+                        <li>
+                            <strong>HTTP Requests:</strong> Requests sent or received through APIs for game logging and chat logging purposes.
+                            <span class="purpose-badge">Service Functionality</span>
+                        </li>
+                        <li>
+                            <strong>Chat Logs:</strong> We log everything you say in our supported games to ensure compliance with Terms of Service.
+                            <span class="purpose-badge">Compliance Monitoring</span>
+                        </li>
+                        <li>
+                            <strong>Messages & Activity:</strong> We log every message you send and activities you perform in our services.
+                            <span class="purpose-badge">Security & Moderation</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="data-category slide-up">
+                    <div class="category-header">
+                        <div class="category-icon">📈</div>
+                        <h3 class="category-title">Service Usage Data</h3>
+                    </div>
+                    <ul class="data-list">
+                        <li>
+                            <strong>Connection Logs:</strong> Times and durations of your connections to our services.
+                            <span class="purpose-badge">Service Analytics</span>
+                        </li>
+                        <li>
+                            <strong>Feature Usage:</strong> Which features and games you use most frequently.
+                            <span class="purpose-badge">Service Improvement</span>
+                        </li>
+                        <li>
+                            <strong>Error Reports:</strong> Crash reports and error logs to improve service stability.
+                            <span class="purpose-badge">Quality Assurance</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="privacy-section">
+                <h2 class="section-title">How We Use Your Data</h2>
+                
+                <div class="data-flow-diagram">
+                    <div class="flow-step">
+                        <div class="flow-number">1</div>
+                        <h4 class="flow-title">Collection</h4>
+                        <p class="flow-desc">Data is collected during your use of our services</p>
+                    </div>
+                    
+                    <div class="flow-step">
+                        <div class="flow-number">2</div>
+                        <h4 class="flow-title">Processing</h4>
+                        <p class="flow-desc">Data is analyzed for security and service improvement</p>
+                    </div>
+                    
+                    <div class="flow-step">
+                        <div class="flow-number">3</div>
+                        <h4 class="flow-title">Storage</h4>
+                        <p class="flow-desc">Secure storage with encryption and access controls</p>
+                    </div>
+                    
+                    <div class="flow-step">
+                        <div class="flow-number">4</div>
+                        <h4 class="flow-title">Protection</h4>
+                        <p class="flow-desc">Advanced security measures to prevent unauthorized access</p>
+                    </div>
+                </div>
+                
+                <div class="info-box">
+                    <div class="info-title">
+                        🎯 PRIMARY PURPOSES
+                    </div>
+                    <ul class="data-list">
+                        <li><strong>Service Provision:</strong> To provide, maintain, and improve our services</li>
+                        <li><strong>Security Enforcement:</strong> To detect and prevent violations of our Terms of Service</li>
+                        <li><strong>Compliance Monitoring:</strong> To ensure users adhere to community guidelines</li>
+                        <li><strong>Fraud Prevention:</strong> To prevent unauthorized access and account sharing</li>
+                        <li><strong>Customer Support:</strong> To assist with technical issues and inquiries</li>
+                        <li><strong>Service Analytics:</strong> To understand usage patterns and improve features</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="privacy-section">
+                <h2 class="section-title">Data Retention & Security</h2>
+                
+                <div class="warning-box">
+                    <div class="warning-title">
+                        ⚠️ IMPORTANT SECURITY NOTICE
+                    </div>
+                    <p>
+                        All collected data is stored on secure servers with encryption and access controls. 
+                        Data is retained for as long as necessary to provide services, enforce our Terms of Service, 
+                        and comply with legal obligations. We implement industry-standard security measures, but 
+                        no system is 100% secure.
+                    </p>
+                </div>
+                
+                <div class="info-box">
+                    <div class="info-title">
+                        🔒 SECURITY MEASURES
+                    </div>
+                    <ul class="data-list">
+                        <li><strong>Encryption:</strong> All sensitive data is encrypted both in transit and at rest</li>
+                        <li><strong>Access Controls:</strong> Strict access controls and authentication mechanisms</li>
+                        <li><strong>Regular Audits:</strong> Security audits and vulnerability assessments</li>
+                        <li><strong>Monitoring:</strong> 24/7 monitoring for suspicious activities</li>
+                        <li><strong>Backup Systems:</strong> Regular backups with disaster recovery plans</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="privacy-section">
+                <h2 class="section-title">Data Sharing & Third Parties</h2>
+                <p>
+                    We do not sell your personal data to third parties. Data may be shared only in the following circumstances:
+                </p>
+                
+                <div class="info-box">
+                    <ul class="data-list">
+                        <li><strong>Legal Requirements:</strong> When required by law or legal process</li>
+                        <li><strong>Service Providers:</strong> With trusted service providers who assist in operating our services</li>
+                        <li><strong>Security Incidents:</strong> In case of security breaches or fraud investigations</li>
+                        <li><strong>Business Transfers:</strong> In connection with mergers, acquisitions, or asset sales</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="consent-section slide-up">
+                <h3 class="consent-title">Your Consent</h3>
+                <p class="consent-desc">
+                    By using Saint Admin services, you consent to the collection, processing, and storage 
+                    of your data as described in this Privacy Policy. If you do not agree with any part of 
+                    this policy, you must immediately discontinue use of our services.
+                </p>
+                <div class="info-box" style="margin-top: 1.5rem;">
+                    <p style="color: var(--text-secondary);">
+                        <strong>Withdrawal of Consent:</strong> You may withdraw consent by ceasing to use our services 
+                        and requesting account deletion. Note that some data may be retained for legal compliance purposes.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="privacy-section">
+                <h2 class="section-title">Policy Updates</h2>
+                <div class="info-box">
+                    <div class="info-title">
+                        🔄 POLICY CHANGES
+                    </div>
+                    <p>
+                        We may update this Privacy Policy from time to time. We will notify users of any 
+                        material changes by posting the new Privacy Policy on this page and updating the 
+                        "Last Updated" date. Continued use of our services after changes constitutes 
+                        acceptance of the updated policy.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="contact-section">
+                <h2 class="contact-title">Questions About Privacy?</h2>
+                <p class="contact-desc">
+                    If you have questions about this Privacy Policy, your data, or our privacy practices, 
+                    please contact us through our Discord server.
+                </p>
+                <a href="https://discord.gg/CEKQDKBN9R" class="btn btn-primary">
+                    Contact via Discord
+                </a>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-brand">
+                <div class="footer-logo">Saint Admin</div>
+                <p class="footer-tagline">
+                    The best roblox serverside providing lightning fast execution speed, 
+                    good games and website based execution. Absolutely no downloads required!
+                </p>
+            </div>
+            
+            <div class="footer-links">
+                <h3 class="footer-heading">Legal Documents</h3>
+                <a href="/terms" class="footer-link">Terms of Service</a>
+                <a href="/privacy-policy" class="footer-link">Privacy Policy</a>
+                <a href="/refund-policy" class="footer-link">Refund Policy</a>
+            </div>
+            
+            <div class="footer-links">
+                <h3 class="footer-heading">Resources</h3>
+                <a href="https://discord.gg/CEKQDKBN9R" class="footer-link">Discord Community</a>
+                <a href="https://www.youtube.com/@SaintUtilities" class="footer-link">YouTube Channel</a>
+                <a href="/showcases" class="footer-link">User Showcases</a>
+            </div>
+            
+            <div class="footer-links">
+                <h3 class="footer-heading">Account</h3>
+                <a href="/sign-in" class="footer-link">Sign In</a>
+                <a href="/register" class="footer-link">Register</a>
+                <a href="/pricing" class="footer-link">Pricing</a>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div>© 2024 Saint Admin. All rights reserved.</div>
+            <div>Privacy Policy v2.0</div>
+        </div>
+    </footer>
+
+    <script>
+        function createParticles() {
+            const container = document.getElementById('particles-container');
+            const particleCount = 40;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                const left = Math.random() * 100;
+                const delay = Math.random() * 20;
+                const duration = 15 + Math.random() * 15;
+                
+                particle.style.left = `${left}%`;
+                particle.style.animationDelay = `${delay}s`;
+                particle.style.animationDuration = `${duration}s`;
+                
+                const size = 1 + Math.random() * 3;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                const colors = ['#ef4444', '#f97316', '#3b82f6', '#8b5cf6'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.backgroundColor = color;
+                
+                container.appendChild(particle);
+            }
+        }
+        
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-toggle').addEventListener('click', function() {
+            const navLinks = document.getElementById('nav-links');
+            const navActions = document.getElementById('nav-actions');
+            
+            navLinks.classList.toggle('mobile-open');
+            navActions.classList.toggle('mobile-open');
+            
+            this.textContent = navLinks.classList.contains('mobile-open') ? '✕' : '☰';
+        });
+        
+        document.addEventListener('click', function(event) {
+            const navLinks = document.getElementById('nav-links');
+            const navActions = document.getElementById('nav-actions');
+            const toggleBtn = document.getElementById('mobile-menu-toggle');
+            
+            if (!navLinks.contains(event.target) && !toggleBtn.contains(event.target)) {
+                navLinks.classList.remove('mobile-open');
+                navActions.classList.remove('mobile-open');
+                toggleBtn.textContent = '☰';
+            }
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const navLinks = document.getElementById('nav-links');
+                    const navActions = document.getElementById('nav-actions');
+                    const toggleBtn = document.getElementById('mobile-menu-toggle');
+                    
+                    if (navLinks.classList.contains('mobile-open')) {
+                        navLinks.classList.remove('mobile-open');
+                        navActions.classList.remove('mobile-open');
+                        toggleBtn.textContent = '☰';
+                    }
+                    
+                    const headerHeight = document.querySelector('header').offsetHeight;
+                    const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+                    
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        </script></body></html>
