@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saint Admin - Refund Policy</title>
+    <meta name="description" content="Saint Admin Refund Policy - Learn about our refund and return policies for services and purchases.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #ef4444;
+            --primary-dark: #dc2626;
+            --primary-light: #f87171;
+            --secondary: #3b82f6;
+            --accent: #f97316;
+            --warning: #f59e0b;
+            --danger: #dc2626;
+            --success: #10b981;
+            --dark-bg: #0a0a0a;
+            --darker-bg: #050505;
+            --card-bg: rgba(15, 15, 15, 0.7);
+            --text-primary: #ffffff;
+            --text-secondary: #d1d5db;
+            --text-tertiary: #9ca3af;
+            --border-color: rgba(239, 68, 68, 0.2);
+            --border-light: rgba(255, 255, 255, 0.1);
+            --gradient-red: linear-gradient(135deg, #ef4444, #dc2626, #b91c1c);
+            --gradient-orange: linear-gradient(135deg, #f97316, #ea580c);
+            --gradient-blue: linear-gradient(135deg, #3b82f6, #2563eb);
+            --gradient-primary: linear-gradient(135deg, #ef4444, #f97316);
+            --gradient-purple: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+            position: relative;
+        }
+        
+        /* ASCII Art Background */
+        .ascii-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            opacity: 0.03;
+            pointer-events: none;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            line-height: 1.1;
+            white-space: pre;
+            color: var(--primary-light);
+            overflow: hidden;
+        }
+        
+        .ascii-bg-content {
+            animation: scroll-up 80s linear infinite;
+        }
+        
+        @keyframes scroll-up {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-50%); }
+        }
+        
+        /* Gradient Overlay */
+        .gradient-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 20% 30%, rgba(239, 68, 68, 0.1) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, rgba(249, 115, 22, 0.08) 0%, transparent 40%),
+                        radial-gradient(circle at 40% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 40%);
+            pointer-events: none;
+        }
+        
+        /* Animated Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            animation: float 20s infinite linear;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px);
+                opacity: 0;
+            }
+        }
+        
+        /* Header & Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1.5rem 2rem;
+            backdrop-filter: blur(10px);
+            background-color: rgba(10, 10, 10, 0.9);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 800;
+            font-size: 1.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--gradient-primary);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 800;
+            font-size: 1rem;
+            color: white;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-link:hover {
+            color: var(--text-primary);
+        }
+        
+        .nav-link.active {
+            color: var(--primary);
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+        
+        .nav-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .btn {
+            padding: 0.6rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-light);
+        }
+        
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Main Content */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 8rem 2rem 4rem;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .page-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* Refund Content */
+        .refund-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .refund-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(135deg, #dc2626, #ef4444);
+        }
+        
+        .last-updated {
+            text-align: center;
+            color: var(--warning);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            padding: 0.75rem;
+            background: rgba(245, 158, 11, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+        
+        .refund-section {
+            margin-bottom: 3rem;
+        }
+        
+        .refund-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: linear-gradient(135deg, #dc2626, #ef4444);
+            border-radius: 2px;
+        }
+        
+        .no-refund-banner {
+            text-align: center;
+            padding: 3rem;
+            margin: 2rem 0;
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.1), rgba(239, 68, 68, 0.1));
+            border: 2px solid var(--danger);
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .no-refund-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(220, 38, 38, 0.2) 0%, transparent 70%);
+            z-index: 0;
+        }
+        
+        .no-refund-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .no-refund-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: var(--danger);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .no-refund-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .warning-box {
+            background: rgba(220, 38, 38, 0.1);
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            border-left: 4px solid var(--danger);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+        
+        .warning-title {
+            color: var(--danger);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .info-box {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-left: 4px solid var(--secondary);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+        
+        .info-title {
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .policy-list {
+            list-style: none;
+            margin: 1.5rem 0;
+        }
+        
+        .policy-list li {
+            padding: 0.75rem 0;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+        
+        .policy-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .policy-list li::before {
+            content: '•';
+            color: var(--primary);
+            font-weight: bold;
+            flex-shrink: 0;
+            margin-top: 0.2rem;
+        }
+        
+        .highlight-box {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .highlight-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--primary);
+        }
+        
+        .contact-section {
+            text-align: center;
+            margin-top: 4rem;
+            padding: 3rem;
+            background: linear-gradient(135deg, rgba(15, 15, 15, 0.9), rgba(10, 10, 10, 0.9));
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+        }
+        
+        .contact-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        
+        .contact-desc {
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            font-size: 1.1rem;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--darker-bg);
+            border-top: 1px solid var(--border-light);
+            padding: 4rem 2rem 2rem;
+            margin-top: 4rem;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+        
+        .footer-brand {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .footer-tagline {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            max-width: 300px;
+        }
+        
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .footer-heading {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        
+        .footer-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-link:hover {
+            color: var(--primary);
+        }
+        
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 3rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .page-title {
+                font-size: 3rem;
+            }
+            
+            .section-title {
+                font-size: 1.6rem;
+            }
+            
+            .no-refund-title {
+                font-size: 2rem;
+            }
+            
+            .contact-title {
+                font-size: 1.8rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .nav-links, .nav-actions {
+                display: none;
+            }
+            
+            .nav-links.mobile-open {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: var(--darker-bg);
+                padding: 2rem;
+                border-top: 1px solid var(--border-light);
+                border-bottom: 1px solid var(--border-light);
+                gap: 1.5rem;
+            }
+            
+            .nav-actions.mobile-open {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: calc(100% + 200px);
+                left: 0;
+                width: 100%;
+                padding: 0 2rem 2rem;
+                background-color: var(--darker-bg);
+            }
+            
+            .main-container {
+                padding: 7rem 1.5rem 3rem;
+            }
+            
+            .refund-container {
+                padding: 2rem 1.5rem;
+            }
+            
+            .page-title {
+                font-size: 2.5rem;
+            }
+            
+            .no-refund-banner {
+                padding: 2rem 1.5rem;
+            }
+            
+            .no-refund-title {
+                font-size: 1.8rem;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .contact-section {
+                padding: 2rem 1.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.4rem;
+            }
+            
+            .refund-container {
+                padding: 1.5rem;
+            }
+            
+            .no-refund-title {
+                font-size: 1.5rem;
+            }
+            
+            .no-refund-icon {
+                font-size: 3rem;
+            }
+            
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+        
+        /* Animation Classes */
+        .fade-in {
+            animation: fadeIn 1s ease forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .slide-up {
+            animation: slideUp 0.8s ease forwards;
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--darker-bg);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--gradient-primary);
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+        
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+    </style>
+</head>
+<body>
+    <div class="ascii-bg">
+        <div class="ascii-bg-content">
+        </div>
+    </div>
+    
+    <div class="gradient-overlay"></div>
+    
+    <div class="particles" id="particles-container"></div>
+    
+    <!-- Header -->
+<header>
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">S</div>
+                Saint Admin
+            </div>
+            
+            <button class="mobile-menu-btn" id="mobile-menu-toggle">☰</button>
+            
+            <nav class="nav-links" id="nav-links">
+                <a href="#" class="nav-link">Home</a>
+                <a href="#features-section" class="nav-link">Features</a>
+                <a href="#pricing-section" class="nav-link">Pricing</a>
+                <a href="#showcases-section" class="nav-link">Showcases</a>
+                <a href="https://discord.gg/CEKQDKBN9R" class="nav-link">Join Discord</a>
+            </nav>
+            
+            <div class="nav-actions" id="nav-actions">
+                <a href="/sign-in" class="btn btn-secondary">Sign In</a>
+                <a href="/register" class="btn btn-primary">Register</a>
+            </div>
+        </div>
+    </header>
+
+    
+    <!-- Main Content -->
+    <main class="main-container">
+        <div class="page-header fade-in">
+            <h1 class="page-title slide-up">Refund Policy</h1>
+            <p class="page-subtitle slide-up">
+                Important information regarding refunds, returns, and service cancellations for Saint Admin purchases.
+            </p>
+        </div>
+        
+        <div class="last-updated slide-up">
+            Last Updated: December 2025 | Effective immediately upon publication
+        </div>
+        
+        <div class="refund-container slide-up">
+            <!-- IMPORTANT NO REFUND BANNER -->
+            <div class="no-refund-banner">
+                <div class="no-refund-icon">🚫</div>
+                <h2 class="no-refund-title">NO REFUNDS POLICY</h2>
+                <p class="no-refund-subtitle">
+                    All purchases of Saint Admin services are <strong>FINAL</strong> and <strong>NON-REFUNDABLE</strong>.
+                    By making a purchase, you acknowledge and agree to this policy.
+                </p>
+            </div>
+            
+            <div class="refund-section">
+                <h2 class="section-title">Important Notice</h2>
+                
+                <div class="warning-box">
+                    <div class="warning-title">
+                        ⚠️ CRITICAL INFORMATION
+                    </div>
+                    <p>
+                        <strong>Saint Admin no longer offers refunds for any purchases.</strong> All sales are final. 
+                        This policy is strictly enforced and there are <strong>NO EXCEPTIONS</strong> under any circumstances.
+                    </p>
+                </div>
+                
+                <p>
+                    This Refund Policy outlines our stance on refunds, returns, and cancellations. 
+                    Please read this policy carefully before making any purchase. By purchasing our services, 
+                    you acknowledge that you have read, understood, and agree to be bound by this policy.
+                </p>
+            </div>
+            
+
+            
+            <div class="refund-section">
+                <h2 class="section-title">Account Issues & Blacklisting</h2>
+                
+                <div class="info-box">
+                    <div class="info-title">
+                        ⚖️ TERMS OF SERVICE VIOLATIONS
+                    </div>
+                    <p>
+                        If your account is suspended or blacklisted due to violations of our 
+                        <a href="/terms" style="color: var(--primary); text-decoration: underline;">Terms of Service</a>, 
+                        you are <strong>NOT</strong> eligible for any refund. This includes but is not limited to:
+                    </p>
+                    <ul class="policy-list" style="margin-top: 1rem;">
+                        <li>Abuse of services</li>
+                        <li>Violation of Basic or Exclusive rules</li>
+                        <li>Sharing whitelist access</li>
+                        <li>Attempting to reverse engineer our software</li>
+                        <li>Any other Terms of Service violations</li>
+                    </ul>
+                </div>
+            </div>
+            
+
+            
+            <div class="refund-section">
+                <h2 class="section-title">Your Responsibilities</h2>
+                
+                <div class="info-box">
+                    <div class="info-title">
+                        ✅ BEFORE YOU PURCHASE
+                    </div>
+                    <ul class="policy-list">
+                        <li>Read and understand our Terms of Service</li>
+                        <li>Ensure you meet all requirements (age, system, etc.)</li>
+                        <li>Understand that all purchases are final</li>
+                        <li>Acknowledge that there are no refunds under any circumstances</li>
+                        <li>Verify that you want the service before completing your purchase</li>
+                    </ul>
+                </div>
+                
+                <p style="margin-top: 1.5rem;">
+                    By completing a purchase, you confirm that you have read, understood, and agree to this 
+                    Refund Policy in its entirety. You acknowledge that you are making a non-refundable 
+                    purchase and accept full responsibility for your decision.
+                </p>
+            </div>
+            
+            <div class="refund-section">
+                <h2 class="section-title">Policy Updates</h2>
+                
+                <div class="info-box">
+                    <div class="info-title">
+                        🔄 POLICY CHANGES
+                    </div>
+                    <p>
+                        We reserve the right to modify this Refund Policy at any time. Changes will be 
+                        effective immediately upon posting on this page. Your continued use of our services 
+                        after any changes constitutes acceptance of the modified policy.
+                    </p>
+                    <p style="margin-top: 1rem;">
+                        It is your responsibility to review this policy periodically for updates. The 
+                        "Last Updated" date at the top of this page indicates when this policy was last revised.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="contact-section">
+                <h2 class="contact-title">Questions About This Policy?</h2>
+                <p class="contact-desc">
+                    If you have questions about our Refund Policy or need clarification before making a purchase, 
+                    please contact us through our Discord server.
+                </p>
+                <a href="https://discord.gg/CEKQDKBN9R" class="btn btn-primary">
+                    Contact via Discord
+                </a>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+<footer>
+        <div class="footer-container">
+            <div class="footer-brand">
+                <div class="footer-logo">Saint Admin</div>
+                <p class="footer-tagline">
+                    The best roblox serverside providing lightning fast execution speed, good games and website based execution. Absolutely no downloads required!
+                </p>
+            </div>
+            
+            <div class="footer-links">
+                <h3 class="footer-heading">Product</h3>
+                <a href="#features-section" class="footer-link">Features</a>
+                <a href="#pricing-section" class="footer-link">Pricing</a>
+                <a href="#showcases-section" class="footer-link">Showcases</a>
+            </div>
+            
+            <div class="footer-links">
+                <h3 class="footer-heading">Company</h3>
+                <a href="https://www.youtube.com/@SaintUtilities" class="footer-link">YouTube</a>
+                <a href="https://discord.gg/CEKQDKBN9R" class="footer-link">Discord</a>
+            </div>
+            
+            <div class="footer-links">
+                <h3 class="footer-heading">Legal</h3>
+                <a href="/legal/terms" class="footer-link">Terms of Service</a>
+                <a href="/legal/privacy-policy" class="footer-link">Privacy Policy</a>
+                <a href="/legal/refund-policy" class="footer-link">Refund Policy</a>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div>© 2024 Saint Admin. All rights reserved.</div>
+        </div>
+    </footer>
+
+    <script>
+        function createParticles() {
+            const container = document.getElementById('particles-container');
+            const particleCount = 40;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                const left = Math.random() * 100;
+                const delay = Math.random() * 20;
+                const duration = 15 + Math.random() * 15;
+                
+                particle.style.left = `${left}%`;
+                particle.style.animationDelay = `${delay}s`;
+                particle.style.animationDuration = `${duration}s`;
+                
+                const size = 1 + Math.random() * 3;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                const colors = ['#ef4444', '#f97316', '#3b82f6', '#8b5cf6'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.backgroundColor = color;
+                
+                container.appendChild(particle);
+            }
+        }
+        
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-toggle').addEventListener('click', function() {
+            const navLinks = document.getElementById('nav-links');
+            const navActions = document.getElementById('nav-actions');
+            
+            navLinks.classList.toggle('mobile-open');
+            navActions.classList.toggle('mobile-open');
+            
+            this.textContent = navLinks.classList.contains('mobile-open') ? '✕' : '☰';
+        });
+        
+        document.addEventListener('click', function(event) {
+            const navLinks = document.getElementById('nav-links');
+            const navActions = document.getElementById('nav-actions');
+            const toggleBtn = document.getElementById('mobile-menu-toggle');
+            
+            if (!navLinks.contains(event.target) && !toggleBtn.contains(event.target)) {
+                navLinks.classList.remove('mobile-open');
+                navActions.classList.remove('mobile-open');
+                toggleBtn.textContent = '☰';
+            }
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const navLinks = document.getElementById('nav-links');
+                    const navActions = document.getElementById('nav-actions');
+                    const toggleBtn = document.getElementById('mobile-menu-toggle');
+                    
+                    if (navLinks.classList.contains('mobile-open')) {
+                        navLinks.classList.remove('mobile-open');
+                        navActions.classList.remove('mobile-open');
+                        toggleBtn.textContent = '☰';
+                    }
+                    
+                    const headerHeight = document.querySelector('header').offsetHeight;
+                    const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+                    
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+        });
+    </script>
+</body>
+</html>
