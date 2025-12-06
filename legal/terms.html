@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saint Admin - Terms of Service</title>
+    <meta name="description" content="Saint Admin Terms of Service - Rules and guidelines for using our web-based execution service.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #ef4444;
+            --primary-dark: #dc2626;
+            --primary-light: #f87171;
+            --secondary: #3b82f6;
+            --accent: #f97316;
+            --warning: #f59e0b;
+            --danger: #dc2626;
+            --success: #10b981;
+            --dark-bg: #0a0a0a;
+            --darker-bg: #050505;
+            --card-bg: rgba(15, 15, 15, 0.7);
+            --text-primary: #ffffff;
+            --text-secondary: #d1d5db;
+            --text-tertiary: #9ca3af;
+            --border-color: rgba(239, 68, 68, 0.2);
+            --border-light: rgba(255, 255, 255, 0.1);
+            --gradient-red: linear-gradient(135deg, #ef4444, #dc2626, #b91c1c);
+            --gradient-orange: linear-gradient(135deg, #f97316, #ea580c);
+            --gradient-blue: linear-gradient(135deg, #3b82f6, #2563eb);
+            --gradient-primary: linear-gradient(135deg, #ef4444, #f97316);
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+            position: relative;
+        }
+        
+        /* ASCII Art Background */
+        .ascii-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            opacity: 0.03;
+            pointer-events: none;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            line-height: 1.1;
+            white-space: pre;
+            color: var(--primary-light);
+            overflow: hidden;
+        }
+        
+        .ascii-bg-content {
+            animation: scroll-up 80s linear infinite;
+        }
+        
+        @keyframes scroll-up {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-50%); }
+        }
+        
+        /* Gradient Overlay */
+        .gradient-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 20% 30%, rgba(239, 68, 68, 0.1) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, rgba(249, 115, 22, 0.08) 0%, transparent 40%),
+                        radial-gradient(circle at 40% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 40%);
+            pointer-events: none;
+        }
+        
+        /* Animated Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            animation: float 20s infinite linear;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px);
+                opacity: 0;
+            }
+        }
+        
+        /* Header & Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1.5rem 2rem;
+            backdrop-filter: blur(10px);
+            background-color: rgba(10, 10, 10, 0.9);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 800;
+            font-size: 1.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--gradient-primary);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 800;
+            font-size: 1rem;
+            color: white;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-link:hover {
+            color: var(--text-primary);
+        }
+        
+        .nav-link.active {
+            color: var(--primary);
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+        
+        .nav-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .btn {
+            padding: 0.6rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-light);
+        }
+        
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Main Content */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 8rem 2rem 4rem;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .page-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* Terms Content */
+        .terms-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .terms-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+        
+        .last-updated {
+            text-align: center;
+            color: var(--warning);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            padding: 0.75rem;
+            background: rgba(245, 158, 11, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+        
+        .terms-section {
+            margin-bottom: 3rem;
+        }
+        
+        .terms-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+        
+        .terms-subtitle {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem;
+            color: var(--text-primary);
+        }
+        
+        .terms-list {
+            list-style: none;
+            margin: 1.5rem 0;
+        }
+        
+        .terms-list li {
+            padding: 0.75rem 0;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+        
+        .terms-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .terms-list li::before {
+            content: '•';
+            color: var(--primary);
+            font-weight: bold;
+            flex-shrink: 0;
+            margin-top: 0.2rem;
+        }
+        
+        .warning-box {
+            background: rgba(220, 38, 38, 0.1);
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            border-left: 4px solid var(--danger);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+        
+        .warning-title {
+            color: var(--danger);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .info-box {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-left: 4px solid var(--secondary);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+        
+        .info-title {
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .rule-category {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(15, 15, 15, 0.5);
+            border-radius: 12px;
+            border: 1px solid var(--border-light);
+        }
+        
+        .category-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .instant-blacklist {
+            color: var(--danger);
+            font-weight: 600;
+            background: rgba(220, 38, 38, 0.1);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            margin-left: 0.5rem;
+        }
+        
+        .highlight {
+            background: rgba(239, 68, 68, 0.1);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            color: var(--primary);
+            font-weight: 500;
+        }
+        
+        .contact-section {
+            text-align: center;
+            margin-top: 4rem;
+            padding: 3rem;
+            background: linear-gradient(135deg, rgba(15, 15, 15, 0.9), rgba(10, 10, 10, 0.9));
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+        }
+        
+        .contact-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        
+        .contact-desc {
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            font-size: 1.1rem;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--darker-bg);
+            border-top: 1px solid var(--border-light);
+            padding: 4rem 2rem 2rem;
+            margin-top: 4rem;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+        
+        .footer-brand {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .footer-tagline {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            max-width: 300px;
+        }
+        
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .footer-heading {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        
+        .footer-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-link:hover {
+            color: var(--primary);
+        }
+        
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 3rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .page-title {
+                font-size: 3rem;
+            }
+            
+            .section-title {
+                font-size: 1.6rem;
+            }
+            
+            .contact-title {
+                font-size: 1.8rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .nav-links, .nav-actions {
+                display: none;
+            }
+            
+            .nav-links.mobile-open {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: var(--darker-bg);
+                padding: 2rem;
+                border-top: 1px solid var(--border-light);
+                border-bottom: 1px solid var(--border-light);
+                gap: 1.5rem;
+            }
+            
+            .nav-actions.mobile-open {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: calc(100% + 200px);
+                left: 0;
+                width: 100%;
+                padding: 0 2rem 2rem;
+                background-color: var(--darker-bg);
+            }
+            
+            .main-container {
+                padding: 7rem 1.5rem 3rem;
+            }
+            
+            .terms-container {
+                padding: 2rem 1.5rem;
+            }
+            
+            .page-title {
+                font-size: 2.5rem;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .contact-section {
+                padding: 2rem 1.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.4rem;
+            }
+            
+            .terms-container {
+                padding: 1.5rem;
+            }
+            
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+        
+        /* Animation Classes */
+        .fade-in {
+            animation: fadeIn 1s ease forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .slide-up {
+            animation: slideUp 0.8s ease forwards;
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--darker-bg);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--gradient-primary);
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+        
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+    </style>
+</head>
+<body>
+    <div class="ascii-bg">
+        <div class="ascii-bg-content">
+        </div>
+    </div>
+    
+    <div class="gradient-overlay"></div>
+    
+    <div class="particles" id="particles-container"></div>
+    
+    <!-- Header -->
+<header>
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">S</div>
+                Saint Admin
+            </div>
+            
+            <button class="mobile-menu-btn" id="mobile-menu-toggle">☰</button>
+            
+            <nav class="nav-links" id="nav-links">
+                <a href="#" class="nav-link">Home</a>
+                <a href="#features-section" class="nav-link">Features</a>
+                <a href="#pricing-section" class="nav-link">Pricing</a>
+                <a href="#showcases-section" class="nav-link">Showcases</a>
+                <a href="https://discord.gg/CEKQDKBN9R" class="nav-link">Join Discord</a>
+            </nav>
+            
+            <div class="nav-actions" id="nav-actions">
+                <a href="/sign-in" class="btn btn-secondary">Sign In</a>
+                <a href="/register" class="btn btn-primary">Register</a>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main class="main-container">
+        <div class="page-header fade-in">
+            <h1 class="page-title slide-up">Terms of Service</h1>
+            <p class="page-subtitle slide-up">
+                By signing up or logging in to our website, you agree to comply with these terms and conditions.
+                Failure to adhere to these rules may result in immediate blacklisting without prior notice.
+            </p>
+        </div>
+        
+        <div class="last-updated slide-up">
+            Last Updated: December 2025 | Subject to change without prior notice
+        </div>
+        
+        <div class="terms-container slide-up">
+            <div class="warning-box">
+                <div class="warning-title">
+                    ⚠️ IMPORTANT NOTICE
+                </div>
+                <p>
+                    Staff have full rights to blacklist you at any time without prior notice. 
+                    Users under 18 years old will be immediately blacklisted. It is YOUR responsibility 
+                    to regularly check for updates to these Terms of Service.
+                </p>
+            </div>
+            
+            <div class="terms-section">
+                <h2 class="section-title">Acceptance of Terms</h2>
+                <p>
+                    Prior to signing up or logging in to our website, you must satisfy certain prerequisites. 
+                    By signing up or logging in, you are indicating your agreement to the following terms and conditions.
+                </p>
+            </div>
+            
+            <div class="terms-section">
+                <h2 class="section-title">Basic Rules</h2>
+                <p>All users with basic whitelist type must comply with those rules:</p>
+                
+                <div class="rule-category">
+                    <h3 class="category-title">Prohibited Actions</h3>
+                    <ul class="terms-list">
+                        <li>Do NOT use external Executors (E.g: Exser, Polaria)</li>
+                        <li>Do NOT snitch in game (e.g., saying "Saint Admin Serverside", talking about backdoors)</li>
+                        <li>Do NOT use C00lkidd-like GUIs (e.g., k00pgui) - THEY ARE ABUSIVE!</li>
+                        <li>Do NOT reverse engineer our software</li>
+                        <li>Do NOT abuse the tool while the developer is in-game</li>
+                        <li>Do NOT use for any unlawful activities</li>
+                        <li>Do NOT shutdown servers without valid reason</li>
+                        <li>Do NOT teleport players to other games</li>
+                        <li>Do NOT infect/backdoor games</li>
+                        <li>Do NOT mass ban players</li>
+                        <li>Do NOT use MarketplaceService to prompt gamepass purchases</li>
+                        <li>Do NOT run Dex</li>
+                        <li>Do NOT change maps (unless fewer than 3 players are present)</li>
+                        <li>Do NOT insert anti-leave scripts</li>
+                        <li>Do NOT leak games</li>
+                        <li>Do NOT mass-kill players</li>
+                        <li>Do NOT run scripts for non-buyers</li>
+                        <li>Avoid flexing/showing off, may result in reports or blacklisting</li>
+                    </ul>
+                </div>
+                
+                <div class="rule-category">
+                    <h3 class="category-title">
+                        Instant Blacklist Offenses
+                        <span class="instant-blacklist">NO APPEAL</span>
+                    </h3>
+                    <ul class="terms-list">
+                        <li>Do NOT use NSFW scripts <span class="instant-blacklist">(Instant blacklist)</span></li>
+                        <li>Do NOT use obfuscated scripts <span class="instant-blacklist">(Instant blacklist; appeal possible)</span></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="terms-section">
+                <h2 class="section-title">Exclusive Rules</h2>
+                <p>
+All users with Exclusive whitelist type must comply with those rules:
+                </p>
+                
+                <div class="rule-category">
+                    <ul class="terms-list">
+                        <li>Custom GUIs allowed - but NO decal spam, skybox spam, or abuse</li>
+                        <li>Kicking allowed - banning is not permitted</li>
+                        <li>Map changes allowed if under 3 players</li>
+                        <li>Use features responsibly, especially around other players</li>
+                        <li>Do not ABUSE in-game features</li>
+                        <li>No snitching about the service</li>
+                        <li>Jumpscare is allowed but with reduced time limits</li>
+                        <li>Teleporting is strictly prohibited</li>
+                        <li>Do NOT insert anti-leave scripts</li>
+                        <li>Do NOT leak games and no dex or prompt purchase</li>
+                        <li>No sharing Whitelist - Both parties will be blacklisted</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="terms-section">
+                <h2 class="section-title">Age Restriction</h2>
+                <div class="warning-box">
+                    <div class="warning-title">
+                        🚫 AGE RESTRICTION
+                    </div>
+                    <p>
+                        This service is strictly for users 18 years of age or older. 
+                        <span class="highlight">Any user found to be under 18 will be immediately and permanently blacklisted</span> 
+                        without the possibility of appeal. By using our service, you affirm that you are 18 years or older.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="terms-section">
+                <h2 class="section-title">Modification of Terms</h2>
+                <div class="info-box">
+                    <div class="info-title">
+                        🔄 TERMS UPDATES
+                    </div>
+                    <p>
+                        These Terms of Service can be updated at any time without prior notice. 
+                        <span class="highlight">It is YOUR responsibility to check back regularly</span> for any changes. 
+                        Continued use of the service after changes constitutes acceptance of the modified terms.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="terms-section">
+                <h2 class="section-title">Enforcement</h2>
+                <div class="warning-box">
+                    <div class="warning-title">
+                        ⚖️ ENFORCEMENT POLICY
+                    </div>
+                    <p>
+                        Saint Admin staff reserve the full right to blacklist, suspend, or terminate 
+                        any account at any time for any reason, without prior notice or explanation. 
+                        Decisions made by staff are final and not subject to debate.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="contact-section">
+                <h2 class="contact-title">Questions or Concerns?</h2>
+                <p class="contact-desc">
+                    If you have any questions about these Terms of Service or need clarification 
+                    on any rules, please contact us via our Discord server.
+                </p>
+                <a href="https://discord.gg/CEKQDKBN9R" class="btn btn-primary">
+                    Join Discord Server
+                </a>
+            </div>
+        </div>
+    </main>
+    
+<footer>
+        <div class="footer-container">
+            <div class="footer-brand">
+                <div class="footer-logo">Saint Admin</div>
+                <p class="footer-tagline">
+                    The best roblox serverside providing lightning fast execution speed, good games and website based execution. Absolutely no downloads required!
+                </p>
+            </div>
+            
+            <div class="footer-links">
+                <h3 class="footer-heading">Product</h3>
+                <a href="#features-section" class="footer-link">Features</a>
+                <a href="#pricing-section" class="footer-link">Pricing</a>
+                <a href="#showcases-section" class="footer-link">Showcases</a>
+            </div>
+            
+            <div class="footer-links">
+                <h3 class="footer-heading">Company</h3>
+                <a href="https://www.youtube.com/@SaintUtilities" class="footer-link">YouTube</a>
+                <a href="https://discord.gg/CEKQDKBN9R" class="footer-link">Discord</a>
+            </div>
+            
+            <div class="footer-links">
+                <h3 class="footer-heading">Legal</h3>
+                <a href="/legal/terms" class="footer-link">Terms of Service</a>
+                <a href="/legal/privacy-policy" class="footer-link">Privacy Policy</a>
+                <a href="/legal/refund-policy" class="footer-link">Refund Policy</a>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div>© 2024 Saint Admin. All rights reserved.</div>
+        </div>
+    </footer>
+
+
+    <script>
+        function createParticles() {
+            const container = document.getElementById('particles-container');
+            const particleCount = 40;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                const left = Math.random() * 100;
+                const delay = Math.random() * 20;
+                const duration = 15 + Math.random() * 15;
+                
+                particle.style.left = `${left}%`;
+                particle.style.animationDelay = `${delay}s`;
+                particle.style.animationDuration = `${duration}s`;
+                
+                const size = 1 + Math.random() * 3;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                const colors = ['#ef4444', '#f97316', '#3b82f6', '#8b5cf6'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.backgroundColor = color;
+                
+                container.appendChild(particle);
+            }
+        }
+        
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-toggle').addEventListener('click', function() {
+            const navLinks = document.getElementById('nav-links');
+            const navActions = document.getElementById('nav-actions');
+            
+            navLinks.classList.toggle('mobile-open');
+            navActions.classList.toggle('mobile-open');
+            
+            this.textContent = navLinks.classList.contains('mobile-open') ? '✕' : '☰';
+        });
+        
+        document.addEventListener('click', function(event) {
+            const navLinks = document.getElementById('nav-links');
+            const navActions = document.getElementById('nav-actions');
+            const toggleBtn = document.getElementById('mobile-menu-toggle');
+            
+            if (!navLinks.contains(event.target) && !toggleBtn.contains(event.target)) {
+                navLinks.classList.remove('mobile-open');
+                navActions.classList.remove('mobile-open');
+                toggleBtn.textContent = '☰';
+            }
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const navLinks = document.getElementById('nav-links');
+                    const navActions = document.getElementById('nav-actions');
+                    const toggleBtn = document.getElementById('mobile-menu-toggle');
+                    
+                    if (navLinks.classList.contains('mobile-open')) {
+                        navLinks.classList.remove('mobile-open');
+                        navActions.classList.remove('mobile-open');
+                        toggleBtn.textContent = '☰';
+                    }
+                    
+                    const headerHeight = document.querySelector('header').offsetHeight;
+                    const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+                    
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+</script></html></body>
