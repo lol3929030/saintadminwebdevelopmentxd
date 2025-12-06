@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saint Admin - Ultimate Web-based Execution</title>
+    <meta name="description" content="Powerup your gameplay with Saint Admin - the ultimate web-based execution tool with advanced security, lightning-fast performance, and zero downloads required.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #ef4444;
+            --primary-dark: #dc2626;
+            --primary-light: #f87171;
+            --secondary: #3b82f6;
+            --accent: #f97316;
+            --dark-bg: #0a0a0a;
+            --darker-bg: #050505;
+            --card-bg: rgba(15, 15, 15, 0.7);
+            --text-primary: #ffffff;
+            --text-secondary: #d1d5db;
+            --text-tertiary: #9ca3af;
+            --border-color: rgba(239, 68, 68, 0.2);
+            --border-light: rgba(255, 255, 255, 0.1);
+            --gradient-red: linear-gradient(135deg, #ef4444, #dc2626, #b91c1c);
+            --gradient-orange: linear-gradient(135deg, #f97316, #ea580c);
+            --gradient-blue: linear-gradient(135deg, #3b82f6, #2563eb);
+            --gradient-primary: linear-gradient(135deg, #ef4444, #f97316);
+            --gradient-green: linear-gradient(135deg, #10b981, #059669);
+            --gradient-purple: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+            position: relative;
+        }
+        
+        /* ASCII Art Background */
+        .ascii-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            opacity: 0.05;
+            pointer-events: none;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            line-height: 1.2;
+            white-space: pre;
+            color: var(--primary-light);
+            overflow: hidden;
+        }
+        
+        .ascii-bg-content {
+            animation: scroll-up 60s linear infinite;
+        }
+        
+        @keyframes scroll-up {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-50%); }
+        }
+        
+        /* Gradient Overlay */
+        .gradient-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 20% 30%, rgba(239, 68, 68, 0.1) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, rgba(249, 115, 22, 0.08) 0%, transparent 40%),
+                        radial-gradient(circle at 40% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 40%);
+            pointer-events: none;
+        }
+        
+        /* Animated Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            animation: float 20s infinite linear;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px);
+                opacity: 0;
+            }
+        }
+        
+        /* Header & Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1.5rem 2rem;
+            backdrop-filter: blur(10px);
+            background-color: rgba(10, 10, 10, 0.8);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 800;
+            font-size: 1.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--gradient-primary);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 800;
+            font-size: 1rem;
+            color: white;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-link:hover {
+            color: var(--text-primary);
+        }
+        
+        .nav-link.active {
+            color: var(--primary);
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+        
+        .nav-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .btn {
+            padding: 0.6rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-light);
+        }
+        
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 12rem 2rem 6rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+        }
+        
+        .hero-title {
+            font-size: 4.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #ffffff, var(--primary-light), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .hero-title span {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 3rem;
+        }
+        
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 4rem;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            flex-wrap: wrap;
+            margin-top: 4rem;
+            padding-top: 3rem;
+            border-top: 1px solid var(--border-light);
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Features Section */
+        .section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 4rem;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 15px 30px rgba(239, 68, 68, 0.15);
+        }
+        
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            background: rgba(239, 68, 68, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+        
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        
+        .feature-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        
+        /* Pricing Section */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .pricing-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+        
+        .pricing-card.popular {
+            border-color: var(--primary);
+            transform: scale(1.05);
+            box-shadow: 0 20px 40px rgba(239, 68, 68, 0.2);
+        }
+        
+        .pricing-card.popular::before {
+            content: 'POPULAR';
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--gradient-primary);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border-radius: 0 16px 0 16px;
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+        }
+        
+        .pricing-tier {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .pricing-price {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin: 1.5rem 0;
+            color: var(--text-primary);
+        }
+        
+        .pricing-period {
+            font-size: 1rem;
+            color: var(--text-tertiary);
+        }
+        
+        .pricing-features {
+            list-style: none;
+            margin: 2rem 0;
+            text-align: left;
+        }
+        
+        .pricing-features li {
+            padding: 0.75rem 0;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .pricing-features li:last-child {
+            border-bottom: none;
+        }
+        
+        .pricing-features li::before {
+            content: '✓';
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        /* Showcases Section */
+        .showcases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .showcase-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .showcase-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 15px 30px rgba(239, 68, 68, 0.15);
+        }
+        
+        .showcase-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(249, 115, 22, 0.2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--primary);
+        }
+        
+        .showcase-content {
+            padding: 2rem;
+        }
+        
+        .showcase-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        
+        .showcase-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .showcase-stats {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-tertiary);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border-light);
+            padding-top: 1rem;
+        }
+        
+        /* CTA Section */
+        .cta {
+            background: linear-gradient(135deg, rgba(15, 15, 15, 0.9), rgba(10, 10, 10, 0.9));
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 4rem;
+            text-align: center;
+            margin: 4rem auto;
+            max-width: 1000px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(239, 68, 68, 0.05) 0%, transparent 70%);
+            z-index: -1;
+        }
+        
+        .cta-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        
+        .cta-title span {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .cta-desc {
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+            font-size: 1.1rem;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--darker-bg);
+            border-top: 1px solid var(--border-light);
+            padding: 4rem 2rem 2rem;
+            margin-top: 4rem;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+        
+        .footer-brand {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .footer-tagline {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            max-width: 300px;
+        }
+        
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .footer-heading {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        
+        .footer-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-link:hover {
+            color: var(--primary);
+        }
+        
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 3rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .hero-title {
+                font-size: 3.5rem;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+            
+            .cta-title {
+                font-size: 2rem;
+            }
+            
+            .pricing-card.popular {
+                transform: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .nav-links, .nav-actions {
+                display: none;
+            }
+            
+            .nav-links.mobile-open {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: var(--darker-bg);
+                padding: 2rem;
+                border-top: 1px solid var(--border-light);
+                border-bottom: 1px solid var(--border-light);
+                gap: 1.5rem;
+            }
+            
+            .nav-actions.mobile-open {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: calc(100% + 200px);
+                left: 0;
+                width: 100%;
+                padding: 0 2rem 2rem;
+                background-color: var(--darker-bg);
+            }
+            
+            .hero {
+                padding: 10rem 1.5rem 4rem;
+            }
+            
+            .hero-title {
+                font-size: 2.8rem;
+            }
+            
+            .hero-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .stats {
+                gap: 2rem;
+            }
+            
+            .section {
+                padding: 4rem 1.5rem;
+            }
+            
+            .cta {
+                padding: 3rem 1.5rem;
+                border-radius: 15px;
+            }
+            
+            .pricing-grid,
+            .showcases-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2.2rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .stat-value {
+                font-size: 2rem;
+            }
+            
+            .pricing-price {
+                font-size: 2.8rem;
+            }
+            
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+        
+        /* Animation Classes */
+        .fade-in {
+            animation: fadeIn 1s ease forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .slide-up {
+            animation: slideUp 0.8s ease forwards;
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--darker-bg);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--gradient-primary);
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+        
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+    </style>
+</head>
+<body>
+    <div class="ascii-bg">
+        <div class="ascii-bg-content">
+        </div>
+    </div>
+    
+    <div class="gradient-overlay"></div>
+    
+    <div class="particles" id="particles-container"></div>
+    
+    <!-- Header -->
+    <header>
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">S</div>
+                Saint Admin
+            </div>
+            
+            <button class="mobile-menu-btn" id="mobile-menu-toggle">☰</button>
+            
+            <nav class="nav-links" id="nav-links">
+                <a href="#" class="nav-link">Home</a>
+                <a href="#features-section" class="nav-link">Features</a>
+                <a href="#pricing-section" class="nav-link">Pricing</a>
+                <a href="#showcases-section" class="nav-link">Showcases</a>
+                <a href="https://discord.gg/CEKQDKBN9R" class="nav-link">Join Discord</a>
+            </nav>
+            
+            <div class="nav-actions" id="nav-actions">
+                <a href="/sign-in" class="btn btn-secondary">Sign In</a>
+                <a href="/register" class="btn btn-primary">Register</a>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="hero fade-in">
+        <h1 class="hero-title slide-up">
+            Powerup your gameplay with<br>
+            <span>Saint Admin</span>
+        </h1>
+        
+        <p class="hero-subtitle slide-up">
+            Unleash the power of seamless server-side execution with unmatched performance, 
+            advanced security, and zero downloads required. Experience the most reliable and 
+            feature-rich gaming administration tool with lifetime access and premium support.
+        </p>
+        
+        <div class="hero-actions slide-up">
+            <a href="#pricing-section" class="btn btn-primary">View Pricing</a>
+            <a href="https://discord.gg/CEKQDKBN9R" class="btn btn-secondary">Join Community</a>
+        </div>
+        
+        <div class="stats slide-up">
+            <div class="stat-item">
+                <div class="stat-value">10+</div>
+                <div class="stat-label">Supported Games</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">High Quality</div>
+                <div class="stat-label">Games</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">24/7</div>
+                <div class="stat-label">Support</div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Features Section -->
+    <section class="section" id="features-section">
+        <h2 class="section-title slide-up">Powerful Features</h2>
+        <p class="section-subtitle slide-up">
+            Everything you need to dominate your gaming experience
+        </p>
+        
+        <div class="features-grid">
+            <div class="feature-card slide-up">
+                <div class="feature-icon">⚡</div>
+                <h3 class="feature-title">Lightning Fast Execution Speed</h3>
+                <p class="feature-desc">
+                    Optimized an enhanced execution performance with zero-lag execution intended for smooth serversiding.
+                </p>
+            </div>
+            
+            <div class="feature-card slide-up">
+                <div class="feature-icon">🎮</div>
+                <h3 class="feature-title">Good Games</h3>
+                <p class="feature-desc">
+                    Our services provide huge games for a cheap price with undetected methods!
+                </p>
+            </div>
+            
+            <div class="feature-card slide-up">
+                <div class="feature-icon">🌐</div>
+                <h3 class="feature-title">Website Based Execution</h3>
+                <p class="feature-desc">
+                    Our service does not require downloads and executes scripts on the server through the website.
+                </p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Pricing Section -->
+    <section class="section" id="pricing-section">
+        <h2 class="section-title slide-up">Simple, Transparent Pricing</h2>
+        <p class="section-subtitle slide-up">
+            Choose the perfect plan for your gaming needs. All plans include lifetime access.
+        </p>
+        
+        <div class="pricing-grid">
+            <div class="pricing-card slide-up">
+                <h3 class="pricing-tier">Basic</h3>
+                <div class="pricing-price">300 Robux</div>
+                <div class="pricing-period">One-time payment</div>
+                
+                <ul class="pricing-features">
+                    <li>More strict terms of service</li>
+                    <li>Fast execution speed</li>
+                    <li>Access to all supported games</li>
+                </ul>
+                
+                <a href="https://www.roblox.com/game-pass/1606468319/Saint-Basic" class="btn btn-outline">Get Started</a>
+            </div>
+            
+            <div class="pricing-card slide-up popular">
+                <h3 class="pricing-tier">Exclusive</h3>
+                <div class="pricing-price">500 Robux</div>
+                <div class="pricing-period">One-time payment</div>
+                
+                <ul class="pricing-features">
+                    <li>Less strict terms of service</li>
+                    <li>Fast execution speed</li>
+                    <li>Access to all supported games</li>
+                </ul>
+                
+                <a href="https://www.roblox.com/game-pass/1606204325/Saint-Exclusive" class="btn btn-primary">Get Started</a>
+            </div>
+            
+        </div>
+    </section>
+<p class="section-subtitle slide-up">
+            After purchasing, create a ticket in our discord server providing your roblox username where you've purchased the gamepass. After that, support team will assist you.
+        </p>
+    
+    <!-- Showcases Section -->
+    <section class="section" id="showcases-section">
+        <h2 class="section-title slide-up">User Showcases</h2>
+        <p class="section-subtitle slide-up">
+            See how our users are dominating their favorite games with Saint Admin
+        </p>
+        
+        <div class="showcases-grid">
+            <div class="showcase-card slide-up">
+                <img class="showcase-image" src="https://i.ytimg.com/vi/gUPKH5gAqn0/hqdefault.jpg?sqp=-oaymwEnCNACELwBSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLDOLbtG8sK2wHPETm4WetNckAv4Mg"></img>
+                <div class="showcase-content">
+                    <h3 class="showcase-title">Saint admin serverside showcase | bypass byfron 2025</h3>
+                    <p class="showcase-desc">
+                        By @NORMAL CAT
+                    </p>
+                    <div class="showcase-stats">
+<a href="https://www.youtube.com/watch?v=gUPKH5gAqn0" class="btn btn-primary">‎View on Youtube‎</a>
+                    </div>
+                </div>
+            </div>
+            
+
+            
+            <div class="showcase-card slide-up">
+                <img class="showcase-image" src="https://images-ext-1.discordapp.net/external/OinXVuzNCX8iys7zWHzyfeP4n1cDiosxBwlDiEEteTA/https/i.ytimg.com/vi/lrOgIqF0yDU/maxresdefault.jpg?format=webp&width=500&height=225"></img>
+                <div class="showcase-content">
+                    <h3 class="showcase-title">Saint Admin Serverside - infected 5k Player Game?!?!?</h3>
+                    <p class="showcase-desc">
+                        By @17.Issarathep Lhaojedsada
+                    </p>
+                    <div class="showcase-stats">
+<a href="https://www.youtube.com/watch?v=lrOgIqF0yDU" class="btn btn-primary">View on Youtube‎</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    
+    <!-- CTA Section -->
+    <section class="section">
+        <div class="cta slide-up">
+            <h2 class="cta-title">Ready to Transform Your Gaming?</h2>
+            <p class="cta-desc">
+                Join thousands of satisfied users who have already upgraded their gaming experience with Saint Admin. 
+                Get started today and unleash the full potential of your gameplay.
+            </p>
+            <div class="hero-actions">
+                <a href="/register" class="btn btn-primary pulse">Get Started Now</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer information -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-brand">
+                <div class="footer-logo">Saint Admin</div>
+                <p class="footer-tagline">
+                    The best roblox serverside providing lightning fast execution speed, good games and website based execution. Absolutely no downloads required!
+                </p>
+            </div>
+            
+            <div class="footer-links">
+                <h3 class="footer-heading">Product</h3>
+                <a href="#features-section" class="footer-link">Features</a>
+                <a href="#pricing-section" class="footer-link">Pricing</a>
+                <a href="#showcases-section" class="footer-link">Showcases</a>
+            </div>
+            
+            <div class="footer-links">
+                <h3 class="footer-heading">Company</h3>
+                <a href="https://www.youtube.com/@SaintUtilities" class="footer-link">YouTube</a>
+                <a href="https://discord.gg/CEKQDKBN9R" class="footer-link">Discord</a>
+            </div>
+            
+            <div class="footer-links">
+                <h3 class="footer-heading">Legal</h3>
+                <a href="/legal/terms" class="footer-link">Terms of Service</a>
+                <a href="/legal/privacy-policy" class="footer-link">Privacy Policy</a>
+                <a href="/legal/refund-policy" class="footer-link">Refund Policy</a>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div>© 2024 Saint Admin. All rights reserved.</div>
+        </div>
+    </footer>
+
+    <script>
+        function createParticles() {
+            const container = document.getElementById('particles-container');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // set random position
+                const left = Math.random() * 100;
+                const delay = Math.random() * 20;
+                const duration = 15 + Math.random() * 15;
+                
+                particle.style.left = `${left}%`;
+                particle.style.animationDelay = `${delay}s`;
+                particle.style.animationDuration = `${duration}s`;
+                
+                // Random size and color
+                const size = 1 + Math.random() * 3;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                const colors = ['#ef4444', '#f97316', '#3b82f6', '#8b5cf6'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.backgroundColor = color;
+                
+                container.appendChild(particle);
+            }
+        }
+        
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-toggle').addEventListener('click', function() {
+            const navLinks = document.getElementById('nav-links');
+            const navActions = document.getElementById('nav-actions');
+            
+            navLinks.classList.toggle('mobile-open');
+            navActions.classList.toggle('mobile-open');
+            
+            this.textContent = navLinks.classList.contains('mobile-open') ? '✕' : '☰';
+        });
+        
+        document.addEventListener('click', function(event) {
+            const navLinks = document.getElementById('nav-links');
+            const navActions = document.getElementById('nav-actions');
+            const toggleBtn = document.getElementById('mobile-menu-toggle');
+            
+            if (!navLinks.contains(event.target) && !toggleBtn.contains(event.target)) {
+                navLinks.classList.remove('mobile-open');
+                navActions.classList.remove('mobile-open');
+                toggleBtn.textContent = '☰';
+            }
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    // Close mobile menu if open
+                    const navLinks = document.getElementById('nav-links');
+                    const navActions = document.getElementById('nav-actions');
+                    const toggleBtn = document.getElementById('mobile-menu-toggle');
+                    
+                    if (navLinks.classList.contains('mobile-open')) {
+                        navLinks.classList.remove('mobile-open');
+                        navActions.classList.remove('mobile-open');
+                        toggleBtn.textContent = '☰';
+                    }
+                    
+                    // Calculate position (accounting for fixed header)
+                    const headerHeight = document.querySelector('header').offsetHeight;
+                    const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+                    
+                    // Smooth scroll
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        function handleScrollAnimations() {
+            const elements = document.querySelectorAll('.slide-up');
+            
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (elementTop < windowHeight - 100) {
+                    element.style.animationPlayState = 'running';
+                }
+            });
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            handleScrollAnimations();
+            
+            window.addEventListener('scroll', handleScrollAnimations);
+         
+            // Add hover effects to cards
+            const cards = document.querySelectorAll('.feature-card, .pricing-card, .showcase-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-10px)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    if (!this.classList.contains('popular')) {
+                        this.style.transform = 'translateY(0)';
+                    } else {
+                        this.style.transform = 'scale(1.05)';
+                    }
+                });
+            });
+</script>
+</body>
+</html>
