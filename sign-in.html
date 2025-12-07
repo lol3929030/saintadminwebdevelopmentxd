@@ -609,6 +609,13 @@
             margin-bottom: 1rem;
             color: var(--text-primary);
         }
+
+.lock-image {
+    width: 32px;
+    height: 32px;
+    filter: brightness(0) invert(1);
+    object-fit: contain;
+}
         
         .footer-link {
             color: var(--text-secondary);
@@ -807,10 +814,7 @@
             <div class="login-card slide-up">
 <div class="login-header">
     <div class="login-icon">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="4" y="9" width="16" height="12" rx="2" stroke="white" stroke-width="1.8"/>
-            <path d="M8 9V6C8 3.79086 9.79086 2 12 2C14.2091 2 16 3.79086 16 6V9" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
-        </svg>
+        <img src="/icons8-lock-50.png" alt="Lock icon" class="lock-image">
     </div>
     <h1 class="login-title">Welcome Back</h1>
     <p class="login-subtitle">Sign in to your Saint Admin account</p>
@@ -1010,6 +1014,7 @@
     </script>
 </body>
 </html>
+
 
 
 
