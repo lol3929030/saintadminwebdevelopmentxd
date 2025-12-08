@@ -586,12 +586,18 @@ function clearEditor() {
                 executeBtn.addEventListener('click', executeScript);
             }
             
-            if (clearBtn) {
-                clearBtn.addEventListener('click', function() {
-                    clearOutput();
-                    clearEditor();
-                });
-            }
+if (clearBtn) {
+    clearBtn.addEventListener('click', function() {
+        // Clear the editor
+        if (editor) {
+            editor.setValue('');
+        }
+        
+        outputContainer.innerHTML = '';
+        
+        addOutputLine('[INFO] cleard', 'success');
+    });
+}
             
             if (saveBtn) {
                 saveBtn.addEventListener('click', saveScript);
@@ -614,3 +620,4 @@ function clearEditor() {
 </body>
 
 </html>
+
