@@ -362,252 +362,96 @@
         </div>
     </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // mobile menu elements
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenuClose = document.getElementById('mobile-menu-close');
-        const mobileSidebar = document.getElementById('mobile-sidebar');
-        const mobileSidebarBackdrop = document.getElementById('mobile-sidebar-backdrop');
-        
-        const usernameModal = document.getElementById('username-modal');
-        const setUsernameBtn = document.getElementById('set-username-btn');
-        const modalClose = document.getElementById('modal-close');
-        const modalCancel = document.getElementById('modal-cancel');
-        const modalBackdrop = document.getElementById('modal-backdrop');
-        const modalSubmit = document.getElementById('modal-submit');
-        const robloxUsernameInput = document.getElementById('roblox-username');
-        
-        const errorMessage = document.createElement('p');
-        errorMessage.id = 'username-error';
-        errorMessage.className = 'mt-2 text-sm text-red-400 hidden';
-        robloxUsernameInput.parentNode.appendChild(errorMessage);
-        
-        if (mobileMenuButton) {
-            mobileMenuButton.addEventListener('click', function() {
-                mobileSidebar.classList.remove('hidden');
-            });
-        }
-        
-        if (mobileMenuClose) {
-            mobileMenuClose.addEventListener('click', function() {
-                mobileSidebar.classList.add('hidden');
-            });
-        }
-        
-        if (mobileSidebarBackdrop) {
-            mobileSidebarBackdrop.addEventListener('click', function() {
-                mobileSidebar.classList.add('hidden');
-            });
-        }
-        
-        function validateRobloxUsername(username) {
-            errorMessage.textContent = '';
-            errorMessage.classList.add('hidden');
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // mobile menu elements
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenuClose = document.getElementById('mobile-menu-close');
+            const mobileSidebar = document.getElementById('mobile-sidebar');
+            const mobileSidebarBackdrop = document.getElementById('mobile-sidebar-backdrop');
             
-            if (!username || username.trim() === '') {
-                errorMessage.textContent = 'Username cannot be empty.';
-                errorMessage.classList.remove('hidden');
-                return false;
+            const usernameModal = document.getElementById('username-modal');
+            const setUsernameBtn = document.getElementById('set-username-btn');
+            const modalClose = document.getElementById('modal-close');
+            const modalCancel = document.getElementById('modal-cancel');
+            const modalBackdrop = document.getElementById('modal-backdrop');
+            const modalSubmit = document.getElementById('modal-submit');
+            const robloxUsernameInput = document.getElementById('roblox-username');
+            
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', function() {
+                    mobileSidebar.classList.remove('hidden');
+                });
             }
             
-            if (username.length > 20) {
-                errorMessage.textContent = 'Username must be 20 characters or less.';
-                errorMessage.classList.remove('hidden');
-                return false;
+            if (mobileMenuClose) {
+                mobileMenuClose.addEventListener('click', function() {
+                    mobileSidebar.classList.add('hidden');
+                });
             }
             
-            if (username.length < 3) {
-                errorMessage.textContent = 'Username must be at least 3 characters.';
-                errorMessage.classList.remove('hidden');
-                return false;
+            if (mobileSidebarBackdrop) {
+                mobileSidebarBackdrop.addEventListener('click', function() {
+                    mobileSidebar.classList.add('hidden');
+                });
             }
             
-
-            const validPattern = /^[a-zA-Z0-9_]+$/;
-            
-            if (!validPattern.test(username)) {
-                errorMessage.textContent = 'Username can only contain letters (A-Z, a-z), numbers (0-9), and underscores (_).';
-                errorMessage.classList.remove('hidden');
-                return false;
+            function showModal() {
+                usernameModal.classList.remove('hidden');
+                robloxUsernameInput.focus();
             }
             
-            if (username.includes('  ')) {
-                errorMessage.textContent = 'Username cannot contain consecutive spaces.';
-                errorMessage.classList.remove('hidden');
-                return false;
+            function hideModal() {
+                usernameModal.classList.add('hidden');
+                robloxUsernameInput.value = '';
             }
             
-            if (username.startsWith('_') || username.endsWith('_')) {
-                errorMessage.textContent = 'Username cannot start or end with an underscore.';
-                errorMessage.classList.remove('hidden');
-                return false;
+            if (setUsernameBtn) {
+                setUsernameBtn.addEventListener('click', function() {
+                    showModal();
+                });
             }
             
-            if (username.includes('__')) {
-                errorMessage.textContent = 'Username cannot contain consecutive underscores.';
-                errorMessage.classList.remove('hidden');
-                return false;
+            if (modalClose) {
+                modalClose.addEventListener('click', function() {
+                    hideModal();
+                });
             }
             
-            if (/^\d+$/.test(username)) {
-                errorMessage.textContent = 'Username cannot consist only of numbers.';
-                errorMessage.classList.remove('hidden');
-                return false;
+            if (modalCancel) {
+                modalCancel.addEventListener('click', function() {
+                    hideModal();
+                });
             }
             
-        
-        robloxUsernameInput.addEventListener('input', function() {
-            const username = this.value.trim();
-            
-            if (!username) {
-                errorMessage.classList.add('hidden');
-                return;
+            if (modalBackdrop) {
+                modalBackdrop.addEventListener('click', function() {
+                    hideModal();
+                });
             }
             
-            const charCount = username.length;
-            const maxLength = 20;
-            
-            let charCounter = document.getElementById('char-counter');
-            if (!charCounter) {
-                charCounter = document.createElement('div');
-                charCounter.id = 'char-counter';
-                charCounter.className = 'mt-1 text-xs text-gray-400';
-                robloxUsernameInput.parentNode.appendChild(charCounter);
-            }
-            
-            charCounter.textContent = `${charCount}/${maxLength} characters`;
-            
-            if (charCount > 15) {
-                charCounter.className = 'mt-1 text-xs text-yellow-400';
-            } else {
-                charCounter.className = 'mt-1 text-xs text-gray-400';
-            }
-            
-            if (charCount > maxLength) {
-                charCounter.className = 'mt-1 text-xs text-red-400';
-            }
-            
-            if (charCount > maxLength) {
-                errorMessage.textContent = `Maximum ${maxLength} characters allowed.`;
-                errorMessage.classList.remove('hidden');
-            } else if (username.length > 0) {
-                const invalidChars = /[^a-zA-Z0-9_]/g;
-                const invalidMatch = username.match(invalidChars);
-                
-                if (invalidMatch) {
-                    const invalidCharList = [...new Set(invalidMatch)].join(', ');
-                    errorMessage.textContent = `Invalid character(s): ${invalidCharList}. Only letters, numbers, and underscores allowed.`;
-                    errorMessage.classList.remove('hidden');
-                } else {
-                    errorMessage.classList.add('hidden');
-                }
-            }
-        });
-        
-        function showModal() {
-            usernameModal.classList.remove('hidden');
-            robloxUsernameInput.focus();
-            
-            errorMessage.classList.add('hidden');
-            const charCounter = document.getElementById('char-counter');
-            if (charCounter) {
-                charCounter.remove();
-            }
-        }
-        
-        function hideModal() {
-            usernameModal.classList.add('hidden');
-            robloxUsernameInput.value = '';
-            errorMessage.classList.add('hidden');
-            
-            const charCounter = document.getElementById('char-counter');
-            if (charCounter) {
-                charCounter.remove();
-            }
-        }
-        
-        if (setUsernameBtn) {
-            setUsernameBtn.addEventListener('click', function() {
-                showModal();
-            });
-        }
-        
-        if (modalClose) {
-            modalClose.addEventListener('click', function() {
-                hideModal();
-            });
-        }
-        
-        if (modalCancel) {
-            modalCancel.addEventListener('click', function() {
-                hideModal();
-            });
-        }
-        
-        if (modalBackdrop) {
-            modalBackdrop.addEventListener('click', function() {
-                hideModal();
-            });
-        }
-        
-        if (modalSubmit) {
-            modalSubmit.addEventListener('click', function() {
-                const username = robloxUsernameInput.value.trim();
-                
-                if (validateRobloxUsername(username)) {
-                    console.log('Valid username submitted:', username);
-                    
-                    errorMessage.textContent = 'Username is valid! Saving...';
-                    errorMessage.className = 'mt-2 text-sm text-green-400';
-                    errorMessage.classList.remove('hidden');
-
-                    setTimeout(() => {
+            if (modalSubmit) {
+                modalSubmit.addEventListener('click', function() {
+                    const username = robloxUsernameInput.value.trim();
+                    if (username) {
+                        console.log('Submitting username:', username);
                         hideModal();
-                        const usernameDisplay = document.querySelector('.text-xl.font-semibold.text-white.mt-1');
-                        if (usernameDisplay && usernameDisplay.textContent.includes('Unknown')) {
-                            usernameDisplay.textContent = username;
-                        }
-                    }, 1500);
-                }
-                // If validation fails, error is already shown by validateRobloxUsername()
-            });
-        }
-        
-        if (robloxUsernameInput) {
-            robloxUsernameInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    modalSubmit.click();
-                }
-                
-                if (e.key === ' ') {
-                    e.preventDefault();
-                    errorMessage.textContent = 'Spaces are not allowed in usernames. Use underscores (_) instead.';
-                    errorMessage.classList.remove('hidden');
-                }
-            });
+                        // can add API integration here
+                    } else {
+                        robloxUsernameInput.focus();
+                    }
+                });
+            }
             
-            robloxUsernameInput.addEventListener('paste', function(e) {
-                const pasteData = e.clipboardData || window.clipboardData;
-                const pastedText = pasteData.getData('text');
-                const invalidPattern = /[^a-zA-Z0-9_]/g;
-                if (invalidPattern.test(pastedText)) {
-                    e.preventDefault();
-                    errorMessage.textContent = 'Pasted text contains invalid characters. Only letters, numbers, and underscores allowed.';
-                    errorMessage.classList.remove('hidden');
-                }
-            });
-        }
-        
-        robloxUsernameInput.addEventListener('focus', function() {
-            this.classList.add('ring-2', 'ring-red-500');
+            if (robloxUsernameInput) {
+                robloxUsernameInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        modalSubmit.click();
+                    }
+                });
+            }
         });
-        
-        robloxUsernameInput.addEventListener('blur', function() {
-            this.classList.remove('ring-2', 'ring-red-500');
-        });
-    });
-</script>
+    </script>
 
 
 
