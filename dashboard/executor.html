@@ -363,7 +363,6 @@
             const saveBtn = document.getElementById('save-btn');
             const loadBtn = document.getElementById('load-btn');
             const templateBtns = document.querySelectorAll('.template-btn');
-            const outputContainer = document.getElementById('output-container');
             
             let editor = null;
             
@@ -478,12 +477,9 @@
                 const line = document.createElement('div');
                 line.className = `output-line ${type}`;
                 line.textContent = text;
-                outputContainer.appendChild(line);
-                outputContainer.scrollTop = outputContainer.scrollHeight;
             }
             
             function clearOutput() {
-                outputContainer.innerHTML = '';
                 addOutputLine('[INFO] Output cleared.', 'info');
             }
             
@@ -593,7 +589,6 @@ if (clearBtn) {
             editor.setValue('');
         }
         
-        outputContainer.innerHTML = '';
         
         addOutputLine('[INFO] cleard', 'success');
     });
@@ -620,4 +615,5 @@ if (clearBtn) {
 </body>
 
 </html>
+
 
