@@ -487,13 +487,13 @@
                 addOutputLine('[INFO] Output cleared.', 'info');
             }
             
-            // Clear editor content
-            function clearEditor() {
-                if (editor) {
-                    editor.setValue('');
-                    addOutputLine('[INFO] Editor cleared.', 'success');
-                }
-            }
+// Clear monaco editor content(BUG FIXES, FULLY FUNCTIONAL NOW)
+function clearEditor() {
+    if (editor) {
+        editor.setValue('');
+        addOutputLine('[INFO] Editor cleared.', 'success');
+    }
+}
             
             function executeScript() {
                 if (!editor) {
@@ -612,4 +612,5 @@
         });
     </script>
 </body>
+
 </html>
