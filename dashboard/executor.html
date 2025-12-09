@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Saint Admin - Whitelisted Users</title>
+    <title>Roblox Serverside</title>
     <script src="https://cdn.tailwindcss.com"></script>
     
     <style>
@@ -118,12 +118,94 @@
         .output-line.warning {
             color: #fbbf24;
         }
+        
+        .page-transition {
+            animation: pageFadeIn 0.4s ease forwards;
+        }
+        
+        .fade-out {
+            animation: fadeOut 0.3s ease forwards !important;
+        }
+        
+        .slide-in {
+            animation: slideIn 0.3s ease forwards;
+        }
+        
+        .slide-out {
+            animation: slideOut 0.3s ease forwards;
+        }
+        
+        .nav-link {
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #ef4444;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .nav-link.active::after {
+            width: 100%;
+        }
+        
+        @keyframes pageFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(0); }
+        }
+        
+        @keyframes slideOut {
+            from { transform: translateX(0); }
+            to { transform: translateX(-100%); }
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
     </style>
 </head>
 <body class="bg-black text-white">
     
-    <!-- Username Modal -->
-    <div id="username-modal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+    <div id="page-loading-overlay" class="fixed inset-0 z-50 flex items-center justify-center bg-black transition-opacity duration-300 hidden opacity-0">
+        <div class="flex flex-col items-center">
+            <div class="spinner animate-spin rounded-full border-4 border-red-500 border-t-transparent h-12 w-12 mb-4"></div>
+            <p class="text-white font-medium">Loading...</p>
+        </div>
+    </div>
+    
+    <div id="username-modal" class="fixed inset-0 z-50 hidden overflow-y-auto opacity-0 transition-opacity duration-300">
         <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div id="modal-backdrop" class="fixed inset-0 bg-black/50 transition-opacity"></div>
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen">​</span>
@@ -131,7 +213,7 @@
                 <div class="px-6 pt-6 pb-4">
                     <div class="flex items-center justify-between">
                         <h3 class="text-lg font-medium text-white">Set Roblox Username</h3>
-                        <button id="modal-close" class="text-gray-400 hover:text-white">
+                        <button id="modal-close" class="text-gray-400 hover:text-white transition">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                             </svg>
@@ -162,14 +244,12 @@
         </div>
     </div>
     
-    <!-- Main Layout -->
     <div class="flex h-screen">
         
-        <!-- Sidebar -->
         <div class="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 bg-saint-darker border-r border-saint-dark">
             <div class="flex-1 flex flex-col min-h-0">
-                <!-- Logo -->
- <div class="p-4">
+                
+                <div class="p-4">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
                             
@@ -187,21 +267,20 @@
                     </div>
                 </div>
                 
-                <!-- Navigation -->
                 <nav class="flex-1 px-2 pb-4 space-y-1">
-                    <a href="/dashboard" class="group flex items-center px-3 py-3 text-sm font-medium rounded-md text-gray-300 hover:bg-gray-900/50 hover:text-white">
+                    <a href="/dashboard" class="nav-link group flex items-center px-3 py-3 text-sm font-medium rounded-md text-gray-300 hover:bg-gray-900/50 hover:text-white">
                         <svg xmlns="http://www.w3.org/2000/svg" class="mr-3 flex-shrink-0 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
                         </svg>
                         Dashboard
                     </a>
-                    <a href="/dashboard/games" class="group flex items-center px-3 py-3 text-sm font-medium rounded-md text-gray-300 hover:bg-gray-900/50 hover:text-white">
+                    <a href="/dashboard/games" class="nav-link group flex items-center px-3 py-3 text-sm font-medium rounded-md text-gray-300 hover:bg-gray-900/50 hover:text-white">
                         <svg xmlns="http://www.w3.org/2000/svg" class="mr-3 flex-shrink-0 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"></path>
                         </svg>
                         Games
                     </a>
-                    <a href="/dashboard/executor" class="group flex items-center px-3 py-3 text-sm font-medium rounded-md bg-red-900/30 text-red-300 border border-red-800/30 glow-red">
+                    <a href="/dashboard/executor" class="nav-link group flex items-center px-3 py-3 text-sm font-medium rounded-md bg-red-900/30 text-red-300 border border-red-800/30 glow-red active">
                         <svg xmlns="http://www.w3.org/2000/svg" class="mr-3 flex-shrink-0 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
                         </svg>
@@ -209,13 +288,10 @@
                     </a>
                 </nav>
                 
-                <!-- User Profile -->
                 <div class="flex-shrink-0 flex border-t border-saint-dark p-4">
                     <div class="flex items-center w-full">
                         <div>
-                            <div class="h-9 w-9 rounded-full bg-gradient-to-br from-red-600 to-red-800 flex items-center justify-center">
-                                <img class="h-9 w-9 rounded-full bg-gradient-to-br from-red-600 to-red-800 flex items-center justify-center" src="https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg">
-                            </div>
+                            <img class="h-9 w-9 rounded-full bg-gradient-to-br from-red-600 to-red-800 flex items-center justify-center" src="https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg">
                         </div>
                         <div class="ml-3 flex-1">
                             <p class="text-sm font-medium text-white">Unknown</p>
@@ -231,14 +307,12 @@
             </div>
         </div>
         
-        <!-- Main Content -->
         <div class="md:pl-64 flex flex-col flex-1 min-h-0">
             
-            <!-- Mobile Header -->
             <div class="sticky top-0 z-10 md:hidden pl-1 pt-1 sm:pl-3 sm:pt-3 bg-saint-darker">
                 <div class="flex items-center justify-between p-2">
                     <div class="flex items-center">
-                        <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-800">
+                        <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-800 transition">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                             </svg>
@@ -253,12 +327,11 @@
                 </div>
             </div>
             
-            <!-- Mobile Sidebar -->
             <div id="mobile-sidebar" class="md:hidden fixed inset-0 z-40 hidden">
-                <div class="fixed inset-0 bg-black bg-opacity-75" id="mobile-sidebar-backdrop"></div>
+                <div class="fixed inset-0 bg-black bg-opacity-75 transition-opacity" id="mobile-sidebar-backdrop"></div>
                 <div class="relative flex-1 flex flex-col max-w-xs w-full bg-saint-darker">
                     <div class="absolute top-0 right-0 -mr-12 pt-2">
-                        <button id="mobile-menu-close" class="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                        <button id="mobile-menu-close" class="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white transition">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                             </svg>
@@ -277,25 +350,25 @@
                             </div>
                         </div>
                         <nav class="mt-8 px-2 space-y-1">
-                            <a href="/dashboard" class="text-gray-300 hover:bg-gray-800 hover:text-white group flex items-center px-3 py-3 text-base font-medium rounded-md">
+                            <a href="/dashboard" class="nav-link text-gray-300 hover:bg-gray-800 hover:text-white group flex items-center px-3 py-3 text-base font-medium rounded-md">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="mr-4 flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
                                 </svg>
                                 Dashboard
                             </a>
-                            <a href="/dashboard/games" class="text-gray-300 hover:bg-gray-800 hover:text-white group flex items-center px-3 py-3 text-base font-medium rounded-md">
+                            <a href="/dashboard/games" class="nav-link text-gray-300 hover:bg-gray-800 hover:text-white group flex items-center px-3 py-3 text-base font-medium rounded-md">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="mr-4 flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"></path>
                                 </svg>
                                 Games
                             </a>
-                            <a href="/dashboard/executor" class="bg-red-900/30 text-red-300 group flex items-center px-3 py-3 text-base font-medium rounded-md">
+                            <a href="/dashboard/executor" class="nav-link bg-red-900/30 text-red-300 group flex items-center px-3 py-3 text-base font-medium rounded-md active">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="mr-4 flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
                                 </svg>
                                 Executor
                             </a>
-                            <a href="#" class="text-gray-300 hover:bg-gray-800 hover:text-white group flex items-center px-3 py-3 text-base font-medium rounded-md">
+                            <a href="#" class="nav-link text-gray-300 hover:bg-gray-800 hover:text-white group flex items-center px-3 py-3 text-base font-medium rounded-md">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="mr-4 flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
                                 </svg>
@@ -306,7 +379,7 @@
                 </div>
             </div>
             
-            <main class="flex-1 relative overflow-y-auto focus:outline-none grid-pattern">
+            <main class="flex-1 relative overflow-y-auto focus:outline-none grid-pattern page-transition">
                 <div id="executor-page" class="p-4 md:p-6">
                     
                     <div class="mb-6 md:mb-8">
@@ -345,10 +418,113 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             
+            const loadingOverlay = document.getElementById('page-loading-overlay');
+            
+            function showLoading() {
+                if (loadingOverlay) {
+                    loadingOverlay.classList.remove('hidden');
+                    setTimeout(() => {
+                        loadingOverlay.classList.add('opacity-100');
+                    }, 10);
+                }
+            }
+            
+            function hideLoading() {
+                if (loadingOverlay) {
+                    loadingOverlay.classList.remove('opacity-100');
+                    setTimeout(() => {
+                        loadingOverlay.classList.add('hidden');
+                    }, 300);
+                }
+            }
+            
+            const mainContent = document.querySelector('main');
+            const navLinks = document.querySelectorAll('nav a');
+            const mobileNavLinks = document.querySelectorAll('#mobile-sidebar nav a');
+            const allLinks = [...navLinks, ...mobileNavLinks];
+            
+            if (mainContent) {
+                mainContent.classList.add('page-transition');
+            }
+            
+            allLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    
+                    if (href.startsWith('http') || 
+                        href.startsWith('#') || 
+                        href.includes('logout')) {
+                        return;
+                    }
+                    
+                    if (href === window.location.pathname) {
+                        e.preventDefault();
+                        return;
+                    }
+                    
+                    e.preventDefault();
+                    
+                    this.classList.add('opacity-70');
+                    
+                    showLoading();
+                    
+                    if (mainContent) {
+                        mainContent.classList.add('fade-out');
+                    }
+                    
+                    setTimeout(() => {
+                        window.location.href = href;
+                    }, 300);
+                });
+            });
+            
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             const mobileMenuClose = document.getElementById('mobile-menu-close');
             const mobileSidebar = document.getElementById('mobile-sidebar');
             const mobileSidebarBackdrop = document.getElementById('mobile-sidebar-backdrop');
+            
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', function() {
+                    mobileSidebar.classList.remove('hidden');
+                    setTimeout(() => {
+                        mobileSidebar.classList.add('slide-in');
+                    }, 10);
+                });
+            }
+            
+            if (mobileMenuClose) {
+                mobileMenuClose.addEventListener('click', function() {
+                    mobileSidebar.classList.remove('slide-in');
+                    mobileSidebar.classList.add('slide-out');
+                    setTimeout(() => {
+                        mobileSidebar.classList.add('hidden');
+                        mobileSidebar.classList.remove('slide-out');
+                    }, 300);
+                });
+            }
+            
+            if (mobileSidebarBackdrop) {
+                mobileSidebarBackdrop.addEventListener('click', function() {
+                    mobileSidebar.classList.remove('slide-in');
+                    mobileSidebar.classList.add('slide-out');
+                    setTimeout(() => {
+                        mobileSidebar.classList.add('hidden');
+                        mobileSidebar.classList.remove('slide-out');
+                    }, 300);
+                });
+            }
+            
+            const mobileSidebarLinks = document.querySelectorAll('#mobile-sidebar a');
+            mobileSidebarLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileSidebar.classList.remove('slide-in');
+                    mobileSidebar.classList.add('slide-out');
+                    setTimeout(() => {
+                        mobileSidebar.classList.add('hidden');
+                        mobileSidebar.classList.remove('slide-out');
+                    }, 300);
+                });
+            });
             
             const usernameModal = document.getElementById('username-modal');
             const setUsernameBtn = document.getElementById('set-username-btn');
@@ -366,38 +542,28 @@
             
             let editor = null;
             
-            if (mobileMenuButton) {
-                mobileMenuButton.addEventListener('click', function() {
-                    mobileSidebar.classList.remove('hidden');
-                });
-            }
-            
-            if (mobileMenuClose) {
-                mobileMenuClose.addEventListener('click', function() {
-                    mobileSidebar.classList.add('hidden');
-                });
-            }
-            
-            if (mobileSidebarBackdrop) {
-                mobileSidebarBackdrop.addEventListener('click', function() {
-                    mobileSidebar.classList.add('hidden');
-                });
-            }
-            
             function showModal() {
-                usernameModal.classList.remove('hidden');
-                robloxUsernameInput.focus();
+                if (usernameModal) {
+                    usernameModal.classList.remove('hidden');
+                    setTimeout(() => {
+                        usernameModal.classList.add('opacity-100');
+                    }, 10);
+                    if (robloxUsernameInput) {
+                        robloxUsernameInput.focus();
+                    }
+                }
             }
             
             function hideModal() {
-                usernameModal.classList.add('hidden');
-                robloxUsernameInput.value = '';
-            }
-            
-            if (setUsernameBtn) {
-                setUsernameBtn.addEventListener('click', function() {
-                    showModal();
-                });
+                if (usernameModal) {
+                    usernameModal.classList.remove('opacity-100');
+                    setTimeout(() => {
+                        usernameModal.classList.add('hidden');
+                        if (robloxUsernameInput) {
+                            robloxUsernameInput.value = '';
+                        }
+                    }, 300);
+                }
             }
             
             if (modalClose) {
@@ -423,7 +589,6 @@
                     const username = robloxUsernameInput.value.trim();
                     if (username) {
                         console.log('Submitting username:', username);
-                        addOutputLine(`[INFO] Username set to: ${username}`, 'success');
                         hideModal();
                     } else {
                         robloxUsernameInput.focus();
@@ -440,7 +605,6 @@
             }
             
             function initializeMonacoEditor() {
-                // Configure the loader
                 require.config({ 
                     paths: { 
                         vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.33.0/min/vs'
@@ -468,43 +632,19 @@
                         formatOnPaste: true,
                         formatOnType: true
                     });
-                    
-                    addOutputLine('[INFO] Monaco Editor initialized successfully.', 'info');
                 });
             }
             
-            function addOutputLine(text, type = 'info') {
-                const line = document.createElement('div');
-                line.className = `output-line ${type}`;
-                line.textContent = text;
-            }
-            
-            function clearOutput() {
-                addOutputLine('[INFO] Output cleared.', 'info');
-            }
-            
-// Clear monaco editor content(BUG FIXES, FULLY FUNCTIONAL NOW)
-function clearEditor() {
-    if (editor) {
-        editor.setValue('');
-        addOutputLine('[INFO] Editor cleared.', 'success');
-    }
-}
-            
             function executeScript() {
                 if (!editor) {
-                    addOutputLine('[ERROR] Editor not initialized.', 'error');
                     return;
                 }
                 
                 const code = editor.getValue();
                 
                 if (!code.trim()) {
-                    addOutputLine('[ERROR] No code to execute.', 'error');
                     return;
                 }
-                
-                addOutputLine('[INFO] Executing script...', 'info');
                 
                 try {
                     const lines = code.split('\n');
@@ -516,53 +656,37 @@ function clearEditor() {
                         if (trimmedLine.startsWith('print(')) {
                             const match = trimmedLine.match(/print\(["'](.+)["']\)/);
                             if (match) {
-                                addOutputLine(`[OUTPUT] ${match[1]}`, 'success');
                                 hasOutput = true;
                             }
                         } else if (trimmedLine && !trimmedLine.startsWith('--')) {
-                            addOutputLine(`[LINE ${index + 1}] Executed: ${trimmedLine}`, 'info');
                         }
                     });
-                    
-                    if (!hasOutput) {
-                        addOutputLine('[INFO] Script executed (no print statements).', 'info');
-                    }
-                    
-                    addOutputLine('[SUCCESS] Script execution completed.', 'success');
                 } catch (error) {
-                    addOutputLine(`[ERROR] ${error.message}`, 'error');
                 }
             }
             
             function saveScript() {
                 if (!editor) {
-                    addOutputLine('[ERROR] Editor not initialized.', 'error');
                     return;
                 }
                 
                 const code = editor.getValue();
                 localStorage.setItem('saved_script', code);
-                addOutputLine('[INFO] Script saved to browser storage.', 'success');
             }
             
             function loadScript() {
                 if (!editor) {
-                    addOutputLine('[ERROR] Editor not initialized.', 'error');
                     return;
                 }
                 
                 const savedScript = localStorage.getItem('saved_script');
                 if (savedScript) {
                     editor.setValue(savedScript);
-                    addOutputLine('[INFO] Script loaded from browser storage.', 'success');
-                } else {
-                    addOutputLine('[WARNING] No saved script found.', 'warning');
                 }
             }
             
             function loadTemplate(templateName) {
                 if (!editor) {
-                    addOutputLine('[ERROR] Editor not initialized.', 'error');
                     return;
                 }
                 
@@ -574,7 +698,6 @@ function clearEditor() {
                 
                 if (templates[templateName]) {
                     editor.setValue(templates[templateName]);
-                    addOutputLine(`[INFO] Loaded "${templateName}" template.`, 'success');
                 }
             }
             
@@ -582,17 +705,13 @@ function clearEditor() {
                 executeBtn.addEventListener('click', executeScript);
             }
             
-if (clearBtn) {
-    clearBtn.addEventListener('click', function() {
-        // Clear the editor
-        if (editor) {
-            editor.setValue('');
-        }
-        
-        
-        addOutputLine('[INFO] cleard', 'success');
-    });
-}
+            if (clearBtn) {
+                clearBtn.addEventListener('click', function() {
+                    if (editor) {
+                        editor.setValue('');
+                    }
+                });
+            }
             
             if (saveBtn) {
                 saveBtn.addEventListener('click', saveScript);
@@ -609,11 +728,39 @@ if (clearBtn) {
                 });
             });
             
+            setTimeout(() => {
+                const cards = document.querySelectorAll('.dashboard-card');
+                cards.forEach((card, index) => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    card.style.transition = `opacity 0.5s ease ${index * 0.1}s, transform 0.5s ease ${index * 0.1}s`;
+                    
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 100);
+                });
+            }, 300);
+            
+            const buttons = document.querySelectorAll('button, .hover-glow-red');
+            buttons.forEach(button => {
+                button.style.transition = 'all 0.2s ease';
+                
+                button.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-2px)';
+                });
+                
+                button.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+            
+            window.addEventListener('load', hideLoading);
+            
+            setTimeout(hideLoading, 2000);
+            
             initializeMonacoEditor();
         });
     </script>
 </body>
-
 </html>
-
-
