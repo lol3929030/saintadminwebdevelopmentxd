@@ -16,37 +16,43 @@ export default async function handler(req, res) {
 
   if (!supabaseUrl || !supabaseKey) {
     return res.status(500).json({
-      error: 'Missing Supabase environment variables. Add SUPABASE_URL and SUPABASE_ANON_KEY to Vercel.'
+      error: 'Missing Supabase environment variables'
     });
   }
 
   try {
-    const { createClient } = await import('@supabase/supabase-js');
-    const supabase = createClient(supabaseUrl, supabaseKey);
     const { code, gameId } = req.body || {};
 
     if (!code || !gameId) {
       return res.status(400).json({ error: 'Missing code or gameId' });
     }
 
-    const { data, error } = await supabase
-      .from('execution_queue')
-      .insert({
+    const response = await fetch(`${supabaseUrl}/rest/v1/execution_queue`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': supabaseKey,
+        'Authorization': `Bearer ${supabaseKey}`,
+        'Prefer': 'return=representation'
+      },
+      body: JSON.stringify({
         game_id: gameId,
         code: code,
         status: 'pending'
       })
-      .select()
-      .single();
+    });
 
-    if (error) {
-      console.error('Supabase error:', error);
-      return res.status(500).json({ error: 'Database error: ' + error.message });
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Supabase error:', errorText);
+      return res.status(500).json({ error: 'Database error: ' + errorText });
     }
+
+    const data = await response.json();
 
     return res.status(200).json({
       success: true,
-      id: data.id,
+      id: data[0]?.id,
       message: 'Script queued for execution'
     });
   } catch (error) {
