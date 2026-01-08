@@ -10,12 +10,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
-        * {
+* {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
         :root {
             --primary: #ef4444;
             --primary-dark: #dc2626;
@@ -39,7 +38,6 @@
             --gradient-primary: linear-gradient(135deg, #ef4444, #f97316);
             --gradient-purple: linear-gradient(135deg, #8b5cf6, #7c3aed);
         }
-        
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--dark-bg);
@@ -48,8 +46,6 @@
             line-height: 1.6;
             position: relative;
         }
-        
-        /* ASCII Art Background */
         .ascii-bg {
             position: fixed;
             top: 0;
@@ -66,17 +62,13 @@
             color: var(--primary-light);
             overflow: hidden;
         }
-        
         .ascii-bg-content {
             animation: scroll-up 80s linear infinite;
         }
-        
         @keyframes scroll-up {
             0% { transform: translateY(0); }
             100% { transform: translateY(-50%); }
         }
-        
-        /* Gradient Overlay */
         .gradient-overlay {
             position: fixed;
             top: 0;
@@ -89,8 +81,6 @@
                         radial-gradient(circle at 40% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 40%);
             pointer-events: none;
         }
-        
-        /* Animated Particles */
         .particles {
             position: fixed;
             top: 0;
@@ -100,7 +90,6 @@
             z-index: -1;
             pointer-events: none;
         }
-        
         .particle {
             position: absolute;
             width: 2px;
@@ -109,7 +98,6 @@
             border-radius: 50%;
             animation: float 20s infinite linear;
         }
-        
         @keyframes float {
             0% {
                 transform: translateY(100vh) translateX(0);
@@ -126,8 +114,6 @@
                 opacity: 0;
             }
         }
-        
-        /* Header & Navigation */
         header {
             position: fixed;
             top: 0;
@@ -139,7 +125,6 @@
             background-color: rgba(10, 10, 10, 0.9);
             border-bottom: 1px solid var(--border-color);
         }
-        
         .nav-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -147,7 +132,6 @@
             justify-content: space-between;
             align-items: center;
         }
-        
         .logo {
             display: flex;
             align-items: center;
@@ -160,7 +144,6 @@
             color: transparent;
             text-decoration: none;
         }
-        
         .logo-icon {
             width: 32px;
             height: 32px;
@@ -174,13 +157,11 @@
             font-size: 1rem;
             color: white;
         }
-        
         .nav-links {
             display: flex;
             gap: 2rem;
             align-items: center;
         }
-        
         .nav-link {
             color: var(--text-secondary);
             text-decoration: none;
@@ -189,15 +170,12 @@
             transition: all 0.3s ease;
             position: relative;
         }
-        
         .nav-link:hover {
             color: var(--text-primary);
         }
-        
         .nav-link.active {
             color: var(--primary);
         }
-        
         .nav-link::after {
             content: '';
             position: absolute;
@@ -208,18 +186,15 @@
             background: var(--gradient-primary);
             transition: width 0.3s ease;
         }
-        
         .nav-link:hover::after,
         .nav-link.active::after {
             width: 100%;
         }
-        
         .nav-actions {
             display: flex;
             gap: 1rem;
             align-items: center;
         }
-        
         .btn {
             padding: 0.6rem 1.5rem;
             border-radius: 8px;
@@ -234,28 +209,23 @@
             justify-content: center;
             gap: 0.5rem;
         }
-        
         .btn-primary {
             background: var(--gradient-primary);
             color: white;
         }
-        
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
         }
-        
         .btn-secondary {
             background: transparent;
             color: var(--text-secondary);
             border: 1px solid var(--border-light);
         }
-        
         .btn-secondary:hover {
             border-color: var(--primary);
             color: var(--primary);
         }
-        
         .mobile-menu-btn {
             display: none;
             background: none;
@@ -264,19 +234,15 @@
             font-size: 1.5rem;
             cursor: pointer;
         }
-        
-        /* Main Content */
         .main-container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 8rem 2rem 4rem;
         }
-        
         .page-header {
             text-align: center;
             margin-bottom: 4rem;
         }
-        
         .page-title {
             font-size: 3.5rem;
             font-weight: 800;
@@ -286,15 +252,12 @@
             background-clip: text;
             color: transparent;
         }
-        
         .page-subtitle {
             font-size: 1.2rem;
             color: var(--text-secondary);
             max-width: 800px;
             margin: 0 auto;
         }
-        
-        /* Privacy Content */
         .privacy-container {
             background: var(--card-bg);
             border: 1px solid var(--border-light);
@@ -304,7 +267,6 @@
             position: relative;
             overflow: hidden;
         }
-        
         .privacy-container::before {
             content: '';
             position: absolute;
@@ -314,7 +276,6 @@
             height: 4px;
             background: var(--gradient-blue);
         }
-        
         .last-updated {
             text-align: center;
             color: var(--warning);
@@ -325,15 +286,12 @@
             border-radius: 8px;
             border: 1px solid rgba(245, 158, 11, 0.2);
         }
-        
         .privacy-section {
             margin-bottom: 3rem;
         }
-        
         .privacy-section:last-child {
             margin-bottom: 0;
         }
-        
         .section-title {
             font-size: 1.8rem;
             font-weight: 700;
@@ -343,7 +301,6 @@
             align-items: center;
             gap: 0.75rem;
         }
-        
         .section-title::before {
             content: '';
             width: 4px;
@@ -351,7 +308,6 @@
             background: var(--gradient-blue);
             border-radius: 2px;
         }
-        
         .data-category {
             margin-bottom: 2.5rem;
             padding: 1.5rem;
@@ -359,7 +315,6 @@
             border-radius: 12px;
             border: 1px solid var(--border-light);
         }
-        
         .category-header {
             display: flex;
             align-items: center;
@@ -368,7 +323,6 @@
             padding-bottom: 1rem;
             border-bottom: 1px solid var(--border-light);
         }
-        
         .category-icon {
             width: 48px;
             height: 48px;
@@ -380,18 +334,15 @@
             font-size: 1.5rem;
             color: var(--secondary);
         }
-        
         .category-title {
             font-size: 1.4rem;
             font-weight: 700;
             color: var(--secondary);
             flex: 1;
         }
-        
         .data-list {
             list-style: none;
         }
-        
         .data-list li {
             padding: 0.75rem 0;
             color: var(--text-secondary);
@@ -400,17 +351,14 @@
             align-items: flex-start;
             gap: 0.75rem;
         }
-        
         .data-list li:last-child {
             border-bottom: none;
         }
-        
         .data-list li::before {
             content: '📊';
             flex-shrink: 0;
             margin-top: 0.2rem;
         }
-        
         .purpose-badge {
             display: inline-block;
             padding: 0.25rem 0.75rem;
@@ -421,7 +369,6 @@
             font-weight: 600;
             margin-left: 0.5rem;
         }
-        
         .info-box {
             background: rgba(59, 130, 246, 0.1);
             border: 1px solid rgba(59, 130, 246, 0.3);
@@ -430,7 +377,6 @@
             border-radius: 8px;
             margin: 1.5rem 0;
         }
-        
         .info-title {
             color: var(--secondary);
             font-weight: 600;
@@ -439,7 +385,6 @@
             align-items: center;
             gap: 0.5rem;
         }
-        
         .warning-box {
             background: rgba(220, 38, 38, 0.1);
             border: 1px solid rgba(220, 38, 38, 0.3);
@@ -448,7 +393,6 @@
             border-radius: 8px;
             margin: 1.5rem 0;
         }
-        
         .warning-title {
             color: var(--danger);
             font-weight: 600;
@@ -457,14 +401,12 @@
             align-items: center;
             gap: 0.5rem;
         }
-        
         .data-flow-diagram {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 1rem;
             margin: 2rem 0;
         }
-        
         .flow-step {
             background: rgba(15, 15, 15, 0.5);
             border: 1px solid var(--border-light);
@@ -473,12 +415,10 @@
             text-align: center;
             transition: transform 0.3s ease;
         }
-        
         .flow-step:hover {
             transform: translateY(-5px);
             border-color: var(--secondary);
         }
-        
         .flow-number {
             width: 36px;
             height: 36px;
@@ -491,19 +431,16 @@
             font-weight: 700;
             margin: 0 auto 1rem;
         }
-        
         .flow-title {
             font-size: 1.1rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
             color: var(--text-primary);
         }
-        
         .flow-desc {
             color: var(--text-secondary);
             font-size: 0.9rem;
         }
-        
         .consent-section {
             text-align: center;
             margin: 3rem 0;
@@ -512,20 +449,17 @@
             border: 1px solid var(--border-color);
             border-radius: 16px;
         }
-        
         .consent-title {
             font-size: 1.8rem;
             font-weight: 700;
             margin-bottom: 1rem;
             color: var(--text-primary);
         }
-        
         .consent-desc {
             color: var(--text-secondary);
             max-width: 600px;
             margin: 0 auto 1.5rem;
         }
-        
         .contact-section {
             text-align: center;
             margin-top: 4rem;
@@ -534,29 +468,24 @@
             border: 1px solid var(--border-color);
             border-radius: 16px;
         }
-        
         .contact-title {
             font-size: 2rem;
             font-weight: 700;
             margin-bottom: 1rem;
             color: var(--text-primary);
         }
-        
         .contact-desc {
             color: var(--text-secondary);
             max-width: 600px;
             margin: 0 auto 2rem;
             font-size: 1.1rem;
         }
-        
-        /* Footer */
         footer {
             background-color: var(--darker-bg);
             border-top: 1px solid var(--border-light);
             padding: 4rem 2rem 2rem;
             margin-top: 4rem;
         }
-        
         .footer-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -564,13 +493,11 @@
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 3rem;
         }
-        
         .footer-brand {
             display: flex;
             flex-direction: column;
             gap: 1rem;
         }
-        
         .footer-logo {
             font-size: 1.8rem;
             font-weight: 800;
@@ -579,37 +506,31 @@
             background-clip: text;
             color: transparent;
         }
-        
         .footer-tagline {
             color: var(--text-secondary);
             font-size: 0.95rem;
             max-width: 300px;
         }
-        
         .footer-links {
             display: flex;
             flex-direction: column;
             gap: 1rem;
         }
-        
         .footer-heading {
             font-size: 1.1rem;
             font-weight: 600;
             margin-bottom: 1rem;
             color: var(--text-primary);
         }
-        
         .footer-link {
             color: var(--text-secondary);
             text-decoration: none;
             font-size: 0.95rem;
             transition: color 0.3s ease;
         }
-        
         .footer-link:hover {
             color: var(--primary);
         }
-        
         .footer-bottom {
             max-width: 1200px;
             margin: 3rem auto 0;
@@ -623,35 +544,27 @@
             color: var(--text-tertiary);
             font-size: 0.9rem;
         }
-        
-        /* Responsive Styles */
         @media (max-width: 992px) {
             .page-title {
                 font-size: 3rem;
             }
-            
             .section-title {
                 font-size: 1.6rem;
             }
-            
             .contact-title {
                 font-size: 1.8rem;
             }
-            
             .data-flow-diagram {
                 grid-template-columns: 1fr;
             }
         }
-        
         @media (max-width: 768px) {
             .mobile-menu-btn {
                 display: block;
             }
-            
             .nav-links, .nav-actions {
                 display: none;
             }
-            
             .nav-links.mobile-open {
                 display: flex;
                 flex-direction: column;
@@ -665,7 +578,6 @@
                 border-bottom: 1px solid var(--border-light);
                 gap: 1.5rem;
             }
-            
             .nav-actions.mobile-open {
                 display: flex;
                 flex-direction: column;
@@ -676,71 +588,55 @@
                 padding: 0 2rem 2rem;
                 background-color: var(--darker-bg);
             }
-            
             .main-container {
                 padding: 7rem 1.5rem 3rem;
             }
-            
             .privacy-container {
                 padding: 2rem 1.5rem;
             }
-            
             .page-title {
                 font-size: 2.5rem;
             }
-            
             .btn {
                 width: 100%;
                 max-width: 300px;
             }
-            
             .contact-section {
                 padding: 2rem 1.5rem;
             }
         }
-        
         @media (max-width: 480px) {
             .page-title {
                 font-size: 2rem;
             }
-            
             .section-title {
                 font-size: 1.4rem;
             }
-            
             .privacy-container {
                 padding: 1.5rem;
             }
-            
             .category-header {
                 flex-direction: column;
                 text-align: center;
             }
-            
             .footer-container {
                 grid-template-columns: 1fr;
             }
-            
             .footer-bottom {
                 flex-direction: column;
                 text-align: center;
             }
         }
-        
-        /* Animation Classes */
         .fade-in {
             animation: fadeIn 1s ease forwards;
         }
-        
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
-        
         .slide-up {
             animation: slideUp 0.8s ease forwards;
         }
-        
         @keyframes slideUp {
             from { 
                 opacity: 0;
@@ -751,26 +647,19 @@
                 transform: translateY(0);
             }
         }
-        
-        /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 10px;
         }
-        
         ::-webkit-scrollbar-track {
             background: var(--darker-bg);
         }
-        
         ::-webkit-scrollbar-thumb {
             background: var(--gradient-primary);
             border-radius: 5px;
         }
-        
         ::-webkit-scrollbar-thumb:hover {
             background: var(--primary-dark);
         }
-        
-        /* Smooth scrolling */
         html {
             scroll-behavior: smooth;
             scroll-padding-top: 80px;
@@ -782,20 +671,15 @@
         <div class="ascii-bg-content">
         </div>
     </div>
-    
     <div class="gradient-overlay"></div>
-    
     <div class="particles" id="particles-container"></div>
-    
     <header>
         <div class="nav-container">
             <div class="logo">
                 <div class="logo-icon">S</div>
                 Saint Admin
             </div>
-            
             <button class="mobile-menu-btn" id="mobile-menu-toggle">☰</button>
-            
             <nav class="nav-links" id="nav-links">
                 <a href="/" class="nav-link">Home</a>
                 <a href="/terms" class="nav-link">Terms of Service</a>
@@ -803,14 +687,12 @@
                 <a href="/refund-policy" class="nav-link">Refund Policy</a>
                 <a href="https://discord.gg/CEKQDKBN9R" class="nav-link">Discord</a>
             </nav>
-            
             <div class="nav-actions" id="nav-actions">
                 <a href="/sign-in" class="btn btn-secondary">Sign In</a>
                 <a href="/register" class="btn btn-primary">Register</a>
             </div>
         </div>
     </header>
-    
     <main class="main-container">
         <div class="page-header fade-in">
             <h1 class="page-title slide-up">Privacy Policy</h1>
@@ -819,11 +701,9 @@
                 to provide and improve our services while ensuring security and compliance.
             </p>
         </div>
-        
         <div class="last-updated slide-up">
             Last Updated: December 2025 | Effective immediately upon publication
         </div>
-        
         <div class="privacy-container slide-up">
             <div class="info-box">
                 <div class="info-title">
@@ -835,14 +715,12 @@
                     maintain, and improve our services while ensuring security and compliance with our Terms of Service.
                 </p>
             </div>
-            
             <div class="privacy-section">
                 <h2 class="section-title">Data We Collect</h2>
                 <p>
                     To provide and maintain our services, we collect and process the following types of data. 
                     This collection is necessary for service functionality, security, and compliance enforcement.
                 </p>
-                
                 <div class="data-category slide-up">
                     <div class="category-header">
                         <div class="category-icon">📜</div>
@@ -863,7 +741,6 @@
                         </li>
                     </ul>
                 </div>
-                
                 <div class="data-category slide-up">
                     <div class="category-header">
                         <div class="category-icon">👤</div>
@@ -884,7 +761,6 @@
                         </li>
                     </ul>
                 </div>
-                
                 <div class="data-category slide-up">
                     <div class="category-header">
                         <div class="category-icon">🌐</div>
@@ -905,7 +781,6 @@
                         </li>
                     </ul>
                 </div>
-                
                 <div class="data-category slide-up">
                     <div class="category-header">
                         <div class="category-icon">📈</div>
@@ -927,36 +802,30 @@
                     </ul>
                 </div>
             </div>
-            
             <div class="privacy-section">
                 <h2 class="section-title">How We Use Your Data</h2>
-                
                 <div class="data-flow-diagram">
                     <div class="flow-step">
                         <div class="flow-number">1</div>
                         <h4 class="flow-title">Collection</h4>
                         <p class="flow-desc">Data is collected during your use of our services</p>
                     </div>
-                    
                     <div class="flow-step">
                         <div class="flow-number">2</div>
                         <h4 class="flow-title">Processing</h4>
                         <p class="flow-desc">Data is analyzed for security and service improvement</p>
                     </div>
-                    
                     <div class="flow-step">
                         <div class="flow-number">3</div>
                         <h4 class="flow-title">Storage</h4>
                         <p class="flow-desc">Secure storage with encryption and access controls</p>
                     </div>
-                    
                     <div class="flow-step">
                         <div class="flow-number">4</div>
                         <h4 class="flow-title">Protection</h4>
                         <p class="flow-desc">Advanced security measures to prevent unauthorized access</p>
                     </div>
                 </div>
-                
                 <div class="info-box">
                     <div class="info-title">
                         🎯 PRIMARY PURPOSES
@@ -971,10 +840,8 @@
                     </ul>
                 </div>
             </div>
-            
             <div class="privacy-section">
                 <h2 class="section-title">Data Retention & Security</h2>
-                
                 <div class="warning-box">
                     <div class="warning-title">
                         ⚠️ IMPORTANT SECURITY NOTICE
@@ -986,7 +853,6 @@
                         no system is 100% secure.
                     </p>
                 </div>
-                
                 <div class="info-box">
                     <div class="info-title">
                         🔒 SECURITY MEASURES
@@ -1000,13 +866,11 @@
                     </ul>
                 </div>
             </div>
-            
             <div class="privacy-section">
                 <h2 class="section-title">Data Sharing & Third Parties</h2>
                 <p>
                     We do not sell your personal data to third parties. Data may be shared only in the following circumstances:
                 </p>
-                
                 <div class="info-box">
                     <ul class="data-list">
                         <li><strong>Legal Requirements:</strong> When required by law or legal process</li>
@@ -1016,7 +880,6 @@
                     </ul>
                 </div>
             </div>
-            
             <div class="consent-section slide-up">
                 <h3 class="consent-title">Your Consent</h3>
                 <p class="consent-desc">
@@ -1031,7 +894,6 @@
                     </p>
                 </div>
             </div>
-            
             <div class="privacy-section">
                 <h2 class="section-title">Policy Updates</h2>
                 <div class="info-box">
@@ -1046,7 +908,6 @@
                     </p>
                 </div>
             </div>
-            
             <div class="contact-section">
                 <h2 class="contact-title">Questions About Privacy?</h2>
                 <p class="contact-desc">
@@ -1059,7 +920,6 @@
             </div>
         </div>
     </main>
-    
     <footer>
         <div class="footer-container">
             <div class="footer-brand">
@@ -1069,21 +929,18 @@
                     good games and website based execution. Absolutely no downloads required!
                 </p>
             </div>
-            
             <div class="footer-links">
                 <h3 class="footer-heading">Legal Documents</h3>
                 <a href="/terms" class="footer-link">Terms of Service</a>
                 <a href="/privacy-policy" class="footer-link">Privacy Policy</a>
                 <a href="/refund-policy" class="footer-link">Refund Policy</a>
             </div>
-            
             <div class="footer-links">
                 <h3 class="footer-heading">Resources</h3>
                 <a href="https://discord.gg/CEKQDKBN9R" class="footer-link">Discord Community</a>
                 <a href="https://www.youtube.com/@SaintUtilities" class="footer-link">YouTube Channel</a>
                 <a href="/showcases" class="footer-link">User Showcases</a>
             </div>
-            
             <div class="footer-links">
                 <h3 class="footer-heading">Account</h3>
                 <a href="/sign-in" class="footer-link">Sign In</a>
@@ -1091,85 +948,66 @@
                 <a href="/pricing" class="footer-link">Pricing</a>
             </div>
         </div>
-        
         <div class="footer-bottom">
             <div>© 2024 Saint Admin. All rights reserved.</div>
         </div>
     </footer>
-
     <script>
         function createParticles() {
             const container = document.getElementById('particles-container');
             const particleCount = 40;
-            
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
                 particle.classList.add('particle');
-                
                 const left = Math.random() * 100;
                 const delay = Math.random() * 20;
                 const duration = 15 + Math.random() * 15;
-                
                 particle.style.left = `${left}%`;
                 particle.style.animationDelay = `${delay}s`;
                 particle.style.animationDuration = `${duration}s`;
-                
                 const size = 1 + Math.random() * 3;
                 particle.style.width = `${size}px`;
                 particle.style.height = `${size}px`;
-                
                 const colors = ['#ef4444', '#f97316', '#3b82f6', '#8b5cf6'];
                 const color = colors[Math.floor(Math.random() * colors.length)];
                 particle.style.backgroundColor = color;
-                
                 container.appendChild(particle);
             }
         }
-        
         document.getElementById('mobile-menu-toggle').addEventListener('click', function() {
             const navLinks = document.getElementById('nav-links');
             const navActions = document.getElementById('nav-actions');
-            
             navLinks.classList.toggle('mobile-open');
             navActions.classList.toggle('mobile-open');
-            
             this.textContent = navLinks.classList.contains('mobile-open') ? '✕' : '☰';
         });
-        
         document.addEventListener('click', function(event) {
             const navLinks = document.getElementById('nav-links');
             const navActions = document.getElementById('nav-actions');
             const toggleBtn = document.getElementById('mobile-menu-toggle');
-            
             if (!navLinks.contains(event.target) && !toggleBtn.contains(event.target)) {
                 navLinks.classList.remove('mobile-open');
                 navActions.classList.remove('mobile-open');
                 toggleBtn.textContent = '☰';
             }
         });
-        
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
-                
                 const targetId = this.getAttribute('href');
                 if (targetId === '#') return;
-                
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
                     const navLinks = document.getElementById('nav-links');
                     const navActions = document.getElementById('nav-actions');
                     const toggleBtn = document.getElementById('mobile-menu-toggle');
-                    
                     if (navLinks.classList.contains('mobile-open')) {
                         navLinks.classList.remove('mobile-open');
                         navActions.classList.remove('mobile-open');
                         toggleBtn.textContent = '☰';
                     }
-                    
                     const headerHeight = document.querySelector('header').offsetHeight;
                     const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
-                    
                     window.scrollTo({
                         top: targetPosition,
                         behavior: 'smooth'
@@ -1177,7 +1015,6 @@
                 }
             });
         });
-
         </script><script>
     (function() {
         window.addEventListener('load', function() {
@@ -1198,7 +1035,6 @@
                 opacity: 1;
                 transition: opacity 0.8s ease-out;
             `;
-            
             const logoContainer = document.createElement('div');
             logoContainer.style.cssText = `
                 position: relative;
@@ -1206,7 +1042,6 @@
                 height: 120px;
                 margin-bottom: 2rem;
             `;
-            
             const logoImg = document.createElement('img');
             logoImg.src = '/03b3cf7a14673a4735184b5cfc73428e.png';
             logoImg.alt = 'Saint Admin';
@@ -1217,7 +1052,6 @@
                 filter: drop-shadow(0 0 20px rgba(239, 68, 68, 0.5));
                 animation: saintPulse 2s infinite ease-in-out;
             `;
-            
             const glowRing = document.createElement('div');
             glowRing.style.cssText = `
                 position: absolute;
@@ -1229,7 +1063,6 @@
                 border-radius: 12px;
                 animation: saintRotate 3s linear infinite;
             `;
-            
             const loadingText = document.createElement('div');
             loadingText.textContent = 'Saint Admin';
             loadingText.style.cssText = `
@@ -1247,13 +1080,11 @@
                 animation: saintGradient 2s linear infinite;
                 font-family: 'Inter', sans-serif;
             `;
-            
             const loadingDots = document.createElement('div');
             loadingDots.style.cssText = `
                 display: flex;
                 gap: 8px;
             `;
-            
             for (let i = 0; i < 3; i++) {
                 const dot = document.createElement('div');
                 dot.style.cssText = `
@@ -1267,7 +1098,6 @@
                 `;
                 loadingDots.appendChild(dot);
             }
-            
             const progressBar = document.createElement('div');
             progressBar.style.cssText = `
                 width: 200px;
@@ -1277,7 +1107,6 @@
                 margin-top: 2rem;
                 overflow: hidden;
             `;
-            
             const progressFill = document.createElement('div');
             progressFill.style.cssText = `
                 width: 0%;
@@ -1286,18 +1115,14 @@
                 border-radius: 2px;
                 transition: width 0.3s ease;
             `;
-            
             progressBar.appendChild(progressFill);
-            
             logoContainer.appendChild(logoImg);
             logoContainer.appendChild(glowRing);
             loadingOverlay.appendChild(logoContainer);
             loadingOverlay.appendChild(loadingText);
             loadingOverlay.appendChild(loadingDots);
             loadingOverlay.appendChild(progressBar);
-            
             document.body.appendChild(loadingOverlay);
-            
             const style = document.createElement('style');
             style.id = 'saint-animations';
             style.textContent = `
@@ -1315,7 +1140,6 @@
                         filter: drop-shadow(0 0 15px rgba(239, 68, 68, 0.5));
                     }
                 }
-                
                 @keyframes saintRotate {
                     0% {
                         transform: rotate(0deg);
@@ -1336,7 +1160,6 @@
                         border-color: rgba(239, 68, 68, 0.3);
                     }
                 }
-                
                 @keyframes saintGradient {
                     0% {
                         background-position: 0% 50%;
@@ -1348,7 +1171,6 @@
                         background-position: 0% 50%;
                     }
                 }
-                
                 @keyframes saintBounce {
                     0%, 80%, 100% {
                         transform: scale(0);
@@ -1361,20 +1183,15 @@
                 }
             `;
             document.head.appendChild(style);
-            
             let progress = 0;
             const progressInterval = setInterval(() => {
                 progress += Math.random() * 20 + 10; 
                 if (progress > 100) progress = 100;
-                
                 progressFill.style.width = `${progress}%`;
-                
                 if (progress >= 100) {
                     clearInterval(progressInterval);
-                    
                     setTimeout(() => {
                         loadingOverlay.style.opacity = '0';
-                        
                         setTimeout(() => {
                             if (loadingOverlay.parentNode) {
                                 loadingOverlay.parentNode.removeChild(loadingOverlay);
@@ -1382,24 +1199,16 @@
                             if (style.parentNode) {
                                 style.parentNode.removeChild(style);
                             }
-                            
                             const mainContent = document.querySelector('main') || document.body;
                             mainContent.style.opacity = '0';
                             mainContent.style.transition = 'opacity 0.5s ease-in';
-                            
                             setTimeout(() => {
                                 mainContent.style.opacity = '1';
                             }, 50);
-                            
                         }, 800);
-                        
                     }, 300);
                 }
             }, 100);
         });
     })();
 </script></body></html>
-
-
-
-
