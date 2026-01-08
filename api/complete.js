@@ -16,30 +16,34 @@ export default async function handler(req, res) {
 
   if (!supabaseUrl || !supabaseKey) {
     return res.status(500).json({
-      error: 'Missing Supabase environment variables. Add SUPABASE_URL and SUPABASE_ANON_KEY to Vercel.'
+      error: 'Missing Supabase environment variables'
     });
   }
 
   try {
-    const { createClient } = await import('@supabase/supabase-js');
-    const supabase = createClient(supabaseUrl, supabaseKey);
     const { id, success } = req.body || {};
 
     if (!id) {
       return res.status(400).json({ error: 'Missing execution id' });
     }
 
-    const { error } = await supabase
-      .from('execution_queue')
-      .update({
+    const response = await fetch(`${supabaseUrl}/rest/v1/execution_queue?id=eq.${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': supabaseKey,
+        'Authorization': `Bearer ${supabaseKey}`
+      },
+      body: JSON.stringify({
         status: success ? 'completed' : 'failed',
         executed_at: new Date().toISOString()
       })
-      .eq('id', id);
+    });
 
-    if (error) {
-      console.error('Supabase error:', error);
-      return res.status(500).json({ error: 'Database error: ' + error.message });
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Supabase error:', errorText);
+      return res.status(500).json({ error: 'Database error: ' + errorText });
     }
 
     return res.status(200).json({ success: true });
