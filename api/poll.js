@@ -16,46 +16,55 @@ export default async function handler(req, res) {
 
   if (!supabaseUrl || !supabaseKey) {
     return res.status(500).json({
-      error: 'Missing Supabase environment variables. Add SUPABASE_URL and SUPABASE_ANON_KEY to Vercel.'
+      error: 'Missing Supabase environment variables'
     });
   }
 
   try {
-    const { createClient } = await import('@supabase/supabase-js');
-    const supabase = createClient(supabaseUrl, supabaseKey);
     const { gameId } = req.query || {};
 
     if (!gameId) {
       return res.status(400).json({ error: 'Missing gameId' });
     }
 
-    const { data, error } = await supabase
-      .from('execution_queue')
-      .select('id, code')
-      .eq('game_id', gameId)
-      .eq('status', 'pending')
-      .order('created_at', { ascending: true })
-      .limit(1)
-      .maybeSingle();
+    const response = await fetch(
+      `${supabaseUrl}/rest/v1/execution_queue?game_id=eq.${encodeURIComponent(gameId)}&status=eq.pending&order=created_at.asc&limit=1`,
+      {
+        headers: {
+          'apikey': supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`
+        }
+      }
+    );
 
-    if (error) {
-      console.error('Supabase error:', error);
-      return res.status(500).json({ error: 'Database error: ' + error.message });
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Supabase error:', errorText);
+      return res.status(500).json({ error: 'Database error: ' + errorText });
     }
 
-    if (!data) {
+    const data = await response.json();
+
+    if (!data || data.length === 0) {
       return res.status(200).json({ pending: false });
     }
 
-    await supabase
-      .from('execution_queue')
-      .update({ status: 'executing' })
-      .eq('id', data.id);
+    const item = data[0];
+
+    await fetch(`${supabaseUrl}/rest/v1/execution_queue?id=eq.${item.id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': supabaseKey,
+        'Authorization': `Bearer ${supabaseKey}`
+      },
+      body: JSON.stringify({ status: 'executing' })
+    });
 
     return res.status(200).json({
       pending: true,
-      id: data.id,
-      code: data.code
+      id: item.id,
+      code: item.code
     });
   } catch (error) {
     console.error('Error:', error);
