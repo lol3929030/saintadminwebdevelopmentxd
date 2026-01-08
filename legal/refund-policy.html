@@ -49,7 +49,6 @@
             position: relative;
         }
         
-        /* ASCII Art Background */
         .ascii-bg {
             position: fixed;
             top: 0;
@@ -76,7 +75,6 @@
             100% { transform: translateY(-50%); }
         }
         
-        /* Gradient Overlay */
         .gradient-overlay {
             position: fixed;
             top: 0;
@@ -90,7 +88,6 @@
             pointer-events: none;
         }
         
-        /* Animated Particles */
         .particles {
             position: fixed;
             top: 0;
@@ -127,7 +124,6 @@
             }
         }
         
-        /* Header & Navigation */
         header {
             position: fixed;
             top: 0;
@@ -265,7 +261,6 @@
             cursor: pointer;
         }
         
-        /* Main Content */
         .main-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -294,7 +289,6 @@
             margin: 0 auto;
         }
         
-        /* Refund Content */
         .refund-container {
             background: var(--card-bg);
             border: 1px solid var(--border-light);
@@ -499,7 +493,6 @@
             font-size: 1.1rem;
         }
         
-        /* Footer */
         footer {
             background-color: var(--darker-bg);
             border-top: 1px solid var(--border-light);
@@ -574,7 +567,6 @@
             font-size: 0.9rem;
         }
         
-        /* Responsive Styles */
         @media (max-width: 992px) {
             .page-title {
                 font-size: 3rem;
@@ -688,7 +680,6 @@
             }
         }
         
-        /* Animation Classes */
         .fade-in {
             animation: fadeIn 1s ease forwards;
         }
@@ -713,7 +704,6 @@
             }
         }
         
-        /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 10px;
         }
@@ -731,7 +721,6 @@
             background: var(--primary-dark);
         }
         
-        /* Smooth scrolling */
         html {
             scroll-behavior: smooth;
             scroll-padding-top: 80px;
@@ -748,7 +737,6 @@
     
     <div class="particles" id="particles-container"></div>
     
-    <!-- Header -->
 <header>
         <div class="nav-container">
             <div class="logo">
@@ -774,7 +762,6 @@
     </header>
 
     
-    <!-- Main Content -->
     <main class="main-container">
         <div class="page-header fade-in">
             <h1 class="page-title slide-up">Refund Policy</h1>
@@ -788,7 +775,6 @@
         </div>
         
         <div class="refund-container slide-up">
-            <!-- IMPORTANT NO REFUND BANNER -->
             <div class="no-refund-banner">
                 <div class="no-refund-icon">🚫</div>
                 <h2 class="no-refund-title">NO REFUNDS POLICY</h2>
@@ -899,7 +885,6 @@
         </div>
     </main>
     
-    <!-- Footer -->
 <footer>
         <div class="footer-container">
             <div class="footer-brand">
@@ -964,7 +949,6 @@
             }
         }
         
-        // Mobile menu toggle
         document.getElementById('mobile-menu-toggle').addEventListener('click', function() {
             const navLinks = document.getElementById('nav-links');
             const navActions = document.getElementById('nav-actions');
@@ -987,7 +971,6 @@
             }
         });
         
-        // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -1248,6 +1231,7 @@
 </body>
 
 </html>
+
 
 
 
