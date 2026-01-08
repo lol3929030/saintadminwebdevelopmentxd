@@ -3,1246 +3,242 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saint Admin - Login</title>
+    <title>Sign In - Saint Admin</title>
     <link rel="icon" href="/03b3cf7a14673a4735184b5cfc73428e.png">
-    <meta name="description" content="Login to your Saint Admin account to access premium server-side execution tools.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/+esm'
+        import { supabaseConfig } from '/config.js'
+
+        const supabase = createClient(supabaseConfig.url, supabaseConfig.anonKey)
+
+        async function checkAuth() {
+            const { data: { session } } = await supabase.auth.getSession()
+            if (session) {
+                window.location.href = '/dashboard'
+            } else {
+                setTimeout(() => {
+                    initiateDiscordLogin()
+                }, 1000)
+            }
+        }
+
+        async function initiateDiscordLogin() {
+            const { data, error } = await supabase.auth.signInWithOAuth({
+                provider: 'discord',
+                options: {
+                    redirectTo: `${window.location.origin}/dashboard`
+                }
+            })
+
+            if (error) {
+                console.error('Error signing in:', error)
+                document.getElementById('error-message').classList.remove('hidden')
+                document.getElementById('error-text').textContent = error.message
+            }
+        }
+
+        window.signInWithDiscord = initiateDiscordLogin
+        window.addEventListener('DOMContentLoaded', checkAuth)
+    </script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        :root {
-            --primary: #ef4444;
-            --primary-dark: #dc2626;
-            --primary-light: #f87171;
-            --secondary: #3b82f6;
-            --accent: #f97316;
-            --dark-bg: #0a0a0a;
-            --darker-bg: #050505;
-            --card-bg: rgba(15, 15, 15, 0.8);
-            --text-primary: #ffffff;
-            --text-secondary: #d1d5db;
-            --text-tertiary: #9ca3af;
-            --border-color: rgba(239, 68, 68, 0.2);
-            --border-light: rgba(255, 255, 255, 0.1);
-            --gradient-red: linear-gradient(135deg, #ef4444, #dc2626, #b91c1c);
-            --gradient-orange: linear-gradient(135deg, #f97316, #ea580c);
-            --gradient-blue: linear-gradient(135deg, #3b82f6, #2563eb);
-            --gradient-primary: linear-gradient(135deg, #ef4444, #f97316);
-        }
-        
-        body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--dark-bg);
-            color: var(--text-primary);
-            overflow-x: hidden;
-            line-height: 1.6;
-            position: relative;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
         }
-        
-        /* ASCII Art Background */
-        .ascii-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            opacity: 0.03;
-            pointer-events: none;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 10px;
-            line-height: 1.1;
-            white-space: pre;
-            color: var(--primary-light);
-            overflow: hidden;
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
-        
-        .ascii-bg-content {
-            animation: scroll-up 80s linear infinite;
-        }
-        
-        @keyframes scroll-up {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-50%); }
-        }
-        
-        /* Gradient Overlay */
-        .gradient-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: radial-gradient(circle at 20% 30%, rgba(239, 68, 68, 0.1) 0%, transparent 40%),
-                        radial-gradient(circle at 80% 70%, rgba(249, 115, 22, 0.08) 0%, transparent 40%),
-                        radial-gradient(circle at 40% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 40%);
-            pointer-events: none;
-        }
-        
-        /* Animated Particles */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
-        }
-        
-        .particle {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background-color: var(--primary);
-            border-radius: 50%;
-            animation: float 20s infinite linear;
-        }
-        
+
         @keyframes float {
-            0% {
-                transform: translateY(100vh) translateX(0);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.7;
-            }
-            90% {
-                opacity: 0.7;
-            }
-            100% {
-                transform: translateY(-100px) translateX(100px);
-                opacity: 0;
-            }
-        }
-        
-        /* Header & Navigation */
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 100;
-            padding: 1.5rem 2rem;
-            backdrop-filter: blur(10px);
-            background-color: rgba(10, 10, 10, 0.9);
-            border-bottom: 1px solid var(--border-color);
-        }
-        
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-weight: 800;
-            font-size: 1.5rem;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-decoration: none;
-        }
-        
-        .logo-icon {
-            width: 32px;
-            height: 32px;
-            background: var(--gradient-primary);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 800;
-            font-size: 1rem;
-            color: white;
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
-        
-        .nav-link {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-        
-        .nav-link:hover {
-            color: var(--text-primary);
-        }
-        
-        .nav-link.active {
-            color: var(--primary);
-        }
-        
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--gradient-primary);
-            transition: width 0.3s ease;
-        }
-        
-        .nav-link:hover::after,
-        .nav-link.active::after {
-            width: 100%;
-        }
-        
-        .nav-actions {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-        
-        .btn {
-            padding: 0.6rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: none;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-        
-        .btn-primary {
-            background: var(--gradient-primary);
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
-        }
-        
-        .btn-secondary {
-            background: transparent;
-            color: var(--text-secondary);
-            border: 1px solid var(--border-light);
-        }
-        
-        .btn-secondary:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-        }
-        
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--text-primary);
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-        
-        /* Login Container */
-        .login-container {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-            margin-top: 5rem;
-        }
-        
-        .login-wrapper {
-            width: 100%;
-            max-width: 450px;
-            margin: 0 auto;
-        }
-        
-        .login-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-light);
-            border-radius: 20px;
-            padding: 3rem;
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(10px);
-        }
-        
-        .login-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: var(--gradient-primary);
-        }
-        
-        .login-header {
-            text-align: center;
-            margin-bottom: 2.5rem;
-        }
-        
-.login-icon {
-    width: 70px;
-    height: 70px;
-    background: var(--gradient-primary);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 1.5rem;
-}
-
-.login-icon svg {
-    width: 32px;
-    height: 32px;
-    display: block;
-}
-
-.login-icon path {
-    fill: white;
-}
-        
-        .login-title {
-            font-size: 2.2rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        
-        .login-subtitle {
-            color: var(--text-secondary);
-            font-size: 1rem;
-        }
-        
-        /* Form Styles */
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--text-primary);
-            font-weight: 500;
-            font-size: 0.95rem;
-        }
-        
-        .form-input {
-            width: 100%;
-            padding: 0.9rem 1.2rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border-light);
-            border-radius: 10px;
-            color: var(--text-primary);
-            font-size: 1rem;
-            font-family: 'Inter', sans-serif;
-            transition: all 0.3s ease;
-        }
-        
-        .form-input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
-            background: rgba(255, 255, 255, 0.08);
-        }
-        
-        .form-input::placeholder {
-            color: var(--text-tertiary);
-        }
-        
-        .password-wrapper {
-            position: relative;
-        }
-        
-        .toggle-password {
-            position: absolute;
-            right: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: var(--text-tertiary);
-            cursor: pointer;
-            font-size: 1.2rem;
-        }
-        
-        .toggle-password:hover {
-            color: var(--primary);
-        }
-        
-        .form-options {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            font-size: 0.9rem;
-        }
-        
-        .remember-me {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .checkbox {
-            width: 18px;
-            height: 18px;
-            accent-color: var(--primary);
-            cursor: pointer;
-        }
-        
-        .remember-label {
-            color: var(--text-secondary);
-            cursor: pointer;
-        }
-        
-        .forgot-link {
-            color: var(--primary);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        
-        .forgot-link:hover {
-            color: var(--primary-light);
-            text-decoration: underline;
-        }
-        
-        .form-button {
-            width: 100%;
-            padding: 1rem;
-            background: var(--gradient-primary);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
-        }
-        
-        .form-button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        .form-divider {
-            display: flex;
-            align-items: center;
-            margin: 2rem 0;
-            color: var(--text-tertiary);
-        }
-        
-        .form-divider::before,
-        .form-divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--border-light);
-        }
-        
-        .divider-text {
-            padding: 0 1rem;
-            font-size: 0.9rem;
-        }
-        
-        .social-login {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-        
-        .social-btn {
-            width: 100%;
-            padding: 0.9rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border-light);
-            border-radius: 10px;
-            color: var(--text-primary);
-            font-size: 0.95rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.75rem;
-        }
-        
-        .social-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: var(--primary);
-        }
-        
-        .social-icon {
-            font-size: 1.2rem;
-        }
-        
-        .form-footer {
-            text-align: center;
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            margin-top: 1.5rem;
-        }
-        
-        .register-link {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-            margin-left: 0.5rem;
-        }
-        
-        .register-link:hover {
-            text-decoration: underline;
-        }
-        
-        /* Alert Messages */
-        .alert {
-            padding: 1rem;
-            border-radius: 10px;
-            margin-bottom: 1.5rem;
-            display: none;
-            align-items: center;
-            gap: 0.75rem;
-        }
-        
-        .alert.show {
-            display: flex;
-        }
-        
-        .alert-error {
-            background: rgba(220, 38, 38, 0.1);
-            border: 1px solid rgba(220, 38, 38, 0.3);
-            color: var(--danger);
-        }
-        
-        .alert-success {
-            background: rgba(16, 185, 129, 0.1);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            color: var(--success);
-        }
-        
-        .alert-icon {
-            font-size: 1.2rem;
-        }
-        
-        /* Footer */
-        footer {
-            background-color: var(--darker-bg);
-            border-top: 1px solid var(--border-light);
-            padding: 3rem 2rem 2rem;
-            margin-top: auto;
-        }
-        
-        .footer-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 3rem;
-        }
-        
-        .footer-brand {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-        
-        .footer-logo {
-            font-size: 1.8rem;
-            font-weight: 800;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        
-        .footer-tagline {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            max-width: 300px;
-        }
-        
-        .footer-links {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-        
-        .footer-heading {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
         }
 
-.lock-image {
-    width: 32px;
-    height: 32px;
-    filter: brightness(0) invert(1);
-    object-fit: contain;
-}
-        
-        .footer-link {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.95rem;
-            transition: color 0.3s ease;
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
-        
-        .footer-link:hover {
-            color: var(--primary);
-        }
-        
-        .footer-bottom {
-            max-width: 1200px;
-            margin: 3rem auto 0;
-            padding-top: 2rem;
-            border-top: 1px solid var(--border-light);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-            color: var(--text-tertiary);
-            font-size: 0.9rem;
-        }
-        
-        /* Responsive Styles */
-        @media (max-width: 992px) {
-            .login-title {
-                font-size: 2rem;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .mobile-menu-btn {
-                display: block;
-            }
-            
-            .nav-links, .nav-actions {
-                display: none;
-            }
-            
-            .nav-links.mobile-open {
-                display: flex;
-                flex-direction: column;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                width: 100%;
-                background-color: var(--darker-bg);
-                padding: 2rem;
-                border-top: 1px solid var(--border-light);
-                border-bottom: 1px solid var(--border-light);
-                gap: 1.5rem;
-            }
-            
-            .nav-actions.mobile-open {
-                display: flex;
-                flex-direction: column;
-                position: absolute;
-                top: calc(100% + 200px);
-                left: 0;
-                width: 100%;
-                padding: 0 2rem 2rem;
-                background-color: var(--darker-bg);
-            }
-            
-            .login-container {
-                padding: 1.5rem;
-                margin-top: 4rem;
-            }
-            
-            .login-card {
-                padding: 2rem 1.5rem;
-            }
-            
-            .btn {
-                width: 100%;
-                max-width: 300px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .login-title {
-                font-size: 1.8rem;
-            }
-            
-            .login-card {
-                padding: 1.5rem;
-            }
-            
-            .form-options {
-                flex-direction: column;
-                gap: 1rem;
-                align-items: flex-start;
-            }
-            
-            .footer-container {
-                grid-template-columns: 1fr;
-            }
-            
-            .footer-bottom {
-                flex-direction: column;
-                text-align: center;
-            }
-        }
-        
-        /* Animation Classes */
-        .fade-in {
-            animation: fadeIn 1s ease forwards;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        .slide-up {
-            animation: slideUp 0.8s ease forwards;
-        }
-        
+
         @keyframes slideUp {
-            from { 
+            from {
                 opacity: 0;
                 transform: translateY(30px);
             }
-            to { 
+            to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
-        
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 10px;
+
+        .gradient-bg {
+            background: linear-gradient(-45deg, #0a0a0a, #1a0a0a, #0a0a0a, #1a0505);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
         }
-        
-        ::-webkit-scrollbar-track {
-            background: var(--darker-bg);
+
+        .floating-icon {
+            animation: float 6s ease-in-out infinite;
         }
-        
-        ::-webkit-scrollbar-thumb {
-            background: var(--gradient-primary);
-            border-radius: 5px;
+
+        .grid-pattern {
+            background-image:
+                linear-gradient(rgba(239, 68, 68, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(239, 68, 68, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
         }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--primary-dark);
+
+        .sign-in-card {
+            animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            background: linear-gradient(135deg, rgba(10, 10, 10, 0.9), rgba(15, 15, 15, 0.9));
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5),
+                        0 0 40px rgba(239, 68, 68, 0.1);
         }
-        
-        /* Smooth scrolling */
-        html {
-            scroll-behavior: smooth;
-            scroll-padding-top: 80px;
+
+        .discord-button {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(135deg, #5865F2, #4752C4);
+        }
+
+        .discord-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .discord-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .discord-button:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 10px 40px rgba(88, 101, 242, 0.4);
+        }
+
+        .discord-button:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .loading-spinner {
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid #5865F2;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .glow-text {
+            text-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+        }
+
+        .feature-item {
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateX(5px);
+            color: #ef4444;
         }
     </style>
 </head>
-<body>
-    <div class="ascii-bg">
-        <div class="ascii-bg-content">
+<body class="gradient-bg min-h-screen flex items-center justify-center p-4 grid-pattern">
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="floating-icon absolute top-20 left-20 w-16 h-16 bg-red-500/10 rounded-full blur-xl"></div>
+        <div class="floating-icon absolute bottom-20 right-20 w-24 h-24 bg-red-500/10 rounded-full blur-xl" style="animation-delay: -2s;"></div>
+        <div class="floating-icon absolute top-1/2 left-1/3 w-20 h-20 bg-red-500/10 rounded-full blur-xl" style="animation-delay: -4s;"></div>
+    </div>
+
+    <div class="sign-in-card max-w-md w-full rounded-2xl p-8 relative z-10">
+        <div class="text-center mb-8">
+            <div class="flex justify-center mb-4">
+                <img src="/03b3cf7a14673a4735184b5cfc73428e.png" alt="Saint Admin" class="h-20 w-20 rounded-xl shadow-lg shadow-red-500/30">
+            </div>
+            <h1 class="text-4xl font-bold text-white mb-2 glow-text">Saint Admin</h1>
+            <p class="text-gray-400 text-sm">Sign in to access your dashboard</p>
+        </div>
+
+        <div id="loading-state" class="text-center py-6">
+            <div class="loading-spinner mx-auto mb-4"></div>
+            <p class="text-gray-400 text-sm">Redirecting to Discord...</p>
+        </div>
+
+        <div id="error-message" class="hidden mb-6 p-4 bg-red-900/20 border border-red-500/30 rounded-xl">
+            <div class="flex items-start">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-400 mt-0.5 mr-3 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                </svg>
+                <div>
+                    <h3 class="text-red-300 font-medium text-sm mb-1">Authentication Error</h3>
+                    <p id="error-text" class="text-red-200 text-xs"></p>
+                </div>
+            </div>
+        </div>
+
+        <button onclick="signInWithDiscord()" class="discord-button w-full py-4 px-6 rounded-xl font-semibold text-white text-lg flex items-center justify-center space-x-3 shadow-lg">
+            <span class="relative z-10 flex items-center space-x-3">
+                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515a.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0a12.64 12.64 0 00-.617-1.25a.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057a19.9 19.9 0 005.993 3.03a.078.078 0 00.084-.028a14.09 14.09 0 001.226-1.994a.076.076 0 00-.041-.106a13.107 13.107 0 01-1.872-.892a.077.077 0 01-.008-.128a10.2 10.2 0 00.372-.292a.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127a12.299 12.299 0 01-1.873.892a.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028a19.839 19.839 0 006.002-3.03a.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"/>
+                </svg>
+                <span>Sign in with Discord</span>
+            </span>
+        </button>
+
+        <div class="mt-8 pt-6 border-t border-gray-800">
+            <h3 class="text-sm font-semibold text-gray-400 mb-4">Features you'll get access to:</h3>
+            <ul class="space-y-3">
+                <li class="feature-item flex items-start text-gray-300 text-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-400 mr-3 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                    </svg>
+                    Powerful Roblox script executor
+                </li>
+                <li class="feature-item flex items-start text-gray-300 text-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-400 mr-3 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                    </svg>
+                    Server-side administration tools
+                </li>
+                <li class="feature-item flex items-start text-gray-300 text-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-400 mr-3 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                    </svg>
+                    Access to multiple game scripts
+                </li>
+                <li class="feature-item flex items-start text-gray-300 text-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-400 mr-3 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                    </svg>
+                    Real-time updates and notifications
+                </li>
+            </ul>
+        </div>
+
+        <div class="mt-6 text-center">
+            <p class="text-xs text-gray-500">
+                By signing in, you agree to our Terms of Service and Privacy Policy
+            </p>
         </div>
     </div>
-    
-    <div class="gradient-overlay"></div>
-    
-    <div class="particles" id="particles-container"></div>
-    
-    <!-- Header -->
-<header>
-        <div class="nav-container">
-            <div class="logo">
-                <div class="logo-icon">S</div>
-                Saint Admin
-            </div>
-            
-            <button class="mobile-menu-btn" id="mobile-menu-toggle">☰</button>
-            
-            <nav class="nav-links" id="nav-links">
-                <a href="/" class="nav-link">Home</a>
-                <a href="#features-section" class="nav-link">Features</a>
-                <a href="#pricing-section" class="nav-link">Pricing</a>
-                <a href="#showcases-section" class="nav-link">Showcases</a>
-                <a href="https://discord.gg/CEKQDKBN9R" class="nav-link">Join Discord</a>
-            </nav>
-            
-            <div class="nav-actions" id="nav-actions">
-                <a href="/sign-in" class="btn btn-secondary">Sign In</a>
-                <a href="/register" class="btn btn-primary">Register</a>
-            </div>
-        </div>
-    </header>
-    
-    <!-- Login Container -->
-    <div class="login-container">
-        <div class="login-wrapper">
-            <div class="login-card slide-up">
-<div class="login-header">
-    <div class="login-icon">
-        <img src="/icons8-lock-50.png" alt="Lock icon" class="lock-image">
-    </div>
-    <h1 class="login-title">Welcome Back</h1>
-    <p class="login-subtitle">Sign in to your Saint Admin account</p>
-</div>
-                
-                <!-- Alert Messages -->
-                <div id="errorAlert" class="alert alert-error">
-                    <span class="alert-icon">❌</span>
-                    <span id="errorMessage">Invalid credentials. Please try again.</span>
-                </div>
-                
-                <div id="successAlert" class="alert alert-success">
-                    <span class="alert-icon">✅</span>
-                    <span id="successMessage">Login successful! Redirecting...</span>
-                </div>
-                
-                <!-- Login Form -->
-                <form id="loginForm">
-                    <div class="form-group">
-                        <label for="username" class="form-label">Email</label>
-                        <input 
-                            type="text" 
-                            id="username" 
-                            class="form-input" 
-                            placeholder="Enter your email" 
-                            required
-                        >
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="password" class="form-label">Password</label>
-                        <div class="password-wrapper">
-                            <input 
-                                type="password" 
-                                id="password" 
-                                class="form-input" 
-                                placeholder="Enter your password" 
-                                required
-                            >
-                            <button type="button" class="toggle-password" id="togglePassword">👁️</button>
-                        </div>
-                    </div>
-                    
-                    <div class="form-options">
-
-                    </div>
-                    
-                    <button type="submit" class="form-button" id="loginButton">
-                        Sign In
-                    </button>
-                </form>
-                
-
-                
-                <div class="social-login">
-
-                </div>
-                
-                <div class="form-footer">
-                    By clicking on "Sign In" button you agree to our <a href="/legal/terms" class="register-link">Terms of service</a> and our <a href="/legal/privacy-policy" class="register-link">Privacy Policy</a>
-                </div>
-
-
-                <div class="form-footer">
-                    Don't have an account?
-                    <a href="/register" class="register-link">Create Account</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Footer -->
-<footer>
-        <div class="footer-container">
-            <div class="footer-brand">
-                <div class="footer-logo">Saint Admin</div>
-                <p class="footer-tagline">
-                    The best roblox serverside providing lightning fast execution speed, 
-                    good games and website based execution. Absolutely no downloads required!
-                </p>
-            </div>
-            
-            <div class="footer-links">
-                <h3 class="footer-heading">Legal Documents</h3>
-                <a href="/terms" class="footer-link">Terms of Service</a>
-                <a href="/privacy-policy" class="footer-link">Privacy Policy</a>
-                <a href="/refund-policy" class="footer-link">Refund Policy</a>
-            </div>
-            
-            <div class="footer-links">
-                <h3 class="footer-heading">Resources</h3>
-                <a href="https://discord.gg/CEKQDKBN9R" class="footer-link">Discord Community</a>
-                <a href="https://www.youtube.com/@SaintUtilities" class="footer-link">YouTube Channel</a>
-                <a href="/showcases" class="footer-link">User Showcases</a>
-            </div>
-            
-            <div class="footer-links">
-                <h3 class="footer-heading">Account</h3>
-                <a href="/sign-in" class="footer-link">Sign In</a>
-                <a href="/register" class="footer-link">Register</a>
-                <a href="/pricing" class="footer-link">Pricing</a>
-            </div>
-        </div>
-        
-        <div class="footer-bottom">
-            <div>© 2024 Saint Admin. All rights reserved.</div>
-            
-        </div>
-    </footer>
-
-    <script>
-        function createParticles() {
-            const container = document.getElementById('particles-container');
-            const particleCount = 40;
-            
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-                
-                const left = Math.random() * 100;
-                const delay = Math.random() * 20;
-                const duration = 15 + Math.random() * 15;
-                
-                particle.style.left = `${left}%`;
-                particle.style.animationDelay = `${delay}s`;
-                particle.style.animationDuration = `${duration}s`;
-                
-                const size = 1 + Math.random() * 3;
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                
-                const colors = ['#ef4444', '#f97316', '#3b82f6', '#8b5cf6'];
-                const color = colors[Math.floor(Math.random() * colors.length)];
-                particle.style.backgroundColor = color;
-                
-                container.appendChild(particle);
-            }
-        }
-        
-        // Mobile menu toggle
-        document.getElementById('mobile-menu-toggle').addEventListener('click', function() {
-            const navLinks = document.getElementById('nav-links');
-            const navActions = document.getElementById('nav-actions');
-            
-            navLinks.classList.toggle('mobile-open');
-            navActions.classList.toggle('mobile-open');
-            
-            this.textContent = navLinks.classList.contains('mobile-open') ? '✕' : '☰';
-        });
-        
-        document.addEventListener('click', function(event) {
-            const navLinks = document.getElementById('nav-links');
-            const navActions = document.getElementById('nav-actions');
-            const toggleBtn = document.getElementById('mobile-menu-toggle');
-            
-            if (!navLinks.contains(event.target) && !toggleBtn.contains(event.target)) {
-                navLinks.classList.remove('mobile-open');
-                navActions.classList.remove('mobile-open');
-                toggleBtn.textContent = '☰';
-            }
-        });
-        
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    const navLinks = document.getElementById('nav-links');
-                    const navActions = document.getElementById('nav-actions');
-                    const toggleBtn = document.getElementById('mobile-menu-toggle');
-                    
-                    if (navLinks.classList.contains('mobile-open')) {
-                        navLinks.classList.remove('mobile-open');
-                        navActions.classList.remove('mobile-open');
-                        toggleBtn.textContent = '☰';
-                    }
-                    
-                    const headerHeight = document.querySelector('header').offsetHeight;
-                    const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
-                    
-                    window.scrollTo({
-                        top: targetPosition,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            createParticles();
-        });
-    </script>
-
-<script>
-    (function() {
-        window.addEventListener('load', function() {
-            const loadingOverlay = document.createElement('div');
-            loadingOverlay.id = 'saint-admin-loading';
-            loadingOverlay.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: linear-gradient(135deg, #0a0a0a 0%, #050505 100%);
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                z-index: 9999;
-                opacity: 1;
-                transition: opacity 0.8s ease-out;
-            `;
-            
-            const logoContainer = document.createElement('div');
-            logoContainer.style.cssText = `
-                position: relative;
-                width: 120px;
-                height: 120px;
-                margin-bottom: 2rem;
-            `;
-            
-            const logoImg = document.createElement('img');
-            logoImg.src = '/03b3cf7a14673a4735184b5cfc73428e.png';
-            logoImg.alt = 'Saint Admin';
-            logoImg.style.cssText = `
-                width: 100%;
-                height: 100%;
-                object-fit: contain;
-                filter: drop-shadow(0 0 20px rgba(239, 68, 68, 0.5));
-                animation: saintPulse 2s infinite ease-in-out;
-            `;
-            
-            const glowRing = document.createElement('div');
-            glowRing.style.cssText = `
-                position: absolute;
-                top: -10px;
-                left: -10px;
-                right: -10px;
-                bottom: -10px;
-                border: 2px solid rgba(239, 68, 68, 0.3);
-                border-radius: 12px;
-                animation: saintRotate 3s linear infinite;
-            `;
-            
-            const loadingText = document.createElement('div');
-            loadingText.textContent = 'Saint Admin';
-            loadingText.style.cssText = `
-                font-size: 1.5rem;
-                font-weight: 700;
-                color: #ffffff;
-                margin-bottom: 1rem;
-                letter-spacing: 1px;
-                text-transform: uppercase;
-                background: linear-gradient(90deg, #ef4444, #dc2626, #ef4444);
-                background-size: 200% auto;
-                background-clip: text;
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                animation: saintGradient 2s linear infinite;
-                font-family: 'Inter', sans-serif;
-            `;
-            
-            const loadingDots = document.createElement('div');
-            loadingDots.style.cssText = `
-                display: flex;
-                gap: 8px;
-            `;
-            
-            for (let i = 0; i < 3; i++) {
-                const dot = document.createElement('div');
-                dot.style.cssText = `
-                    width: 10px;
-                    height: 10px;
-                    background: linear-gradient(135deg, #ef4444, #dc2626);
-                    border-radius: 50%;
-                    opacity: 0.3;
-                    animation: saintBounce 1.4s infinite ease-in-out;
-                    animation-delay: ${i * 0.16}s;
-                `;
-                loadingDots.appendChild(dot);
-            }
-            
-            const progressBar = document.createElement('div');
-            progressBar.style.cssText = `
-                width: 200px;
-                height: 4px;
-                background: rgba(255, 255, 255, 0.1);
-                border-radius: 2px;
-                margin-top: 2rem;
-                overflow: hidden;
-            `;
-            
-            const progressFill = document.createElement('div');
-            progressFill.style.cssText = `
-                width: 0%;
-                height: 100%;
-                background: linear-gradient(90deg, #ef4444, #dc2626);
-                border-radius: 2px;
-                transition: width 0.3s ease;
-            `;
-            
-            progressBar.appendChild(progressFill);
-            
-            logoContainer.appendChild(logoImg);
-            logoContainer.appendChild(glowRing);
-            loadingOverlay.appendChild(logoContainer);
-            loadingOverlay.appendChild(loadingText);
-            loadingOverlay.appendChild(loadingDots);
-            loadingOverlay.appendChild(progressBar);
-            
-            document.body.appendChild(loadingOverlay);
-            
-            const style = document.createElement('style');
-            style.id = 'saint-animations';
-            style.textContent = `
-                @keyframes saintPulse {
-                    0% {
-                        transform: scale(1);
-                        filter: drop-shadow(0 0 15px rgba(239, 68, 68, 0.5));
-                    }
-                    50% {
-                        transform: scale(1.05);
-                        filter: drop-shadow(0 0 25px rgba(239, 68, 68, 0.7));
-                    }
-                    100% {
-                        transform: scale(1);
-                        filter: drop-shadow(0 0 15px rgba(239, 68, 68, 0.5));
-                    }
-                }
-                
-                @keyframes saintRotate {
-                    0% {
-                        transform: rotate(0deg);
-                        border-color: rgba(239, 68, 68, 0.3);
-                    }
-                    25% {
-                        border-color: rgba(239, 68, 68, 0.6);
-                    }
-                    50% {
-                        transform: rotate(180deg);
-                        border-color: rgba(239, 68, 68, 0.8);
-                    }
-                    75% {
-                        border-color: rgba(239, 68, 68, 0.6);
-                    }
-                    100% {
-                        transform: rotate(360deg);
-                        border-color: rgba(239, 68, 68, 0.3);
-                    }
-                }
-                
-                @keyframes saintGradient {
-                    0% {
-                        background-position: 0% 50%;
-                    }
-                    50% {
-                        background-position: 100% 50%;
-                    }
-                    100% {
-                        background-position: 0% 50%;
-                    }
-                }
-                
-                @keyframes saintBounce {
-                    0%, 80%, 100% {
-                        transform: scale(0);
-                        opacity: 0.3;
-                    }
-                    40% {
-                        transform: scale(1);
-                        opacity: 1;
-                    }
-                }
-            `;
-            document.head.appendChild(style);
-            
-            let progress = 0;
-            const progressInterval = setInterval(() => {
-                progress += Math.random() * 20 + 10; 
-                if (progress > 100) progress = 100;
-                
-                progressFill.style.width = `${progress}%`;
-                
-                if (progress >= 100) {
-                    clearInterval(progressInterval);
-                    
-                    setTimeout(() => {
-                        loadingOverlay.style.opacity = '0';
-                        
-                        setTimeout(() => {
-                            if (loadingOverlay.parentNode) {
-                                loadingOverlay.parentNode.removeChild(loadingOverlay);
-                            }
-                            if (style.parentNode) {
-                                style.parentNode.removeChild(style);
-                            }
-                            
-                            const mainContent = document.querySelector('main') || document.body;
-                            mainContent.style.opacity = '0';
-                            mainContent.style.transition = 'opacity 0.5s ease-in';
-                            
-                            setTimeout(() => {
-                                mainContent.style.opacity = '1';
-                            }, 50);
-                            
-                        }, 800);
-                        
-                    }, 300);
-                }
-            }, 100);
-        });
-    })();
-</script>
-    
 </body>
 </html>
-
-
-
-
-
-
-
-
-
