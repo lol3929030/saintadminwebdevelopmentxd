@@ -1,10 +1,7 @@
 <body><h1>hi this is a testing page</h1>
 <script>
-    // Website Load Animation Script
     (function() {
-        // Wait for window to load
         window.addEventListener('load', function() {
-            // Create loading overlay
             const loadingOverlay = document.createElement('div');
             loadingOverlay.id = 'saint-admin-loading';
             loadingOverlay.style.cssText = `
@@ -23,7 +20,6 @@
                 transition: opacity 0.8s ease-out;
             `;
             
-            // Logo container
             const logoContainer = document.createElement('div');
             logoContainer.style.cssText = `
                 position: relative;
@@ -32,7 +28,6 @@
                 margin-bottom: 2rem;
             `;
             
-            // Logo image
             const logoImg = document.createElement('img');
             logoImg.src = '/03b3cf7a14673a4735184b5cfc73428e.png';
             logoImg.alt = 'Saint Admin';
@@ -44,7 +39,6 @@
                 animation: saintPulse 2s infinite ease-in-out;
             `;
             
-            // Glowing ring animation
             const glowRing = document.createElement('div');
             glowRing.style.cssText = `
                 position: absolute;
@@ -57,7 +51,6 @@
                 animation: saintRotate 3s linear infinite;
             `;
             
-            // Loading text
             const loadingText = document.createElement('div');
             loadingText.textContent = 'Saint Admin';
             loadingText.style.cssText = `
@@ -76,7 +69,6 @@
                 font-family: 'Inter', sans-serif;
             `;
             
-            // Loading dots
             const loadingDots = document.createElement('div');
             loadingDots.style.cssText = `
                 display: flex;
@@ -97,7 +89,6 @@
                 loadingDots.appendChild(dot);
             }
             
-            // Progress bar
             const progressBar = document.createElement('div');
             progressBar.style.cssText = `
                 width: 200px;
@@ -119,18 +110,15 @@
             
             progressBar.appendChild(progressFill);
             
-            // Assemble the loading screen
             logoContainer.appendChild(logoImg);
             logoContainer.appendChild(glowRing);
             loadingOverlay.appendChild(logoContainer);
             loadingOverlay.appendChild(loadingText);
             loadingOverlay.appendChild(loadingDots);
             loadingOverlay.appendChild(progressBar);
-            
-            // Add to body
+
             document.body.appendChild(loadingOverlay);
             
-            // Add CSS animations
             const style = document.createElement('style');
             style.id = 'saint-animations';
             style.textContent = `
@@ -195,23 +183,19 @@
             `;
             document.head.appendChild(style);
             
-            // Simulate loading progress
             let progress = 0;
             const progressInterval = setInterval(() => {
-                progress += Math.random() * 20 + 10; // Random progress increments
+                progress += Math.random() * 20 + 10;
                 if (progress > 100) progress = 100;
                 
                 progressFill.style.width = `${progress}%`;
                 
-                // Complete loading
                 if (progress >= 100) {
                     clearInterval(progressInterval);
                     
-                    // Add slight delay before fade out
                     setTimeout(() => {
                         loadingOverlay.style.opacity = '0';
                         
-                        // Remove overlay after animation
                         setTimeout(() => {
                             if (loadingOverlay.parentNode) {
                                 loadingOverlay.parentNode.removeChild(loadingOverlay);
@@ -220,7 +204,6 @@
                                 style.parentNode.removeChild(style);
                             }
                             
-                            // Add smooth entrance effect to main content
                             const mainContent = document.querySelector('main') || document.body;
                             mainContent.style.opacity = '0';
                             mainContent.style.transition = 'opacity 0.5s ease-in';
