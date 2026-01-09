@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Script Hub - Saint Admin</title>
+    <link rel="icon" href="/03b3cf7a14673a4735184b5cfc73428e.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        * { font-family: 'Inter', sans-serif; }
+
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #09090b; }
+        ::-webkit-scrollbar-thumb { 
+            background: linear-gradient(180deg, #dc2626, #991b1b);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #ef4444, #dc2626); }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        @keyframes gradient-x {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        @keyframes fade-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes scale-in {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes slide-in-left {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(0); }
+        }
+        @keyframes slide-out-left {
+            from { transform: translateX(0); }
+            to { transform: translateX(-100%); }
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .animate-fade-up { animation: fade-up 0.5s ease-out forwards; }
+        .animate-scale-in { animation: scale-in 0.3s ease-out forwards; }
+        .slide-in { animation: slide-in-left 0.3s ease-out forwards; }
+        .slide-out { animation: slide-out-left 0.3s ease-out forwards; }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #ef4444 0%, #f97316 50%, #ef4444 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient-x 4s ease infinite;
+        }
+
+        .sidebar-glass {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-item {
+            position: relative;
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: linear-gradient(180deg, #ef4444, #dc2626);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+        .nav-item:hover::before, .nav-item.active::before { transform: scaleY(1); }
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(239, 68, 68, 0.15), transparent);
+        }
+        .nav-item:hover { background: rgba(255, 255, 255, 0.03); }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        .btn-primary:hover::before { left: 100%; }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(220, 38, 38, 0.4);
+        }
+
+        .script-card {
+            background: rgba(15, 15, 15, 0.8);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+        .script-card:hover {
+            background: rgba(20, 20, 20, 0.9);
+            border-color: rgba(239, 68, 68, 0.3);
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 60px rgba(239, 68, 68, 0.15);
+        }
+        .script-card:hover .script-image {
+            transform: scale(1.08);
+        }
+        .script-card:hover .execute-btn {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .script-image {
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .execute-btn {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+        }
+
+        .tag {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #f87171;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .tag.popular { background: rgba(34, 197, 94, 0.15); border-color: rgba(34, 197, 94, 0.3); color: #4ade80; }
+        .tag.dev { background: rgba(168, 85, 247, 0.15); border-color: rgba(168, 85, 247, 0.3); color: #c084fc; }
+        .tag.fun { background: rgba(251, 191, 36, 0.15); border-color: rgba(251, 191, 36, 0.3); color: #fbbf24; }
+        .tag.fixed { background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.3); color: #60a5fa; }
+
+        .grid-bg {
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(239, 68, 68, 0.08) 0%, transparent 50%),
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 100% 100%, 60px 60px, 60px 60px;
+        }
+
+        .search-input {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+        .search-input:focus {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(239, 68, 68, 0.4);
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+        }
+
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: rgba(239, 68, 68, 0.4);
+            color: #f87171;
+        }
+
+        .delay-1 { animation-delay: 0.05s; }
+        .delay-2 { animation-delay: 0.1s; }
+        .delay-3 { animation-delay: 0.15s; }
+        .delay-4 { animation-delay: 0.2s; }
+        .delay-5 { animation-delay: 0.25s; }
+        .delay-6 { animation-delay: 0.3s; }
+        .delay-7 { animation-delay: 0.35s; }
+        .delay-8 { animation-delay: 0.4s; }
+        .delay-9 { animation-delay: 0.45s; }
+        .delay-10 { animation-delay: 0.5s; }
+        .delay-11 { animation-delay: 0.55s; }
+        .delay-12 { animation-delay: 0.6s; }
+
+        html { scroll-behavior: smooth; }
+    </style>
+</head>
+<body class="bg-[#09090b] text-white antialiased">
+
+    <!-- Loading Overlay -->
+    <div id="page-loading-overlay" class="fixed inset-0 z-50 flex items-center justify-center bg-[#09090b] transition-opacity duration-300 hidden opacity-0">
+        <div class="flex flex-col items-center gap-4">
+            <div class="relative">
+                <div class="w-14 h-14 border-4 border-red-500/20 rounded-full"></div>
+                <div class="absolute inset-0 w-14 h-14 border-4 border-transparent border-t-red-500 rounded-full" style="animation: spin 1s linear infinite;"></div>
+            </div>
+            <p class="text-zinc-400 font-medium">Loading...</p>
+        </div>
+    </div>
+
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <aside class="hidden lg:flex lg:w-72 lg:flex-col lg:fixed lg:inset-y-0 sidebar-glass">
+            <div class="flex flex-col h-full">
+                <!-- Logo -->
+                <div class="p-6 border-b border-white/5">
+                    <div class="flex items-center gap-3">
+                        <div class="relative">
+                            <img class="h-11 w-11 rounded-xl" src="/03b3cf7a14673a4735184b5cfc73428e.png" alt="Saint Admin Logo">
+                            <div class="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-[#0a0a0a]"></div>
+                        </div>
+                        <div>
+                            <h1 class="text-lg font-bold tracking-tight">Saint Admin</h1>
+                            <p class="text-xs text-zinc-500">Buyers Dashboard</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation -->
+                <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+                    <a href="/dashboard" class="nav-item flex items-center gap-3 px-4 py-3 text-sm font-medium text-zinc-400 hover:text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                        </svg>
+                        Dashboard
+                    </a>
+                    <a href="/dashboard/games" class="nav-item flex items-center gap-3 px-4 py-3 text-sm font-medium text-zinc-400 hover:text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"/>
+                        </svg>
+                        Games
+                    </a>
+                    <a href="/dashboard/executor" class="nav-item flex items-center gap-3 px-4 py-3 text-sm font-medium text-zinc-400 hover:text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+                        </svg>
+                        Executor
+                    </a>
+                    <a href="/dashboard/scripts" class="nav-item active flex items-center gap-3 px-4 py-3 text-sm font-medium text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                        </svg>
+                        Script Hub
+                    </a>
+                </nav>
+
+                <!-- User Profile -->
+                <div class="p-4 border-t border-white/5">
+                    <div class="flex items-center gap-3 p-3 rounded-xl bg-white/[0.02]">
+                        <div class="h-10 w-10 rounded-full bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center shadow-lg shadow-red-500/20">
+                            <span class="text-white font-semibold">U</span>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-medium truncate">Unknown</p>
+                            <button class="text-xs text-zinc-500 hover:text-red-400 transition">Logout</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Mobile Header -->
+        <div class="lg:hidden fixed top-0 left-0 right-0 z-30 sidebar-glass p-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <button id="mobile-menu-button" class="p-2 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                    <h1 class="text-lg font-bold">Script Hub</h1>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Sidebar -->
+        <div id="mobile-sidebar" class="lg:hidden fixed inset-0 z-40 hidden">
+            <div id="mobile-sidebar-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm"></div>
+            <div class="relative flex flex-col w-72 h-full sidebar-glass">
+                <div class="absolute top-4 right-4">
+                    <button id="mobile-menu-close" class="p-2 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center gap-3">
+                        <div class="relative">
+                            <img class="h-11 w-11 rounded-xl" src="/03b3cf7a14673a4735184b5cfc73428e.png" alt="Saint Admin Logo">
+                            <div class="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-[#0a0a0a]"></div>
+                        </div>
+                        <div>
+                            <h1 class="text-lg font-bold">Saint Admin</h1>
+                            <p class="text-xs text-zinc-500">Buyers Dashboard</p>
+                        </div>
+                    </div>
+                </div>
+                <nav class="flex-1 px-4 space-y-2 overflow-y-auto">
+                    <a href="/dashboard" class="nav-item flex items-center gap-3 px-4 py-3 text-base font-medium text-zinc-400 hover:text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                        </svg>
+                        Dashboard
+                    </a>
+                    <a href="/dashboard/games" class="nav-item flex items-center gap-3 px-4 py-3 text-base font-medium text-zinc-400 hover:text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"/>
+                        </svg>
+                        Games
+                    </a>
+                    <a href="/dashboard/executor" class="nav-item flex items-center gap-3 px-4 py-3 text-base font-medium text-zinc-400 hover:text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+                        </svg>
+                        Executor
+                    </a>
+                    <a href="/dashboard/scripts" class="nav-item active flex items-center gap-3 px-4 py-3 text-base font-medium text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                        </svg>
+                        Script Hub
+                    </a>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="lg:pl-72 flex-1 min-h-screen overflow-y-auto grid-bg pt-20 lg:pt-0">
+            <div class="p-6 lg:p-8 max-w-7xl mx-auto">
+                <!-- Header -->
+                <div class="mb-8 opacity-0 animate-fade-up">
+                    <h1 class="text-3xl lg:text-4xl font-bold mb-2">Script Hub</h1>
+                    <p class="text-zinc-400">Browse and execute popular scripts instantly</p>
+                </div>
+
+                <!-- Search and Filters -->
+                <div class="flex flex-col sm:flex-row gap-4 mb-8 opacity-0 animate-fade-up delay-1">
+                    <div class="relative flex-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                        <input type="text" id="search-input" placeholder="Search scripts..." class="search-input w-full pl-12 pr-4 py-3 rounded-xl text-white placeholder-zinc-500 focus:outline-none">
+                    </div>
+                    <div class="flex gap-2 flex-wrap">
+                        <button class="filter-btn active px-4 py-2 rounded-xl text-sm font-medium" data-filter="all">All</button>
+                        <button class="filter-btn px-4 py-2 rounded-xl text-sm font-medium" data-filter="popular">Popular</button>
+                        <button class="filter-btn px-4 py-2 rounded-xl text-sm font-medium" data-filter="r6">R6</button>
+                        <button class="filter-btn px-4 py-2 rounded-xl text-sm font-medium" data-filter="fun">Fun</button>
+                        <button class="filter-btn px-4 py-2 rounded-xl text-sm font-medium" data-filter="dev">Developer</button>
+                    </div>
+                </div>
+
+                <!-- Scripts Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5" id="scripts-grid">
+                    <!-- Infinite Yield -->
+                    <div class="script-card rounded-2xl opacity-0 animate-fade-up delay-1" data-tags="fixed">
+                        <div class="relative h-40 overflow-hidden">
+                            <img src="/placeholder.svg?height=160&width=280" alt="Infinite Yield" class="script-image w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                            <button class="execute-btn btn-primary absolute bottom-3 right-3 px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                Execute
+                            </button>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <h3 class="font-semibold text-white">Infinite Yield</h3>
+                                <span class="tag fixed">Fixed</span>
+                            </div>
+                            <p class="text-sm text-zinc-400 line-clamp-2">Clean, and simple to use fun admin commands.</p>
+                        </div>
+                    </div>
+
+                    <!-- R6 -->
+                    <div class="script-card rounded-2xl opacity-0 animate-fade-up delay-2" data-tags="r6">
+                        <div class="relative h-40 overflow-hidden">
+                            <img src="/placeholder.svg?height=160&width=280" alt="R6" class="script-image w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                            <button class="execute-btn btn-primary absolute bottom-3 right-3 px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                Execute
+                            </button>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <h3 class="font-semibold text-white">R6</h3>
+                                <span class="tag">R6</span>
+                            </div>
+                            <p class="text-sm text-zinc-400 line-clamp-2">Turns your character into R6.</p>
+                        </div>
+                    </div>
+
+                    <!-- Elio Blasio -->
+                    <div class="script-card rounded-2xl opacity-0 animate-fade-up delay-3" data-tags="r6">
+                        <div class="relative h-40 overflow-hidden">
+                            <img src="/placeholder.svg?height=160&width=280" alt="Elio Blasio" class="script-image w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                            <button class="execute-btn btn-primary absolute bottom-3 right-3 px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                Execute
+                            </button>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <h3 class="font-semibold text-white">Elio Blasio</h3>
+                                <span class="tag">R6</span>
+                            </div>
+                            <p class="text-sm text-zinc-400 line-clamp-2">The original elio blasio script. Press E to use gun.</p>
+                        </div>
+                    </div>
+
+                    <!-- Pet Leash -->
+                    <div class="script-card rounded-2xl opacity-0 animate-fade-up delay-4" data-tags="popular fun">
+                        <div class="relative h-40 overflow-hidden">
+                            <img src="/placeholder.svg?height=160&width=280" alt="Pet Leash" class="script-image w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                            <button class="execute-btn btn-primary absolute bottom-3 right-3 px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                Execute
+                            </button>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <h3 class="font-semibold text-white">Pet Leash</h3>
+                                <span class="tag popular">Popular</span>
+                            </div>
+                            <p class="text-sm text-zinc-400 line-clamp-2">Drag people around like a pet!</p>
+                        </div>
+                    </div>
+
+                    <!-- Syrian Soldier -->
+                    <div class="script-card rounded-2xl opacity-0 animate-fade-up delay-5" data-tags="fun">
+                        <div class="relative h-40 overflow-hidden">
+                            <img src="/placeholder.svg?height=160&width=280" alt="Syrian Soldier" class="script-image w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                            <button class="execute-btn btn-primary absolute bottom-3 right-3 px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                Execute
+                            </button>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <h3 class="font-semibold text-white">Syrian Soldier!</h3>
+                                <span class="tag fun">Fun</span>
+                            </div>
+                            <p class="text-sm text-zinc-400 line-clamp-2">Shoot up your enemies by becoming a Syrian Soldier!</p>
+                        </div>
+                    </div>
+
+                    <!-- Xester V2 -->
+                    <div class="script-card rounded-2xl opacity-0 animate-fade-up delay-6" data-tags="popular">
+                        <div class="relative h-40 overflow-hidden">
+                            <img src="/placeholder.svg?height=160&width=280" alt="Xester V2" class="script-image w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                            <button class="execute-btn btn-primary absolute bottom-3 right-3 px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                Execute
+                            </button>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <h3 class="font-semibold text-white">Xester V2</h3>
+                                <span class="tag popular">Popular</span>
+                            </div>
+                            <p class="text-sm text-zinc-400 line-clamp-2">Become Xester V2 using this script.</p>
+                        </div>
+                    </div>
+
+                    <!-- Rainbow Sword -->
+                    <div class="script-card rounded-2xl opacity-0 animate-fade-up delay-7" data-tags="fun">
+                        <div class="relative h-40 overflow-hidden">
+                            <img src="/placeholder.svg?height=160&width=280" alt="Rainbow Sword" class="script-image w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                            <button class="execute-btn btn-primary absolute bottom-3 right-3 px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                Execute
+                            </button>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <h3 class="font-semibold text-white">Rainbow Sword</h3>
+                                <span class="tag fun">Fun</span>
+                            </div>
+                            <p class="text-sm text-zinc-400 line-clamp-2">Slash enemies with this colorful sword!</p>
+                        </div>
+                    </div>
+
+                    <!-- Fake VR -->
+                    <div class="script-card rounded-2xl opacity-0 animate-fade-up delay-8" data-tags="r6">
+                        <div class="relative h-40 overflow-hidden">
+                            <img src="/placeholder.svg?height=160&width=280" alt="Fake VR" class="script-image w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                            <button class="execute-btn btn-primary absolute bottom-3 right-3 px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                Execute
+                            </button>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <h3 class="font-semibold text-white">Fake VR</h3>
+                                <span class="tag">R6</span>
+                            </div>
+                            <p class="text-sm text-zinc-400 line-clamp-2">Turn into a VR-like player without actually having VR.</p>
+                        </div>
+                    </div>
+
+                    <!-- Drawing Script -->
+                    <div class="script-card rounded-2xl opacity-0 animate-fade-up delay-9" data-tags="fun">
+                        <div class="relative h-40 overflow-hidden">
+                            <img src="/placeholder.svg?height=160&width=280" alt="Drawing Script" class="script-image w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                            <button class="execute-btn btn-primary absolute bottom-3 right-3 px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                Execute
+                            </button>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <h3 class="font-semibold text-white">Drawing Script</h3>
+                                <span class="tag fun">Fun</span>
+                            </div>
+                            <p class="text-sm text-zinc-400 line-clamp-2">Draw anything you want using your mouse easily!</p>
+                        </div>
+                    </div>
+
+                    <!-- Dex V4 -->
+                    <div class="script-card rounded-2xl opacity-0 animate-fade-up delay-10" data-tags="dev">
+                        <div class="relative h-40 overflow-hidden">
+                            <img src="/placeholder.svg?height=160&width=280" alt="Dex V4" class="script-image w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                            <button class="execute-btn btn-primary absolute bottom-3 right-3 px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                Execute
+                            </button>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <h3 class="font-semibold text-white">Dex V4</h3>
+                                <span class="tag dev">Developer</span>
+                            </div>
+                            <p class="text-sm text-zinc-400 line-clamp-2">Enhance your serversided game development.</p>
+                        </div>
+                    </div>
+
+                    <!-- Gun Pack -->
+                    <div class="script-card rounded-2xl opacity-0 animate-fade-up delay-11" data-tags="fun">
+                        <div class="relative h-40 overflow-hidden">
+                            <img src="/placeholder.svg?height=160&width=280" alt="Gun Pack" class="script-image w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                            <button class="execute-btn btn-primary absolute bottom-3 right-3 px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                Execute
+                            </button>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <h3 class="font-semibold text-white">Gun Pack</h3>
+                                <span class="tag fun">Fun</span>
+                            </div>
+                            <p class="text-sm text-zinc-400 line-clamp-2">Dozens of guns to use and have fun with.</p>
+                        </div>
+                    </div>
+
+                    <!-- Grab Knife V3 -->
+                    <div class="script-card rounded-2xl opacity-0 animate-fade-up delay-12" data-tags="r6">
+                        <div class="relative h-40 overflow-hidden">
+                            <img src="/placeholder.svg?height=160&width=280" alt="Grab Knife V3" class="script-image w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                            <button class="execute-btn btn-primary absolute bottom-3 right-3 px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                Execute
+                            </button>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <h3 class="font-semibold text-white">Grab Knife V3</h3>
+                                <span class="tag">R6</span>
+                            </div>
+                            <p class="text-sm text-zinc-400 line-clamp-2">Old grab knife script.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- No Results -->
+                <div id="no-results" class="hidden text-center py-16">
+                    <div class="p-4 bg-zinc-800/50 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-zinc-300 mb-2">No scripts found</h3>
+                    <p class="text-zinc-500">Try a different search term or filter</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Mobile menu functionality
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenuClose = document.getElementById('mobile-menu-close');
+        const mobileSidebar = document.getElementById('mobile-sidebar');
+        const mobileSidebarBackdrop = document.getElementById('mobile-sidebar-backdrop');
+
+        function openMobileMenu() {
+            mobileSidebar.classList.remove('hidden');
+            mobileSidebar.querySelector('.sidebar-glass').classList.add('slide-in');
+        }
+
+        function closeMobileMenu() {
+            mobileSidebar.querySelector('.sidebar-glass').classList.remove('slide-in');
+            mobileSidebar.querySelector('.sidebar-glass').classList.add('slide-out');
+            setTimeout(() => {
+                mobileSidebar.classList.add('hidden');
+                mobileSidebar.querySelector('.sidebar-glass').classList.remove('slide-out');
+            }, 300);
+        }
+
+        mobileMenuButton?.addEventListener('click', openMobileMenu);
+        mobileMenuClose?.addEventListener('click', closeMobileMenu);
+        mobileSidebarBackdrop?.addEventListener('click', closeMobileMenu);
+
+        // Search functionality
+        const searchInput = document.getElementById('search-input');
+        const scriptsGrid = document.getElementById('scripts-grid');
+        const noResults = document.getElementById('no-results');
+        const scriptCards = scriptsGrid.querySelectorAll('.script-card');
+
+        searchInput?.addEventListener('input', filterScripts);
+
+        // Filter buttons
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        let activeFilter = 'all';
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                activeFilter = btn.dataset.filter;
+                filterScripts();
+            });
+        });
+
+        function filterScripts() {
+            const searchTerm = searchInput.value.toLowerCase();
+            let visibleCount = 0;
+
+            scriptCards.forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                const description = card.querySelector('p').textContent.toLowerCase();
+                const tags = card.dataset.tags || '';
+
+                const matchesSearch = title.includes(searchTerm) || description.includes(searchTerm);
+                const matchesFilter = activeFilter === 'all' || tags.includes(activeFilter);
+
+                if (matchesSearch && matchesFilter) {
+                    card.style.display = '';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            noResults.classList.toggle('hidden', visibleCount > 0);
+        }
+
+        // Execute button functionality
+        const executeButtons = document.querySelectorAll('.execute-btn');
+        executeButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const scriptName = btn.closest('.script-card').querySelector('h3').textContent;
+                alert(`Executing: ${scriptName}\n\nThis would normally send the script to the executor.`);
+            });
+        });
+
+        // Page navigation with loading
+        document.querySelectorAll('a[href^="/dashboard"]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const overlay = document.getElementById('page-loading-overlay');
+                overlay.classList.remove('hidden');
+                setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+                setTimeout(() => {
+                    window.location.href = this.href;
+                }, 300);
+            });
+        });
+    </script>
+</body>
+</html>
