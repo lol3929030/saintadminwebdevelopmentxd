@@ -463,7 +463,12 @@
                     </div>
 
                     <!-- R6 -->
-                    <div class="script-card rounded-2xl opacity-0 animate-fade-up delay-2" data-tags="r6" data-script="require(16669109277):albert('')">
+                    <div class="script-card rounded-2xl opacity-0 animate-fade-up delay-2" data-tags="r6" data-script="local Players = game:GetService('Players')
+local module = require(16669109277)
+
+for _, player in ipairs(Players:GetPlayers()) do
+	module:albert(player)
+end">
                         <div class="relative h-40 overflow-hidden rounded-t-2xl">
                             <img src="/placeholder.svg?height=160&width=280" alt="R6" class="script-image w-full h-full object-cover">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
@@ -478,9 +483,9 @@
                         <div class="p-4">
                             <div class="flex items-center gap-2 mb-2">
                                 <h3 class="font-semibold text-white">R6</h3>
-                                <span class="tag">R6</span>
+                                <span class="tag">R6 all</span>
                             </div>
-                            <p class="text-sm text-zinc-400 line-clamp-2">Turns your character into R6.</p>
+                            <p class="text-sm text-zinc-400 line-clamp-2">Turns all people's character into R6.</p>
                         </div>
                     </div>
 
