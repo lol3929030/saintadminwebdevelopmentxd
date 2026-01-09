@@ -349,6 +349,13 @@
                         </svg>
                         Executor
                     </a>
+                    <!-- Added Script Hub navigation link -->
+                    <a href="/dashboard/scripthub" class="nav-item flex items-center gap-3 px-4 py-3 text-sm font-medium text-zinc-400 hover:text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+                        </svg>
+                        Script Hub
+                    </a>
                 </nav>
 
                 <!-- User Profile -->
@@ -424,6 +431,13 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
                             </svg>
                             Executor
+                        </a>
+                        <!-- Added Script Hub navigation link for mobile -->
+                        <a href="/dashboard/scripthub" class="nav-item flex items-center gap-3 px-4 py-3 text-base font-medium text-zinc-400 hover:text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+                            </svg>
+                            Script Hub
                         </a>
                     </nav>
                 </div>
@@ -768,7 +782,7 @@
                     });
 
                     editor = monaco.editor.create(document.getElementById('monaco-editor'), {
-                        value: '-- type or paste Luau code! Make sure to follow TOS.',
+                        value: '-- Write your Lua script here\nprint("Hello from Saint Admin!")',
                         language: 'lua',
                         theme: 'saint-dark',
                         fontSize: 14,
@@ -847,4 +861,3 @@
 
 </body>
 </html>
-
