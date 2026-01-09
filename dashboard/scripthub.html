@@ -191,6 +191,30 @@
             color: #f87171;
         }
 
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        .status-connected { background: #22c55e; box-shadow: 0 0 10px rgba(34, 197, 94, 0.5); }
+        .status-disconnected { background: #ef4444; box-shadow: 0 0 10px rgba(239, 68, 68, 0.5); }
+
+        .glass-card {
+            background: rgba(15, 15, 15, 0.6);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .modal-overlay {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+        }
+
+        .toast {
+            animation: fade-up 0.3s ease-out forwards;
+        }
+
         .delay-1 { animation-delay: 0.05s; }
         .delay-2 { animation-delay: 0.1s; }
         .delay-3 { animation-delay: 0.15s; }
@@ -219,6 +243,32 @@
             <p class="text-zinc-400 font-medium">Loading...</p>
         </div>
     </div>
+
+    <!-- Game ID Modal -->
+    <div id="game-id-modal" class="fixed inset-0 z-50 hidden opacity-0 transition-opacity duration-300">
+        <div id="modal-backdrop" class="absolute inset-0 modal-overlay"></div>
+        <div class="absolute inset-0 flex items-center justify-center p-4">
+            <div class="glass-card rounded-2xl p-6 w-full max-w-md animate-scale-in border border-white/10">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-xl font-bold">Set Game ID</h3>
+                    <button id="modal-close" class="p-2 hover:bg-white/5 rounded-lg transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                <p class="text-zinc-400 text-sm mb-4">Enter the Game ID to connect your executor with Roblox.</p>
+                <input type="text" id="game-id-input" placeholder="Enter Game ID" class="w-full px-4 py-3 bg-zinc-900/50 border border-white/10 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-red-500/50 mb-6">
+                <div class="flex gap-3">
+                    <button id="modal-cancel" class="flex-1 px-4 py-3 bg-zinc-800 hover:bg-zinc-700 rounded-xl font-medium transition">Cancel</button>
+                    <button id="modal-submit" class="flex-1 px-4 py-3 btn-primary rounded-xl font-medium text-white">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-3"></div>
 
     <div class="flex h-screen overflow-hidden">
         <!-- Sidebar -->
@@ -258,7 +308,7 @@
                         </svg>
                         Executor
                     </a>
-                    <a href="/dashboard/scripts" class="nav-item active flex items-center gap-3 px-4 py-3 text-sm font-medium text-white">
+                    <a href="/dashboard/scripthub" class="nav-item active flex items-center gap-3 px-4 py-3 text-sm font-medium text-white">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
                         </svg>
@@ -292,6 +342,10 @@
                     </button>
                     <h1 class="text-lg font-bold">Script Hub</h1>
                 </div>
+                <button id="mobile-set-game-id" class="flex items-center gap-2 px-3 py-2 bg-zinc-800/50 hover:bg-zinc-700/50 rounded-lg text-sm font-medium transition">
+                    <div class="status-indicator status-disconnected" id="mobile-status-dot"></div>
+                    <span class="text-zinc-300 hidden sm:inline" id="mobile-status-text">Set Game ID</span>
+                </button>
             </div>
         </div>
 
@@ -337,7 +391,7 @@
                         </svg>
                         Executor
                     </a>
-                    <a href="/dashboard/scripts" class="nav-item active flex items-center gap-3 px-4 py-3 text-base font-medium text-white">
+                    <a href="/dashboard/scripthub" class="nav-item active flex items-center gap-3 px-4 py-3 text-base font-medium text-white">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
                         </svg>
@@ -351,9 +405,20 @@
         <main class="lg:pl-72 flex-1 min-h-screen overflow-y-auto grid-bg pt-20 lg:pt-0">
             <div class="p-6 lg:p-8 max-w-7xl mx-auto">
                 <!-- Header -->
-                <div class="mb-8 opacity-0 animate-fade-up">
-                    <h1 class="text-3xl lg:text-4xl font-bold mb-2">Script Hub</h1>
-                    <p class="text-zinc-400">Browse and execute popular scripts instantly</p>
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-8 opacity-0 animate-fade-up">
+                    <div>
+                        <h1 class="text-3xl lg:text-4xl font-bold mb-2">Script Hub</h1>
+                        <p class="text-zinc-400">Browse and execute popular scripts instantly</p>
+                    </div>
+                    <!-- Connection Status -->
+                    <button id="set-game-id-btn" class="hidden lg:flex items-center gap-3 px-5 py-3 glass-card rounded-xl hover:bg-white/5 transition cursor-pointer">
+                        <div class="status-indicator status-disconnected" id="desktop-status-dot"></div>
+                        <span class="text-sm font-medium text-zinc-300" id="desktop-status-text">Set Game ID</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                    </button>
                 </div>
 
                 <!-- Search and Filters -->
@@ -376,8 +441,8 @@
                 <!-- Scripts Grid -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5" id="scripts-grid">
                     <!-- Infinite Yield -->
-                    <div class="script-card rounded-2xl opacity-0 animate-fade-up delay-1" data-tags="fixed">
-                        <div class="relative h-40 overflow-hidden">
+                    <div class="script-card rounded-2xl opacity-0 animate-fade-up delay-1" data-tags="fixed" data-script="loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()">
+                        <div class="relative h-40 overflow-hidden rounded-t-2xl">
                             <img src="/placeholder.svg?height=160&width=280" alt="Infinite Yield" class="script-image w-full h-full object-cover">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                             <button class="execute-btn btn-primary absolute bottom-3 right-3 px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2">
@@ -398,8 +463,8 @@
                     </div>
 
                     <!-- R6 -->
-                    <div class="script-card rounded-2xl opacity-0 animate-fade-up delay-2" data-tags="r6">
-                        <div class="relative h-40 overflow-hidden">
+                    <div class="script-card rounded-2xl opacity-0 animate-fade-up delay-2" data-tags="r6" data-script="loadstring(game:HttpGet('https://raw.githubusercontent.com/PixeledPlayer/R6/main/R6'))()">
+                        <div class="relative h-40 overflow-hidden rounded-t-2xl">
                             <img src="/placeholder.svg?height=160&width=280" alt="R6" class="script-image w-full h-full object-cover">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                             <button class="execute-btn btn-primary absolute bottom-3 right-3 px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2">
@@ -420,8 +485,8 @@
                     </div>
 
                     <!-- Elio Blasio -->
-                    <div class="script-card rounded-2xl opacity-0 animate-fade-up delay-3" data-tags="r6">
-                        <div class="relative h-40 overflow-hidden">
+                    <div class="script-card rounded-2xl opacity-0 animate-fade-up delay-3" data-tags="r6" data-script="loadstring(game:HttpGet('https://pastebin.com/raw/elioblasio'))()">
+                        <div class="relative h-40 overflow-hidden rounded-t-2xl">
                             <img src="/placeholder.svg?height=160&width=280" alt="Elio Blasio" class="script-image w-full h-full object-cover">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                             <button class="execute-btn btn-primary absolute bottom-3 right-3 px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2">
@@ -442,8 +507,8 @@
                     </div>
 
                     <!-- Pet Leash -->
-                    <div class="script-card rounded-2xl opacity-0 animate-fade-up delay-4" data-tags="popular fun">
-                        <div class="relative h-40 overflow-hidden">
+                    <div class="script-card rounded-2xl opacity-0 animate-fade-up delay-4" data-tags="popular fun" data-script="loadstring(game:HttpGet('https://pastebin.com/raw/petleash'))()">
+                        <div class="relative h-40 overflow-hidden rounded-t-2xl">
                             <img src="/placeholder.svg?height=160&width=280" alt="Pet Leash" class="script-image w-full h-full object-cover">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                             <button class="execute-btn btn-primary absolute bottom-3 right-3 px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2">
@@ -464,8 +529,8 @@
                     </div>
 
                     <!-- Syrian Soldier -->
-                    <div class="script-card rounded-2xl opacity-0 animate-fade-up delay-5" data-tags="fun">
-                        <div class="relative h-40 overflow-hidden">
+                    <div class="script-card rounded-2xl opacity-0 animate-fade-up delay-5" data-tags="fun" data-script="loadstring(game:HttpGet('https://pastebin.com/raw/syriansoldier'))()">
+                        <div class="relative h-40 overflow-hidden rounded-t-2xl">
                             <img src="/placeholder.svg?height=160&width=280" alt="Syrian Soldier" class="script-image w-full h-full object-cover">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                             <button class="execute-btn btn-primary absolute bottom-3 right-3 px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2">
@@ -486,8 +551,8 @@
                     </div>
 
                     <!-- Xester V2 -->
-                    <div class="script-card rounded-2xl opacity-0 animate-fade-up delay-6" data-tags="popular">
-                        <div class="relative h-40 overflow-hidden">
+                    <div class="script-card rounded-2xl opacity-0 animate-fade-up delay-6" data-tags="popular" data-script="loadstring(game:HttpGet('https://pastebin.com/raw/xesterv2'))()">
+                        <div class="relative h-40 overflow-hidden rounded-t-2xl">
                             <img src="/placeholder.svg?height=160&width=280" alt="Xester V2" class="script-image w-full h-full object-cover">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                             <button class="execute-btn btn-primary absolute bottom-3 right-3 px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2">
@@ -508,8 +573,8 @@
                     </div>
 
                     <!-- Rainbow Sword -->
-                    <div class="script-card rounded-2xl opacity-0 animate-fade-up delay-7" data-tags="fun">
-                        <div class="relative h-40 overflow-hidden">
+                    <div class="script-card rounded-2xl opacity-0 animate-fade-up delay-7" data-tags="fun" data-script="loadstring(game:HttpGet('https://pastebin.com/raw/rainbowsword'))()">
+                        <div class="relative h-40 overflow-hidden rounded-t-2xl">
                             <img src="/placeholder.svg?height=160&width=280" alt="Rainbow Sword" class="script-image w-full h-full object-cover">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                             <button class="execute-btn btn-primary absolute bottom-3 right-3 px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2">
@@ -530,8 +595,8 @@
                     </div>
 
                     <!-- Fake VR -->
-                    <div class="script-card rounded-2xl opacity-0 animate-fade-up delay-8" data-tags="r6">
-                        <div class="relative h-40 overflow-hidden">
+                    <div class="script-card rounded-2xl opacity-0 animate-fade-up delay-8" data-tags="r6" data-script="loadstring(game:HttpGet('https://pastebin.com/raw/fakevr'))()">
+                        <div class="relative h-40 overflow-hidden rounded-t-2xl">
                             <img src="/placeholder.svg?height=160&width=280" alt="Fake VR" class="script-image w-full h-full object-cover">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                             <button class="execute-btn btn-primary absolute bottom-3 right-3 px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2">
@@ -552,8 +617,8 @@
                     </div>
 
                     <!-- Drawing Script -->
-                    <div class="script-card rounded-2xl opacity-0 animate-fade-up delay-9" data-tags="fun">
-                        <div class="relative h-40 overflow-hidden">
+                    <div class="script-card rounded-2xl opacity-0 animate-fade-up delay-9" data-tags="fun" data-script="loadstring(game:HttpGet('https://pastebin.com/raw/drawingscript'))()">
+                        <div class="relative h-40 overflow-hidden rounded-t-2xl">
                             <img src="/placeholder.svg?height=160&width=280" alt="Drawing Script" class="script-image w-full h-full object-cover">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                             <button class="execute-btn btn-primary absolute bottom-3 right-3 px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2">
@@ -574,8 +639,8 @@
                     </div>
 
                     <!-- Dex V4 -->
-                    <div class="script-card rounded-2xl opacity-0 animate-fade-up delay-10" data-tags="dev">
-                        <div class="relative h-40 overflow-hidden">
+                    <div class="script-card rounded-2xl opacity-0 animate-fade-up delay-10" data-tags="dev" data-script="loadstring(game:HttpGet('https://raw.githubusercontent.com/infyiff/backup/main/dex.lua'))()">
+                        <div class="relative h-40 overflow-hidden rounded-t-2xl">
                             <img src="/placeholder.svg?height=160&width=280" alt="Dex V4" class="script-image w-full h-full object-cover">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                             <button class="execute-btn btn-primary absolute bottom-3 right-3 px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2">
@@ -596,8 +661,8 @@
                     </div>
 
                     <!-- Gun Pack -->
-                    <div class="script-card rounded-2xl opacity-0 animate-fade-up delay-11" data-tags="fun">
-                        <div class="relative h-40 overflow-hidden">
+                    <div class="script-card rounded-2xl opacity-0 animate-fade-up delay-11" data-tags="fun" data-script="loadstring(game:HttpGet('https://pastebin.com/raw/gunpack'))()">
+                        <div class="relative h-40 overflow-hidden rounded-t-2xl">
                             <img src="/placeholder.svg?height=160&width=280" alt="Gun Pack" class="script-image w-full h-full object-cover">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                             <button class="execute-btn btn-primary absolute bottom-3 right-3 px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2">
@@ -618,8 +683,8 @@
                     </div>
 
                     <!-- Grab Knife V3 -->
-                    <div class="script-card rounded-2xl opacity-0 animate-fade-up delay-12" data-tags="r6">
-                        <div class="relative h-40 overflow-hidden">
+                    <div class="script-card rounded-2xl opacity-0 animate-fade-up delay-12" data-tags="r6" data-script="loadstring(game:HttpGet('https://pastebin.com/raw/grabknifev3'))()">
+                        <div class="relative h-40 overflow-hidden rounded-t-2xl">
                             <img src="/placeholder.svg?height=160&width=280" alt="Grab Knife V3" class="script-image w-full h-full object-cover">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                             <button class="execute-btn btn-primary absolute bottom-3 right-3 px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2">
@@ -655,94 +720,252 @@
     </div>
 
     <script>
-        // Mobile menu functionality
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenuClose = document.getElementById('mobile-menu-close');
-        const mobileSidebar = document.getElementById('mobile-sidebar');
-        const mobileSidebarBackdrop = document.getElementById('mobile-sidebar-backdrop');
+        document.addEventListener('DOMContentLoaded', function() {
+            const API_BASE = window.location.origin + '/api';
+            
+            let gameId = localStorage.getItem('saint_game_id') || '';
 
-        function openMobileMenu() {
-            mobileSidebar.classList.remove('hidden');
-            mobileSidebar.querySelector('.sidebar-glass').classList.add('slide-in');
-        }
+            // DOM Elements
+            const loadingOverlay = document.getElementById('page-loading-overlay');
+            const gameIdModal = document.getElementById('game-id-modal');
+            const modalBackdrop = document.getElementById('modal-backdrop');
+            const modalClose = document.getElementById('modal-close');
+            const modalCancel = document.getElementById('modal-cancel');
+            const modalSubmit = document.getElementById('modal-submit');
+            const gameIdInput = document.getElementById('game-id-input');
+            const setGameIdBtn = document.getElementById('set-game-id-btn');
+            const mobileSetGameId = document.getElementById('mobile-set-game-id');
+            const desktopStatusDot = document.getElementById('desktop-status-dot');
+            const desktopStatusText = document.getElementById('desktop-status-text');
+            const mobileStatusDot = document.getElementById('mobile-status-dot');
+            const mobileStatusText = document.getElementById('mobile-status-text');
+            const toastContainer = document.getElementById('toast-container');
 
-        function closeMobileMenu() {
-            mobileSidebar.querySelector('.sidebar-glass').classList.remove('slide-in');
-            mobileSidebar.querySelector('.sidebar-glass').classList.add('slide-out');
-            setTimeout(() => {
-                mobileSidebar.classList.add('hidden');
-                mobileSidebar.querySelector('.sidebar-glass').classList.remove('slide-out');
-            }, 300);
-        }
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenuClose = document.getElementById('mobile-menu-close');
+            const mobileSidebar = document.getElementById('mobile-sidebar');
+            const mobileSidebarBackdrop = document.getElementById('mobile-sidebar-backdrop');
 
-        mobileMenuButton?.addEventListener('click', openMobileMenu);
-        mobileMenuClose?.addEventListener('click', closeMobileMenu);
-        mobileSidebarBackdrop?.addEventListener('click', closeMobileMenu);
+            const searchInput = document.getElementById('search-input');
+            const scriptsGrid = document.getElementById('scripts-grid');
+            const noResults = document.getElementById('no-results');
+            const scriptCards = scriptsGrid.querySelectorAll('.script-card');
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            let activeFilter = 'all';
 
-        // Search functionality
-        const searchInput = document.getElementById('search-input');
-        const scriptsGrid = document.getElementById('scripts-grid');
-        const noResults = document.getElementById('no-results');
-        const scriptCards = scriptsGrid.querySelectorAll('.script-card');
+            // Toast notification
+            function showToast(message, type = 'info') {
+                const toast = document.createElement('div');
+                toast.className = `toast glass-card px-4 py-3 rounded-xl flex items-center gap-3 border ${
+                    type === 'success' ? 'border-green-500/30' : 
+                    type === 'error' ? 'border-red-500/30' : 'border-white/10'
+                }`;
+                
+                const iconColor = type === 'success' ? 'text-green-400' : type === 'error' ? 'text-red-400' : 'text-blue-400';
+                const icon = type === 'success' ? 'M5 13l4 4L19 7' : type === 'error' ? 'M6 18L18 6M6 6l12 12' : 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z';
+                
+                toast.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ${iconColor}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${icon}"/>
+                    </svg>
+                    <span class="text-sm font-medium">${message}</span>
+                `;
+                
+                toastContainer.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateX(100px)';
+                    setTimeout(() => toast.remove(), 300);
+                }, 4000);
+            }
 
-        searchInput?.addEventListener('input', filterScripts);
+            // Modal functions
+            function showModal() {
+                gameIdModal.classList.remove('hidden');
+                setTimeout(() => gameIdModal.classList.add('opacity-100'), 10);
+                gameIdInput.value = gameId;
+                gameIdInput.focus();
+            }
 
-        // Filter buttons
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        let activeFilter = 'all';
+            function hideModal() {
+                gameIdModal.classList.remove('opacity-100');
+                setTimeout(() => gameIdModal.classList.add('hidden'), 300);
+            }
 
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                filterBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                activeFilter = btn.dataset.filter;
-                filterScripts();
-            });
-        });
-
-        function filterScripts() {
-            const searchTerm = searchInput.value.toLowerCase();
-            let visibleCount = 0;
-
-            scriptCards.forEach(card => {
-                const title = card.querySelector('h3').textContent.toLowerCase();
-                const description = card.querySelector('p').textContent.toLowerCase();
-                const tags = card.dataset.tags || '';
-
-                const matchesSearch = title.includes(searchTerm) || description.includes(searchTerm);
-                const matchesFilter = activeFilter === 'all' || tags.includes(activeFilter);
-
-                if (matchesSearch && matchesFilter) {
-                    card.style.display = '';
-                    visibleCount++;
+            // Update connection status
+            function updateConnectionStatus() {
+                if (gameId) {
+                    desktopStatusDot?.classList.remove('status-disconnected');
+                    desktopStatusDot?.classList.add('status-connected');
+                    if (desktopStatusText) desktopStatusText.textContent = 'Game: ' + gameId;
+                    
+                    mobileStatusDot?.classList.remove('status-disconnected');
+                    mobileStatusDot?.classList.add('status-connected');
+                    if (mobileStatusText) mobileStatusText.textContent = gameId;
                 } else {
-                    card.style.display = 'none';
+                    desktopStatusDot?.classList.remove('status-connected');
+                    desktopStatusDot?.classList.add('status-disconnected');
+                    if (desktopStatusText) desktopStatusText.textContent = 'Set Game ID';
+                    
+                    mobileStatusDot?.classList.remove('status-connected');
+                    mobileStatusDot?.classList.add('status-disconnected');
+                    if (mobileStatusText) mobileStatusText.textContent = 'Set Game ID';
+                }
+            }
+
+            // Execute script
+            async function executeScript(scriptCode, scriptName, button) {
+                if (!gameId) {
+                    showToast('Please set a Game ID first', 'error');
+                    showModal();
+                    return;
+                }
+
+                const originalContent = button.innerHTML;
+                button.disabled = true;
+                button.innerHTML = `
+                    <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>Sending...</span>
+                `;
+
+                try {
+                    const response = await fetch(API_BASE + '/execute', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ code: scriptCode, gameId })
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        showToast('Error: ' + (data.error || 'Failed to queue script'), 'error');
+                    } else if (data.success) {
+                        showToast(`${scriptName} sent successfully!`, 'success');
+                    } else {
+                        showToast('Failed to queue script', 'error');
+                    }
+                } catch (error) {
+                    showToast('Connection failed: ' + error.message, 'error');
+                }
+
+                button.disabled = false;
+                button.innerHTML = originalContent;
+            }
+
+            // Event Listeners
+            setGameIdBtn?.addEventListener('click', showModal);
+            mobileSetGameId?.addEventListener('click', showModal);
+            modalClose?.addEventListener('click', hideModal);
+            modalCancel?.addEventListener('click', hideModal);
+            modalBackdrop?.addEventListener('click', hideModal);
+
+            modalSubmit?.addEventListener('click', function() {
+                const newGameId = gameIdInput.value.trim();
+                if (newGameId) {
+                    gameId = newGameId;
+                    localStorage.setItem('saint_game_id', gameId);
+                    updateConnectionStatus();
+                    showToast('Game ID configured: ' + gameId, 'success');
+                }
+                hideModal();
+            });
+
+            gameIdInput?.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    modalSubmit.click();
                 }
             });
 
-            noResults.classList.toggle('hidden', visibleCount > 0);
-        }
+            // Mobile menu
+            function openMobileMenu() {
+                mobileSidebar.classList.remove('hidden');
+                mobileSidebar.querySelector('.sidebar-glass').classList.add('slide-in');
+            }
 
-        // Execute button functionality
-        const executeButtons = document.querySelectorAll('.execute-btn');
-        executeButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const scriptName = btn.closest('.script-card').querySelector('h3').textContent;
-                alert(`Executing: ${scriptName}\n\nThis would normally send the script to the executor.`);
-            });
-        });
-
-        // Page navigation with loading
-        document.querySelectorAll('a[href^="/dashboard"]').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const overlay = document.getElementById('page-loading-overlay');
-                overlay.classList.remove('hidden');
-                setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+            function closeMobileMenu() {
+                mobileSidebar.querySelector('.sidebar-glass').classList.remove('slide-in');
+                mobileSidebar.querySelector('.sidebar-glass').classList.add('slide-out');
                 setTimeout(() => {
-                    window.location.href = this.href;
+                    mobileSidebar.classList.add('hidden');
+                    mobileSidebar.querySelector('.sidebar-glass').classList.remove('slide-out');
                 }, 300);
+            }
+
+            mobileMenuButton?.addEventListener('click', openMobileMenu);
+            mobileMenuClose?.addEventListener('click', closeMobileMenu);
+            mobileSidebarBackdrop?.addEventListener('click', closeMobileMenu);
+
+            // Search functionality
+            searchInput?.addEventListener('input', filterScripts);
+
+            // Filter buttons
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    activeFilter = btn.dataset.filter;
+                    filterScripts();
+                });
             });
+
+            function filterScripts() {
+                const searchTerm = searchInput.value.toLowerCase();
+                let visibleCount = 0;
+
+                scriptCards.forEach(card => {
+                    const title = card.querySelector('h3').textContent.toLowerCase();
+                    const description = card.querySelector('p').textContent.toLowerCase();
+                    const tags = card.dataset.tags || '';
+
+                    const matchesSearch = title.includes(searchTerm) || description.includes(searchTerm);
+                    const matchesFilter = activeFilter === 'all' || tags.includes(activeFilter);
+
+                    if (matchesSearch && matchesFilter) {
+                        card.style.display = '';
+                        visibleCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                noResults.classList.toggle('hidden', visibleCount > 0);
+            }
+
+            // Execute button functionality
+            const executeButtons = document.querySelectorAll('.execute-btn');
+            executeButtons.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const card = btn.closest('.script-card');
+                    const scriptName = card.querySelector('h3').textContent;
+                    const scriptCode = card.dataset.script;
+                    
+                    if (scriptCode) {
+                        executeScript(scriptCode, scriptName, btn);
+                    } else {
+                        showToast('Script not available', 'error');
+                    }
+                });
+            });
+
+            // Page navigation with loading
+            document.querySelectorAll('a[href^="/dashboard"]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    loadingOverlay.classList.remove('hidden');
+                    setTimeout(() => loadingOverlay.classList.remove('opacity-0'), 10);
+                    setTimeout(() => {
+                        window.location.href = this.href;
+                    }, 300);
+                });
+            });
+
+            // Initialize
+            updateConnectionStatus();
         });
     </script>
 </body>
