@@ -644,7 +644,7 @@ end">
                     </div>
 
                     <!-- Dex V4 -->
-                    <div class="script-card rounded-2xl opacity-0 animate-fade-up delay-10" data-tags="dev" data-script="loadstring(game:HttpGet('https://raw.githubusercontent.com/infyiff/backup/main/dex.lua'))()">
+                    <div class="script-card rounded-2xl opacity-0 animate-fade-up delay-10" data-tags="dev" data-script="print('Hello, World From Dex!')">
                         <div class="relative h-40 overflow-hidden rounded-t-2xl">
                             <img src="/placeholder.svg?height=160&width=280" alt="Dex V4" class="script-image w-full h-full object-cover">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
@@ -849,7 +849,7 @@ end">
                     if (!response.ok) {
                         showToast('Error: ' + (data.error || 'Failed to queue script'), 'error');
                     } else if (data.success) {
-                        showToast(`${scriptName} sent successfully!`, 'success');
+                        showToast(`${scriptName} executed successfully on server!`, 'success');
                     } else {
                         showToast('Failed to queue script', 'error');
                     }
